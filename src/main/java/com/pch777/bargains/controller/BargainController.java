@@ -87,7 +87,7 @@ public class BargainController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
 
-		Sort sort = Sort.by("voteCount").descending();
+		Sort sort = Sort.by("voteCount").descending().and(Sort.by("createdAt"));
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 		
 		Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLike(pageable, keyword);
@@ -199,7 +199,7 @@ public class BargainController {
 			return "redirect:/";
 		}
 		
-		Sort sort = Sort.by("voteCount").descending();
+		Sort sort = Sort.by("voteCount").descending().and(Sort.by("createdAt"));
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 
 		Page<Bargain> pageBargainsByCategory = bargainService.getAllBargainsByTitleLikeByCategory(pageable, keyword, category);

@@ -35,22 +35,22 @@ public interface BargainRepository extends JpaRepository<Bargain, Long> {
 	@Query ("SELECT b FROM Bargain b where (b.user.id = ?2 and lower(b.title) LIKE %?1%)")
 	Page<Bargain> findByTitleLikeAndUserId(Pageable pageable, String keyword, Long userId);
 	
-	@Query ("SELECT b FROM Bargain b where lower(b.title) LIKE %?1%  order by size(b.comments) desc")
+	@Query ("SELECT b FROM Bargain b where lower(b.title) LIKE %?1%  order by size(b.comments) desc, b.createdAt")
 	Page<Bargain>  findMostCommented(Pageable pageable, String keyword);
 	
-	@Query ("SELECT b FROM Bargain b where (lower(b.title) LIKE %?1% and b.closed = ?2) order by size(b.comments) desc")
+	@Query ("SELECT b FROM Bargain b where (lower(b.title) LIKE %?1% and b.closed = ?2) order by size(b.comments) desc, b.createdAt")
 	Page<Bargain>  findNotClosedMostCommented(Pageable pageable, String keyword, boolean closed);
 	
-	@Query ("SELECT b FROM Bargain b where (b.category = ?2 and lower(b.title) LIKE %?1%) order by size(b.comments) desc")
+	@Query ("SELECT b FROM Bargain b where (b.category = ?2 and lower(b.title) LIKE %?1%) order by size(b.comments) desc, b.createdAt")
 	Page<Bargain>  findByCategoryOrderByCommentsSize(Pageable pageable, String keyword, Category category);
 	
-	@Query ("SELECT b FROM Bargain b where (b.category = ?2 and lower(b.title) LIKE %?1% and b.closed = ?3) order by size(b.comments) desc")
+	@Query ("SELECT b FROM Bargain b where (b.category = ?2 and lower(b.title) LIKE %?1% and b.closed = ?3) order by size(b.comments) desc, b.createdAt")
 	Page<Bargain>  findNotClosedByCategoryOrderByCommentsSize(Pageable pageable, String keyword, Category category, boolean closed);
 	
-	@Query ("SELECT b FROM Bargain b where (b.user.id = ?2 and lower(b.title) LIKE %?1% and b.closed = ?3) order by size(b.comments) desc")
+	@Query ("SELECT b FROM Bargain b where (b.user.id = ?2 and lower(b.title) LIKE %?1% and b.closed = ?3) order by size(b.comments) desc, b.createdAt")
 	Page<Bargain>  findNotClosedByUserIdOrderByCommentsSize(Pageable pageable, String keyword, Long userId, boolean closed);
 	
-	@Query ("SELECT b FROM Bargain b where (b.user.id = ?2 and lower(b.title) LIKE %?1%) order by size(b.comments) desc")
+	@Query ("SELECT b FROM Bargain b where (b.user.id = ?2 and lower(b.title) LIKE %?1%) order by size(b.comments) desc, b.createdAt")
 	Page<Bargain>  findByUserIdOrderByCommentsSize(Pageable pageable, String keyword, Long userId);
 	
 	List<Bargain> findByClosedAndEndBargainLessThan(boolean closed, LocalDate endBargain);
