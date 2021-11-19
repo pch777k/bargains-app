@@ -26,7 +26,7 @@ body {
 }
 
 .technologies {
-	height: 50px;
+	height: 35px;
 }
 
 input[type=radio]:checked+label {
@@ -58,7 +58,7 @@ input[type=radio]:checked+label {
 .checkbox-closed {
 	width: 25px;
 	height: 25px;
-	margin-top: 12px;
+	margin-top: 8px;
 }
 
 .label-checkbox-closed {
