@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
 <title>Best price deals | Bargains</title>
-<link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}">
 </head>   
 
 <body>
@@ -10,25 +10,37 @@
 
   <!-- Navigation -->
   <div th:replace="fragments/navigation :: navigation(href='/')"></div>
-
-  <div id="main" class="container text-center">
   
   <!-- Bar-categories -->
   <div th:replace="fragments/bar-categories :: bar-categories"></div>
-   
-  <!-- Navigation-pills -->
-  <div th:replace="fragments/navigation-pills :: navigation-pills(bestClass='nav-link active', newClass='nav-link', commentedClass='nav-link', bestHref='/', newHref='/new', commentedHref='/commented', hideHref='/')"></div>
+
+  <div id="main" class="container text-center">
+  
+  <!-- Navigation-bargains -->
+  <div th:replace="fragments/navigation-bargains :: navigation-bargains(
+  				   bestClass='user-nav text-primary text-bold border-3', 
+  				   newClass='user-nav text-dark', 
+  				   commentedClass='user-nav text-dark', 
+  				   bestHref='/', 
+  				   newHref='/new', 
+  				   commentedHref='/commented', 
+  				   hideHref='/')"></div>
 
   <div th:if="${totalBargains == 0}" class="text-light">	
-    <div class="jumbotron mt-5">
-      <h1 class="display-4">Welcome</h1>
-      <p class="lead">It's a simple project that allows you to share bargains, cheap deals, discounts and sales. </p>
+    <div class="jumbotron pt-4 margin-jumbotron">
+      <h3>Welcome</h3>
+      <p class="lead">It's a demo project that allows you to share bargains, cheap deals, discounts and sales. </p>
       <hr class="my-4">
       <p>There are not any bargains now, you can load sample offers to test the application</p>
-      <p class="lead">
-        <a class="btn btn-sm btn-success my-lg-0" th:href="@{/init-data}" title="loading some sample data (users, bargains, comments and votes)" role="button">Load sample data <span><i class="fas fa-upload"></i></span></a>
+      <p class="lead ">
+        <a class="btn btn-sm btn-success my-3 " th:href="@{/init-data}" title="loading some sample data (users, bargains, comments and votes)" role="button">Load sample data <span><i class="fas fa-upload"></i></span></a>
       </p>
-      <img src="https://i.postimg.cc/d1x8QVFJ/Brother-printer-dashboard.jpg" class="img-fluid" alt="Responsive image">
+      <div class="d-none d-sm-block ">
+        <img src="https://i.postimg.cc/d1x8QVFJ/Brother-printer-dashboard.jpg" class="img-fluid" alt="Responsive image">
+      </div>
+      <div class="d-block d-sm-none">
+        <img src="https://i.postimg.cc/dtW8NvVj/screenshot-smartphone.jpg" class="img-fluid" alt="Responsive image">
+      </div>
     </div> 
   </div>
 	
@@ -47,7 +59,7 @@
   <div th:replace="fragments/modal-open :: modal-open"></div>	
 		
   <!-- Pagination -->	
-  <div th:replace="fragments/pagination-bargain :: pagination-bargain(href='/')"></div>	
+  <div th:replace="fragments/pagination-bargains :: pagination-bargains(href='/')"></div>	
 	
   </div>
 
@@ -68,6 +80,8 @@
   <script src="../static/js/modal-close.js" th:src="@{/js/modal-close.js}" type ="text/javascript"></script>
   <script src="../static/js/modal-open.js" th:src="@{/js/modal-open.js}" type ="text/javascript"></script>
   <script src="../static/js/copy-to-clipboard.js" th:src="@{/js/copy-to-clipboard.js}" type ="text/javascript"></script>
+   
+ 
     
 </body>
 </html>

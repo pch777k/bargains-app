@@ -16,6 +16,10 @@ body {
 /* 	padding-bottom: 50px; this needs to be bigger than footer height */
 }
 
+.margin-jumbotron {
+	margin-top: 32px;
+}
+
 .footer {
 	position: relative;
 /* 	margin-top: -50px; negative value of footer height */
@@ -40,6 +44,11 @@ input[type=radio]:checked+label {
 	background-color: #0275d8;
 }
 
+
+.card-title {
+    word-break: break-word;
+}
+
 .user-nav {
 	text-decoration: none;
 }
@@ -49,6 +58,26 @@ input[type=radio]:checked+label {
 	font-weight: bold;
 }
 
+.border-3 {
+ 	border-width: 3px;
+ 	border-bottom-style: solid;
+ 	border-color: #0275d8;
+}
+
+.btn-width {
+    width: 94px;
+/*     width: 100px !important; */
+}
+
+.btn-width-md {
+    width: 120px;
+/*     width: 100px !important; */
+}
+
+.text-bold {
+	font-weight: bold;	
+}
+
 .checkbox-completed {
 	width: 25px;
 	height: 25px;
@@ -56,10 +85,12 @@ input[type=radio]:checked+label {
 }
 
 .checkbox-closed {
-	width: 25px;
-	height: 25px;
-	margin-top: 8px;
+	width: 20px;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: 12px;
 }
+
 
 .label-checkbox-closed {
 	margin-top: 12px;

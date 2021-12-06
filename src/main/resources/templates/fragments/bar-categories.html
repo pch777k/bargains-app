@@ -1,10 +1,30 @@
 <div th:fragment="bar-categories">
 	
 <!-- Bar-categories -->	
-<div th:if="${totalBargains > 0}" class="container mt-3">
-  <th:block th:each="category : ${T(com.pch777.bargains.model.Category).values()}">
-    <a class="text-light" th:value="${category}" th:text="${#strings.capitalize(#strings.toLowerCase(category))}" th:href="@{${#strings.toLowerCase(category)}}" role="button">Link</a>
-  <th:block>
+<div th:if="${totalBargains > 0}" class="container-fluid bg-dark mb-3">
+<div class="container pb-1">
+  <div class="d-none d-lg-block">
+	<div class="row d-flex justify-content-center">
+	  <th:block th:each="category : ${T(com.pch777.bargains.model.Category).values()}">
+	    <a class="btn btn-sm btn-dark mr-1" th:value="${category}" th:text="${#strings.capitalize(#strings.toLowerCase(category))}" th:href="@{${#strings.toLowerCase(category)}}" role="button">Link</a>
+	  <th:block>
+	</div>
+  </div>  
+  <div class="d-block d-md-none">
+	<div class="row d-flex justify-content-between">
+	  <th:block th:each="category : ${T(com.pch777.bargains.model.Category).values()}">
+	    <a class="btn btn-sm btn-dark btn-width mb-1" th:value="${category}" th:text="${#strings.capitalize(#strings.toLowerCase(category))}" th:href="@{${#strings.toLowerCase(category)}}" role="button">Link</a>
+	  <th:block>
+	</div>
+  </div>
+  <div class="d-none d-md-block d-lg-none">
+	<div class="row d-flex justify-content-between">
+	  <th:block th:each="category : ${T(com.pch777.bargains.model.Category).values()}">
+	    <a class="btn btn-sm btn-dark btn-width-md mb-1" th:value="${category}" th:text="${#strings.capitalize(#strings.toLowerCase(category))}" th:href="@{${#strings.toLowerCase(category)}}" role="button">Link</a>
+	  <th:block>
+	</div>	
+  </div> 
+</div>
 </div>
 <!-- Bar-categories -->
 	

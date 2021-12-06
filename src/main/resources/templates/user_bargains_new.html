@@ -14,16 +14,29 @@
   <div th:replace="fragments/bar-under-navigation :: bar-under-navigation"></div>
 	
   <!-- Bar-tiny-under-navigation -->
-  <div th:replace="fragments/bar-tiny-under-navigation :: bar-tiny-under-navigation(first='text-dark',second='ml-3 text-primary', third='ml-3 text-dark')"></div>
+  <div th:replace="fragments/bar-tiny-under-navigation :: bar-tiny-under-navigation(
+				   viewLink='text-secondary', viewBadge='badge badge-secondary ml-1', 
+				   bargainsLink='text-primary', bargainsBadge='badge badge-primary ml-1', 
+				   commentsLink='text-secondary', commentsBadge='badge badge-secondary ml-1', 
+				   votesLink='text-secondary', votesBadge='badge badge-secondary ml-1')"></div>
+  
   
   <div id="main" class="container">
 
-  <!-- Navigation-pills -->
-  <div th:replace="fragments/navigation-pills :: navigation-pills(bestClass='nav-link', newClass='nav-link active', commentedClass='nav-link', 
-				  bestHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains'}, 
-				  newHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'}, 
-				  commentedHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/commented'}, 
-				  hideHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'})"></div>
+  <!-- Navigation-bargains -->
+<!--   <div th:replace="fragments/navigation-bargains :: navigation-bargains(bestClass='nav-link', newClass='nav-link active', commentedClass='nav-link',  -->
+<!-- 				  bestHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains'},  -->
+<!-- 				  newHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'},  -->
+<!-- 				  commentedHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/commented'},  -->
+<!-- 				  hideHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'})"></div> -->
+  <div th:replace="fragments/navigation-bargains :: navigation-bargains(
+  				   bestClass='user-nav text-dark', 
+  				   newClass='user-nav text-primary text-bold border-3', 
+  				   commentedClass='user-nav text-dark', 
+  				   bestHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains'}, 
+  				   newHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'}, 
+  				   commentedHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/commented'}, 
+  				   hideHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'})"></div>
 
   <div th:each="bargain: ${bargains}" class="card my-3" >
 	<!-- Bargains display -->
@@ -40,7 +53,7 @@
   <div th:replace="fragments/modal-open :: modal-open"></div>	
 	
   <!-- Pagination -->	
-  <div th:replace="fragments/pagination-bargain :: pagination-bargain(href=${'/users/'+#strings.toString(profileUser.id)+'/bargains/new'})"></div>	
+  <div th:replace="fragments/pagination-bargains :: pagination-bargains(href=${'/users/'+#strings.toString(profileUser.id)+'/bargains/new'})"></div>	
 	
   </div>
 

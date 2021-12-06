@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -88,6 +90,18 @@ public class VoteService {
 	public static boolean userVoted(List<Vote> votes, User user) {
 		Vote vote = votes.stream().filter(v -> user.getId().equals(v.getUser().getId())).findAny().orElse(null);
 		return vote != null;
+	}
+	
+	public Page<Vote> getVotesByUserId(Pageable pageable, Long userId) {
+		return voteRepository.findByUserId(pageable, userId);
+	}
+	
+	public Page<Vote> getVotesByVoteTypeAndUserId(Pageable pageable, VoteType voteType, Long userId) {
+		return voteRepository.findVotesByVoteTypeAndUserId(pageable, voteType, userId);
+	}
+	
+	public List<Vote> getAllByVoteTypeAndUserId(VoteType voteType, Long userId) {
+		return voteRepository.findByVoteTypeAndUserId(voteType, userId);
 	}
 	
 	public List<Vote> getAllVotesByUserId(Long userId) {

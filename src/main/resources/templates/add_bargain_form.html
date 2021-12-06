@@ -45,32 +45,31 @@
 		  <hr>
 	    </div>
 					
-	    <div class="form-group row">	                
-		  <div class="col-6">
-	       	<label for="reduceprice"><strong>PRICE</strong> <small>(Optional)</small></label>
-		      <div class="input-group">
-		    	<input type="number" placeholder="0,00" step="0.01" min="0" th:field="*{reducePrice}" id="reduceprice" class="form-control" />
-			  </div>
+	    <div class="form-group">	                		  
+	      <label for="reduceprice"><strong>PRICE</strong> <small>(Optional)</small></label>
+	      <div class="row">
+		    <div class="input-group col-6 col-sm-4">
+		      <input type="number" placeholder="0,00" step="0.01" min="0" th:field="*{reducePrice}" id="reduceprice" class="form-control" />
+			</div>
 		  </div>
-		  <div class="col-6">
-			<label for="normalprice"><strong>NORMAL PRICE</strong> <small>(Optional)</small></label>
-		    <div class="input-group">
+
+		  <label class="pt-2" for="normalprice"><strong>NORMAL PRICE</strong> <small>(Optional)</small></label>
+		  <div class="row">
+		    <div class="input-group col-6 col-sm-4">
 		      <input type="number" placeholder="0,00" step="0.01" min="0" th:field="*{normalPrice}" id="normalprice" class="form-control" />
 			</div>
 		  </div>
-	    </div>
-		            
-		<div class="form-group row">
-		  <div class="col-6">
-			<label for="delivery"><strong>DELIVERY</strong> <small>(Optional)</small></label>
-			<div class="input-group">
+		  
+		  <label class="pt-2" for="delivery"><strong>DELIVERY</strong> <small>(Optional)</small></label>
+		  <div class="row">
+		    <div class="input-group col-6 col-sm-4">
 			  <input type="number" placeholder="0,00" step="0.01" min="0" th:field="*{delivery}" id="delivery" class="form-control" />
 			</div>
 		  </div>
 		</div>
 		            
 		<div class="form-group row">
-		  <div class="col-6">
+		  <div class="col-12">
 			<div class="form-check">
 			  <input type="checkbox" class="form-check-input checkbox-completed" id="free-delivery" onclick="updateDelivery();">
 			  <label class="form-check-label ml-3 pt-1" for="free-delivery">Free delivery</label>
@@ -114,7 +113,7 @@
 	    </div>
              
 	    <div class="form-group row">
-		  <div class="col-6">
+		  <div class="col-12 col-sm-6">
 			<label for="start-bargain"><strong>BARGAIN STARTS</strong> <small>(Optional)</small></label>
 			<div class="input-group date start-bargain">
 			  <input type="text" class="form-control" id="startB" th:field="*{startBargain}" th:value="${#dates.format(startBargain, 'dd-MM-yyyy')}" autocomplete="off" placeholder="DD-MM-YYYY"/>
@@ -123,7 +122,7 @@
 			  </div>
 			</div>
 		  </div>
-		  <div class="col-6">
+		  <div class="col-12 col-sm-6 mt-2 mt-sm-0">
 			<label for="end-bargain"><strong>BARGAIN ENDS</strong> <small>(Optional)</small></label>
 			<div class="input-group date end-bargain">
 			  <input type="text" class="form-control " th:field="*{endBargain}" th:value="${#dates.format(endBargain, 'dd-MM-yyyy')}" autocomplete="off" placeholder="DD-MM-YYYY"/>
@@ -135,7 +134,7 @@
 		</div>
 
 		<label><strong>PHOTO</strong> <small>(Optional)</small></label>
-		<div class="input-group mb-3">
+		<div class="input-group">
 		  <div class="input-group-prepend">
 		    <span class="input-group-text" title="remove photo" id="removeImage"><i class="fas fa-times"></i></span>
 		  </div>
@@ -144,13 +143,13 @@
 		    <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label>
 		  </div>  
 		</div>
-		<div>
+		<div class="d-flex justify-content-center mt-2">
 		  <img th:src="@{${noBargainPhoto}}" id="thumbnail" width="200" height="200"/>
 		</div>
 
-		<div class="d-flex justify-content-center mb-3">
-		  <a class="btn btn-primary mt-3 mr-3" th:href="@{/}" role="button">Back</a>
-		  <button type="submit" class="btn btn-primary mt-3">Add</button>
+		<div class="d-flex justify-content-center mb-3 mt-2">
+		  <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
+		  <button type="submit" class="btn btn-primary">Add</button>
 		</div>
 	  </form>
 	

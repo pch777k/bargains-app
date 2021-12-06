@@ -1,15 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
 <meta charset="UTF-8" />
-<title>Edit comment</title>
+<title>Cite comment</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- Summernote CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" >
-<!-- Font awesome -->
-<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.14.0/css/all.css">
+
 <!-- Styles CSS -->
 <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
 
@@ -20,32 +17,28 @@
 <!-- Navigation -->
 <div th:replace="fragments/navigation-nosearch :: navigation-nosearch"></div>
 
+<div id="main">
 
-  <div id="main">
+  <th:block sec:authorize="isAuthenticated()">			
+	<div class="container rounded border bg-white my-4">
+	  <div class="row">
+		<div class="col-12">
+		  <div class=" mx-2 my-4 text-center" >
+		    <form id="edit-comment" th:object="${comment}" method="post" 
+		          th:action="@{/bargains/{bargainId}/comments/{commentId}/cite (bargainId=${bargain.id}, commentId=${comment.id})}"> 
+			  <label for="summernote"><strong>Add Comment</strong></label> 
+	          <textarea th:field="*{content}" class="form-control" id="summernote" ></textarea>
+				<div class="d-flex justify-content-center">
+				  <button  type="submit" class="btn btn-primary mt-4">Add</button>
+				</div>
+		    </form>	        		
+		  </div>
+        </div>
+	  </div>
+	</div>
+  </th:block>
 
-	<th:block sec:authorize="isAuthenticated()">			
-		<div class="container rounded border bg-white my-4">
-			<div class="row ">
-		    	<div class="col-12">
-		        	<div class=" mx-2 my-4 text-center" >
-				        <form id="edit-comment" 
-		         			th:action="@{/bargains/{bargainId}/comments/{commentId}/cite (bargainId=${bargain.id}, commentId=${comment.id})}" th:object="${comment}"  method="post" > 
-							
-							<label for="summernote"><strong>Add Comment</strong></label> 
-	
-					        <textarea th:field="*{content}" class="form-control" id="summernote" ></textarea>
-		    
-					        <div class="d-flex justify-content-center">
-					            <button  type="submit" class="btn btn-primary mt-4">Add</button>
-					        </div>
-		       			</form>	        		
-		        	</div>
-		        </div>
-			</div>
-		</div>
-	</th:block>
-
-  </div>
+</div>
 </div>
 	
 <!-- Footer -->	

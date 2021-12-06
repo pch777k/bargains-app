@@ -78,6 +78,10 @@ public class BargainService {
 		return bargainRepository.findByTitleLikeAndUserId(pageable, "%" + keyword.toLowerCase() + "%", userId);
 	}
 	
+	public Page<Bargain> getAllBargainsVotedByUserId(Pageable pageable, Long userId) {
+		return bargainRepository.findBargainsVotedByUserId(pageable, userId);
+	}
+	
 	public boolean existsById(Long id) {
         return bargainRepository.existsById(id);
     }

@@ -16,11 +16,15 @@
   <div th:replace="fragments/bar-under-navigation :: bar-under-navigation"></div>
 
   <!-- Bar-tiny-under-navigation -->
-  <div th:replace="fragments/bar-tiny-under-navigation :: bar-tiny-under-navigation(first='text-primary',second='ml-3 text-dark', third='ml-3 text-dark')"></div>
+  <div th:replace="fragments/bar-tiny-under-navigation :: bar-tiny-under-navigation(
+				   viewLink='text-primary', viewBadge='badge badge-primary ml-1', 
+				   bargainsLink='text-secondary', bargainsBadge='badge badge-secondary ml-1', 
+				   commentsLink='text-secondary', commentsBadge='badge badge-secondary ml-1', 
+				   votesLink='text-secondary', votesBadge='badge badge-secondary ml-1')"></div>
   
 <div id="main" class="container ">
 	<div class="row">
-		<div class="col-12 col-lg-3 mb-2">
+		<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
 			<div class="card" >
   				<div class="card-header text-center">
    					 Statistics
@@ -34,7 +38,7 @@
 			    </ul>
 			</div>
 		</div>
-		<div class="col-12 col-lg-9 mb-4">
+		<div class="col-12 col-sm-6 col-md-8 col-lg-9 mb-4">
 			<div class="card" >
   				<div class="card-header text-center text-primary">
    					Activity
@@ -43,46 +47,45 @@
   					<li th:if="${totalActivities==0}" class="list-group-item text-center"> There is no activity</li>
     				<li th:each="activity: ${activities}" class="list-group-item">
     					<div class="row">
-    						<div class="col-2 col-md-1">
+    						<div class="col-2 col-sm-1 mr-3 mr-md-4 mr-lg-2 mr-xl-1">
     							<a th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">				    					    	 
 									<img th:if="${activity.bargain.photo != null}" 
 									 th:src="@{${'/bargains/' + activity.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
 								</a>
-    	
     						</div>
-    						<div class="col-10 col-md-11">
-    						<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).BARGAIN}"> 
-								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
-									<strong><span th:text="${activity.user.nickname}"></span></strong> added the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
-								</a>
+    						<div class="col-9 col-sm-10">
+    						<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).BARGAIN}"> 	
 								<div class="text-muted" title="Added">
 									<i class="fas fa-plus"></i> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
-								</div> 
+								</div>
+								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
+									<strong><span th:text="${activity.user.nickname}"></span></strong> added the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
+								</a> 
 							</th:block>	
 							<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).COMMENT}"> 
-								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
-									<strong><span th:text="${activity.user.nickname}"></span></strong> commented on the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
-								</a>
 								<div class="text-muted" title="Commented">
 									<i class="fas fa-comment"> </i> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
-								</div> 
+								</div>
+								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
+									<strong><span th:text="${activity.user.nickname}"></span></strong> commented on the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
+								</a>	 
 							</th:block>	
 							<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).VOTE}"> 
-								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
-									<strong><span th:text="${activity.user.nickname}"></span></strong> voted on the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
-								</a>
 								<div class="text-muted" title="Voted">
 									<i class="fas fa-vote-yea"> </i> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
 								</div> 
+								<a th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
+									<strong><span th:text="${activity.user.nickname}"></span></strong> voted on the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
+								</a>
 							</th:block>						
 							</div>
 						</div>
 				    </li>
 				</ul>
 				
-   				<div class="card-footer pb-1" th:if="${activities.totalPages > 1}">
+   				<div class="card-footer" th:if="${activities.totalPages > 1}">
    					<!-- Pagination activity-->	
-					<div th:replace="fragments/pagination-activity :: pagination-activity"></div>
+					<div th:replace="fragments/pagination-activity :: pagination-activity(href='/users/{userId}/overview')"></div>
   				</div>
 			</div>
 		</div>	

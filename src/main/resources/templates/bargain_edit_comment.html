@@ -1,17 +1,16 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
 <meta charset="UTF-8" />
 <title>Edit comment</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- Summernote CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" >
-<!-- Font awesome -->
-<link rel="stylesheet" type="text/css" href="/webjars/font-awesome/5.14.0/css/all.css">
+
 <!-- Styles CSS -->
 <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+
+
 
 </head>
 <body>

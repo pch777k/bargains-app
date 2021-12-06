@@ -1,0 +1,23 @@
+<div th:fragment="navigation-votes(allClass, plusClass, minusClass, allHref, plusHref, minusHref)">
+	
+<!-- Navigation-votes -->	
+<div th:if="${totalVotes > 0}" class="container rounded bg-white mt-3">  
+test
+  <div class="row">
+	<ul class="nav p-1">
+	  <li class="nav-item">
+	    <a th:class="${allClass}" th:href="@{${allHref}}">All</a>
+	  </li>
+	  <li class="nav-item">
+		<a th:class="${plusClass}" th:href="@{${plusHref}}">Positive</a>
+	  </li>
+	  <li class="nav-item">
+		<a th:class="${minusClass}" th:href="@{${minusHref}}">Negative</a>
+	  </li>
+	</ul>
+  </div>
+</div>
+<!-- Navigation-votes -->	
+</div>
+
+

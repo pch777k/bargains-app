@@ -15,32 +15,42 @@
   <div th:replace="fragments/bar-under-navigation :: bar-under-navigation"></div>
 
   <!-- Bar-tiny-under-navigation -->
-  <div th:replace="fragments/bar-tiny-under-navigation :: bar-tiny-under-navigation(first='text-dark',second='ml-3 text-dark', third='ml-3 text-primary')"></div>
+  <div th:replace="fragments/bar-tiny-under-navigation :: bar-tiny-under-navigation(
+				   viewLink='text-secondary', viewBadge='badge badge-secondary ml-1', 
+				   bargainsLink='text-secondary', bargainsBadge='badge badge-secondary ml-1', 
+				   commentsLink='text-primary', commentsBadge='badge badge-primary ml-1', 
+				   votesLink='text-secondary', votesBadge='badge badge-secondary ml-1')"></div>
   
 
   <div id="main" class="container text-center">
 	<div class="card mb-4">
-      <div class="card-header ">
+      <div class="card-header">
     	<span class="text-primary py-2" title="comments">Comments <i class="far fa-comment"></i> [[${totalComments}]]</span>
   	  </div>
   	  <ul class="list-group list-group-flush">
 		<li th:if="${totalComments==0}" class="list-group-item text-center"> There are no comments</li>
-		<li th:each="comment: ${pageComments}" class="list-group-item text-left">
-    	  <div class="row">
-    		<div class="col-2 col-md-1">
+		<li th:each="comment: ${pageComments}" class="list-group-item text-left pb-0">
+    	  <div class="row d-flex justify-content-start">
+    		<div class="col-auto">
     		  <a th:href="@{/bargains/{bargainId} (bargainId=${comment.bargain.id})}">				    					    	 
 				<img th:if="${comment.bargain.photo != null}" th:src="@{${'/bargains/' + comment.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
 			  </a>
     	    </div>
-    		<div class="col-10 col-md-11">
-    	      <a th:href="@{/bargains/{bargainId} (bargainId=${comment.bargain.id})}">
-				<span th:text="${comment.bargain.title}"></span>
-			  </a>
-			  <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(comment.createdAt)}" ></small>
-			  <div class="text-muted" title="added">
-				<p th:utext="${comment.content}" ></p>
-			  </div> 				
+    		<div class="col-8 col-sm-10">
+    		  <div>
+    		    <small class="text-muted" title="added" th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(comment.createdAt)}" ></small>
+    	      </div>
+    	      <div>
+    	        <a th:href="@{/bargains/{bargainId} (bargainId=${comment.bargain.id})}">
+				  <span th:text="${comment.bargain.title}"></span>
+			    </a>
+			  </div>			   				
 			</div>
+		  </div>
+		  <div class="row">
+		     <div class="col-12 mt-2">
+				<p th:utext="${comment.content}" ></p>
+			  </div>
 		  </div>
 		</li>
 	  </ul>

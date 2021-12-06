@@ -54,4 +54,10 @@ public interface BargainRepository extends JpaRepository<Bargain, Long> {
 	Page<Bargain>  findByUserIdOrderByCommentsSize(Pageable pageable, String keyword, Long userId);
 	
 	List<Bargain> findByClosedAndEndBargainLessThan(boolean closed, LocalDate endBargain);
+	
+	//@Query ("SELECT b FROM Bargain b JOIN b.votes bv JOIN bv.bargain bvb where b.id = bvb.id")
+	//Page<Bargain>  findBargainsVotedByUserId(Pageable pageable);
+	
+	@Query ("SELECT distinct b FROM Bargain b, User u JOIN b.votes bv JOIN bv.bargain bvb JOIN bv.user bvu where b.id = bvb.id and bvu.id = ?1")
+	Page<Bargain>  findBargainsVotedByUserId(Pageable pageable, Long userId);
 }

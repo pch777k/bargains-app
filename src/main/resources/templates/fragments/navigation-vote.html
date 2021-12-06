@@ -1,0 +1,24 @@
+<div th:fragment="navigation-vote(allLink, allBadge, posLink, posBadge, negLink, negBadge)">
+	
+<!-- Navigation-vote -->	
+<div th:if="${totalVotes > 0}" class="container rounded bg-white">  
+  <div class="row py-2">
+    <div class="d-sm-inline mx-3 mx-sm-4">
+	  <a class="user-nav" th:href="@{${'/users/'+ #strings.toString(profileUser.id)+'/votes'}}" 
+	     aria-current="page"><span th:class="${allLink}">All</span><span th:class="${allBadge}"> [[${totalVotes}]]</span></a>
+	</div>
+	<div class="d-sm-inline mr-3 mr-sm-4">
+	  <a class="user-nav" th:href="@{${'/users/'+ #strings.toString(profileUser.id)+'/votes/plus'}}" 
+	     aria-current="page"><span th:class="${posLink}">Positive</span><span th:class="${posBadge}"> [[${totalPositiveVotes}]]</span></a>
+	</div>
+	<div class="d-sm-inline mr-3 mr-sm-4">
+	  <a class="user-nav" th:href="@{${'/users/'+ #strings.toString(profileUser.id)+'/votes/minus'}}" 
+	     aria-current="page"><span th:class="${negLink}">Negative</span><span th:class="${negBadge}"> [[${totalNegativeVotes}]]</span></a>
+	</div>
+  </div>
+</div>
+<!-- Navigation-vote -->	
+
+</div>
+
+

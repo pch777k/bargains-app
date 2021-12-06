@@ -13,74 +13,58 @@
   <div id="main" class="container  text-center pt-3">
 	<div class="row d-flex justify-content-center">
 	  <!-- Pagination -->	
-	  <div th:replace="fragments/pagination-user :: pagination-user(href=${'/users'})"></div>	
+	  <div th:replace="fragments/pagination-users :: pagination-users(href=${'/users'})"></div>	
 	</div>
-    <div class="table-responsive mb-4">
-      <table class="table table-light table-bordered">
-        <thead >
-    	  <tr class="table-primary">
-	        <th>#</th>
-	        <th>Avatar</th>
-	        <th>Nickname</th>
-	        <th>Email</th>
-	        <th>Bargains</th>
-	        <th>Comments</th>
-	        <th>Votes</th>
-	        <th>Activities</th>
-	        <th>Actions</th>
-          </tr>
-  		</thead>
-	    <tbody>
-	      <tr class="table-primary" th:each="user: ${pageUsers}">
-	        <td class="align-middle" th:text="${user.id}">User ID</td>
-	        <td>
-	          <a th:href="@{/users/{userId}/overview ((userId=${user.id}))}">
-	            <img th:if="${user.photo != null}" th:src="${'users/' + user.id + '/photo'}" width="50" height="50" class="rounded border">
-	          </a>
-	        </td>
-	        <td class="align-middle">
-	          <a th:href="@{/users/{userId}/overview ((userId=${user.id}))}">
-			    <span th:text="${user.nickname}"></span>
-	    	  </a>
-	        </td>
-	        <td class="align-middle"  th:text="${user.email}">E-mail</td>
-	        <td class="align-middle">
-	          <a th:href="@{/users/{userId}/bargains ((userId=${user.id}))}">
-			    <span th:text="${#lists.size(user.bargains)}"></span>
-	    	  </a>
-	        </td>
-	        <td class="align-middle">
-	          <a th:href="@{/users/{userId}/comments ((userId=${user.id}))}">
-			    <span th:text="${#lists.size(user.comments)}"></span>
-	    	  </a>
-	        </td>
-	        <td class="align-middle"  th:text="${#lists.size(user.votes)}">User's votes</td>
-	        <td class="align-middle" >
-	          <a th:href="@{/users/{userId}/overview ((userId=${user.id}))}">
-			    <span th:text="${#lists.size(user.activities)}"></span>
-	    	  </a>
-	        </td>
-	        <td class="align-middle" >
-		      <th:block sec:authorize="hasAuthority('ADMIN')">
-		      	<a th:unless="${user.email.equals(currentUser.email)}" class="deleteBtn btn btn-sm btn-info" 
-		           th:href="@{/users/{userId}/delete (userId=${user.id})}" role="button">delete</a>
-		        <a th:if="${user.email.equals(currentUser.email)}" class="btn btn-sm btn-info disabled" 
-		           role="button">delete</a>
-		        <a class="btn btn-sm btn-info" 
-		           th:href="@{/users/{userId}/profile (userId=${user.id})}" role="button">edit</a>
-		      </th:block>
-		      <th:block sec:authorize="hasAuthority('USER')">       
-		        <a class="btn btn-sm btn-info disabled" role="button">delete</a>
-		        <a th:unless="${user.email.equals(currentUser.email)}" class="btn btn-sm btn-info disabled" 
-		           role="button">edit</a>
-		        <a th:if="${user.email.equals(currentUser.email)}" class="btn btn-sm btn-info" 
-		           th:href="@{/users/{userId}/profile (userId=${user.id})}" role="button">edit</a>
-		      </th:block> 
-		    </td>          
-	      </tr>
-	    </tbody>
-      </table>
-    </div>
+	
+	<div class="container">
+	  <div class="row">
+	    <div class="col-12 col-sm-6 col-lg-4 mb-3 mb-sm-4" th:each="user: ${pageUsers}">
+	    	
+	    	<div class="card">
+	    	  <a th:href="@{/users/{userId}/overview ((userId=${user.id}))}">
+			    <img class="card-img-top" th:if="${user.photo != null}" th:src="${'users/' + user.id + '/photo'}" alt="photo">
+			  </a>
+			  <div class="card-body">
+			    <h5 class="card-title"><a th:href="@{/users/{userId}/overview ((userId=${user.id}))}"> 
+ 			    <span th:text="${user.nickname}"></span> </a></h5> 
+			    <p class="card-text" th:text="${user.email}">Email</p>
+			  </div>
+			  <ul class="list-group list-group-flush">
+			    <li class="list-group-item">
+			      <a class="mr-2" title="bargains" th:href="@{/users/{userId}/bargains ((userId=${user.id}))}"> 
+ 			       <i class="fas fa-tag text-dark mr-1"></i><span th:text="${#lists.size(user.bargains)}"></span></a> 
+ 			      <a class="mr-2" title="comments" th:href="@{/users/{userId}/comments ((userId=${user.id}))}"> 
+ 			       <i class="fas fa-comment text-dark mr-1"></i><span th:text="${#lists.size(user.comments)}"></span></a>
+ 			      <a title="votes" th:href="@{/users/{userId}/bargains ((userId=${user.id}))}"> 
+ 			       <i class="fas fa-vote-yea text-dark mr-1"></i><span th:text="${#lists.size(user.votes)}"></span></a>
+ 			       
+ 			    </li>
+			    <li class="list-group-item">
+			      <th:block sec:authorize="hasAuthority('ADMIN')">
+		      	    <a th:unless="${user.email.equals(currentUser.email)}" class="deleteBtn btn btn-sm btn-info" 
+		               th:href="@{/users/{userId}/delete (userId=${user.id})}" role="button">delete</a>
+		       	    <a th:if="${user.email.equals(currentUser.email)}" class="btn btn-sm btn-info disabled" role="button">delete</a>
+		            <a class="btn btn-sm btn-info" th:href="@{/users/{userId}/profile (userId=${user.id})}" role="button">edit</a>
+		          </th:block>
+		      	  <th:block sec:authorize="hasAuthority('USER')">       
+		            <a class="btn btn-sm btn-info disabled" role="button">delete</a>
+		            <a th:unless="${user.email.equals(currentUser.email)}" class="btn btn-sm btn-info disabled" role="button">edit</a>
+		            <a th:if="${user.email.equals(currentUser.email)}" class="btn btn-sm btn-info" 
+		               th:href="@{/users/{userId}/profile (userId=${user.id})}" role="button">edit</a>
+		      	  </th:block> 	    
+			    </li>
+			  </ul>
+			</div>
+				   			    
+	    </div>
+	  
+	  </div>
+	  <div class="d-flex justify-content-center">
+	  <!-- Pagination -->	
+	  <div th:replace="fragments/pagination-users :: pagination-users(href=${'/users'})"></div>	
+	  </div>
+	</div>
+	
 	
 	<!-- Delete User Modal	 -->
 	<div th:replace="fragments/modal-delete-user :: modal-delete-user"></div>	

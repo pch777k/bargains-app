@@ -18,4 +18,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	void deleteActivitiesByBargainId(Long bargainId);
 
 	List<Activity> findByBargainId(Long bargainId);
+
+	List<Activity> findByUserId(Long userId);
 }

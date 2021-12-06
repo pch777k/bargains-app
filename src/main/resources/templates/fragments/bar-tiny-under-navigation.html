@@ -1,13 +1,24 @@
-<div th:fragment="bar-tiny-under-navigation(first, second, third)">
+<div th:fragment="bar-tiny-under-navigation(viewLink, viewBadge, bargainsLink, bargainsBadge, 
+                                            commentsLink, commentsBadge, votesLink, votesBadge)">
 	
 <!-- Bar-tiny-under-navigation -->	
 <div  class="container-fluid bg-light mb-4">
   <div class="container py-2">
-   	
-	<a class="user-nav" th:href="@{/users/{userId}/overview (userId=${profileUser.id})}"><span th:class="${first}">Overview</span></a>
-	<a class="user-nav" th:href="@{/users/{userId}/bargains (userId=${profileUser.id})}"><span th:class="${second}">Bargains ([[${totalBargains}]])</span></a>
-	<a class="user-nav" th:href="@{/users/{userId}/comments (userId=${profileUser.id})}"><span th:class="${third}">Comments ([[${totalComments}]])</span></a>
-		
+   	<div class="d-sm-inline mr-sm-3 d-block">
+	  <a class="user-nav" th:href="@{/users/{userId}/overview (userId=${profileUser.id})}"><span th:class="${viewLink}">Overview</span><span th:class="${viewBadge}"> [[${totalActivities}]]</span></a>
+	</div>
+	<div class="d-sm-inline mr-sm-3 d-block">
+	  <a class="user-nav" th:href="@{/users/{userId}/bargains (userId=${profileUser.id})}"><span th:class="${bargainsLink}">Bargains</span><span th:class="${bargainsBadge}"> [[${totalBargains}]]</span></a>
+	</div>
+	<div class="d-sm-inline mr-sm-3 d-block">
+	  <a class="user-nav" th:href="@{/users/{userId}/comments (userId=${profileUser.id})}"><span th:class="${commentsLink}">Comments</span><span th:class="${commentsBadge}">[[${totalComments}]]</span></a>
+	</div>
+	<div class="d-sm-inline d-block">
+	  <a class="user-nav" th:href="@{/users/{userId}/votes (userId=${profileUser.id})}"><span th:class="${votesLink}">Votes</span><span th:class="${votesBadge}">[[${totalVotes}]]</span></a>
+	</div>	
+<!-- 	<div class="d-sm-inline d-block"> -->
+<!-- 	  <a class="user-nav" th:href="@{/users/{userId}/voted (userId=${profileUser.id})}"><span>Voted ([[${totalBargains}]])</span></a> -->
+<!-- 	</div> -->
   </div>
 </div>
 <!-- Bar-tiny-under-navigation -->

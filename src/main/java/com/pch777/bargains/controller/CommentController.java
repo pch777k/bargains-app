@@ -102,9 +102,12 @@ public class CommentController {
 		Comment comment = null;
 		comment = commentService.getCommentById(commentId);
 		
-		comment.setContent("<p><font color=\"#cec6ce\">" + comment.getUser().getNickname() + " " 
-							+ changeDateToString(comment.getCreatedAt())
-							+ " wrote: </font></p><p><font color=\\\"#cec6ce\\\"> " + comment.getContent() + "</font></p><hr><br>");
+//		comment.setContent("<p><font color=\"#cec6ce\">" + comment.getUser().getNickname() + " " 
+//							+ changeDateToString(comment.getCreatedAt())
+//							+ " wrote: </font></p><p><font color=\\\"#cec6ce\\\"> " + comment.getContent() + "</font></p><hr><br>");
+		
+		comment.setContent(comment.getUser().getNickname() + " " + changeDateToString(comment.getCreatedAt())
+				+ comment.getContent() + "<hr><br>");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		model.addAttribute("currentUser", userService.findUserByEmail(email));

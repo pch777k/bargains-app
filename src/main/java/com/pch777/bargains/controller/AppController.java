@@ -42,6 +42,7 @@ import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.UserDto;
 import com.pch777.bargains.model.Vote;
 import com.pch777.bargains.model.VoteDto;
+import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
 import com.pch777.bargains.service.BargainService;
@@ -111,7 +112,7 @@ public class AppController {
     @GetMapping("/users")
     public String listUsers(Model model,
     		@RequestParam(defaultValue = "1") int page, 
-			@RequestParam(defaultValue = "10") int pageSize) {
+			@RequestParam(defaultValue = "12") int pageSize) {
         
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<User> pageUsers = userService.getUsers(pageable);
@@ -180,7 +181,7 @@ public class AppController {
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
 		model.addAttribute("profileUser", user); 	
 		model.addAttribute("activities", pageActivitiesByUser);
-		model.addAttribute("totalActivities", pageActivitiesByUser.getNumberOfElements());
+		model.addAttribute("totalActivities", pageActivitiesByUser.getTotalElements());
 		model.addAttribute("totalBargains", listBargainsByUser.size());
 		model.addAttribute("totalComments", userComments.size());
 		model.addAttribute("totalVotes", userVotes.size());
@@ -213,8 +214,10 @@ public class AppController {
     		pageBargainsByUser = bargainService.getBargainsNotClosedByUserId(pageable, keyword, userId, false);
 		}
     	Long totalDisplayBargains = pageBargainsByUser.getTotalElements();
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
     	List<Comment> userComments = commentService.getAllCommentsByUserId(userId);
-    	    	
+    	List<Vote> userVotes = voteService.getAllVotesByUserId(userId);   
+    	
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
@@ -223,9 +226,11 @@ public class AppController {
 		model.addAttribute("profileUser", user); 	
 		model.addAttribute("title", keyword);
 		model.addAttribute("bargains", pageBargainsByUser);
+		model.addAttribute("totalActivities", userActivities.size());
 		model.addAttribute("totalBargains", totalBargains);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
 		model.addAttribute("totalComments", userComments.size());
+		model.addAttribute("totalVotes", userVotes.size());
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);		
@@ -255,7 +260,9 @@ public class AppController {
 		}
     	Long totalDisplayBargains = pageBargainsByUser.getTotalElements();
     	
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
     	List<Comment> userComments = commentService.getAllCommentsByUserId(userId);
+    	List<Vote> userVotes = voteService.getAllVotesByUserId(userId);
     	
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
@@ -265,9 +272,11 @@ public class AppController {
 		model.addAttribute("profileUser", user); 	
 		model.addAttribute("title", keyword);
 		model.addAttribute("bargains", pageBargainsByUser);
+		model.addAttribute("totalActivities", userActivities.size());
 		model.addAttribute("totalBargains", totalBargains);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
 		model.addAttribute("totalComments", userComments.size());
+		model.addAttribute("totalVotes", userVotes.size());
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);	
@@ -295,7 +304,10 @@ public class AppController {
     		pageBargainsByUserIdOrderByCommentSize = bargainService.getBargainsNotClosedMostCommentedByUserId(pageable, keyword, userId, false);
 		}
     	Long totalDisplayBargains = pageBargainsByUserIdOrderByCommentSize.getTotalElements();
+    	
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
     	List<Comment> userComments = commentService.getAllCommentsByUserId(userId);
+    	List<Vote> userVotes = voteService.getAllVotesByUserId(userId);
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
@@ -304,9 +316,11 @@ public class AppController {
 		model.addAttribute("profileUser", user); 	
 		model.addAttribute("title", keyword);
 		model.addAttribute("bargains", pageBargainsByUserIdOrderByCommentSize);
+		model.addAttribute("totalActivities", userActivities.size());
 		model.addAttribute("totalBargains", totalBargains);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
 		model.addAttribute("totalComments", userComments.size());
+		model.addAttribute("totalVotes", userVotes.size());
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);	
@@ -328,7 +342,8 @@ public class AppController {
     	Sort sort = Sort.by("createdAt").descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
     	Page<Comment> pageComments = commentService.getAllCommentsByUser(pageable, user);
-    	
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
+    	List<Vote> userVotes = voteService.getAllVotesByUserId(userId);
     	int totalUserBargains = bargainService.getAllBargainsByUserId(userId).size();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
@@ -337,6 +352,8 @@ public class AppController {
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
 		model.addAttribute("profileUser", user); 	
 		model.addAttribute("totalComments", pageComments.getTotalElements());
+		model.addAttribute("totalVotes", userVotes.size());
+		model.addAttribute("totalActivities", userActivities.size());
 		model.addAttribute("pageComments", pageComments);
 		model.addAttribute("totalBargains", totalUserBargains);
 		model.addAttribute("pageSize", pageSize);
@@ -346,6 +363,122 @@ public class AppController {
 		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		    	
 		return "user_comments";
+    }   
+    
+    @GetMapping("/users/{userId}/votes")
+    public String showVotesByUser(@PathVariable Long userId, Model model, 
+			@RequestParam(defaultValue = "1") int page, 
+			@RequestParam(defaultValue = "12") int pageSize) {
+    	
+    	User user = userService.findUserById(userId);
+    	
+    	Sort sort = Sort.by("createdAt").descending();
+    	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+    	Page<Vote> pageVotes = voteService.getVotesByUserId(pageable, userId);
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
+    	
+    	List<Comment> userComments = commentService.getAllCommentsByUserId(userId);
+    	int totalUserBargains = bargainService.getAllBargainsByUserId(userId).size();
+    	int totalPositiveVotes = voteService.getAllByVoteTypeAndUserId(VoteType.UPVOTE, userId).size();
+    	int totalNegativeVotes = voteService.getAllByVoteTypeAndUserId(VoteType.DOWNVOTE, userId).size();
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+    	
+		model.addAttribute("loggedUser", email);
+		model.addAttribute("currentUser", userService.findUserByEmail(email));
+		model.addAttribute("profileUser", user); 	
+		model.addAttribute("totalVotes", pageVotes.getTotalElements());
+		model.addAttribute("totalPositiveVotes", totalPositiveVotes);
+		model.addAttribute("totalNegativeVotes", totalNegativeVotes);
+		model.addAttribute("pageVotes", pageVotes);
+		model.addAttribute("totalActivities", userActivities.size());
+		model.addAttribute("totalBargains", totalUserBargains);
+		model.addAttribute("totalComments", userComments.size());
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("currentSize", pageable.getPageSize());
+		model.addAttribute("currentPage", page);		
+		model.addAttribute("totalPages", pageVotes.getTotalPages());
+		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
+		    	
+		return "user_votes";
+    }   
+    
+    @GetMapping("/users/{userId}/votes/plus")
+    public String showPositiveVotesByUser(@PathVariable Long userId, Model model, 
+			@RequestParam(defaultValue = "1") int page, 
+			@RequestParam(defaultValue = "12") int pageSize) {
+    	
+    	User user = userService.findUserById(userId);
+    	
+    	Sort sort = Sort.by("createdAt").descending();
+    	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+    	Page<Vote> pageVotes = voteService.getVotesByVoteTypeAndUserId(pageable, VoteType.UPVOTE, userId);
+    	int totalNegativeVotes = voteService.getAllByVoteTypeAndUserId(VoteType.DOWNVOTE, userId).size();
+    	int totalVotes = voteService.getAllVotesByUserId(userId).size();
+    	
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
+    	List<Comment> userComments = commentService.getAllCommentsByUserId(userId);
+    	int totalUserBargains = bargainService.getAllBargainsByUserId(userId).size();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+    	
+		model.addAttribute("loggedUser", email);
+		model.addAttribute("currentUser", userService.findUserByEmail(email));
+		model.addAttribute("profileUser", user); 	
+		model.addAttribute("totalVotes", totalVotes);
+		model.addAttribute("totalPositiveVotes", pageVotes.getTotalElements());
+		model.addAttribute("totalNegativeVotes", totalNegativeVotes);
+		model.addAttribute("pageVotes", pageVotes);
+		model.addAttribute("totalActivities", userActivities.size());
+		model.addAttribute("totalBargains", totalUserBargains);
+		model.addAttribute("totalComments", userComments.size());
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("currentSize", pageable.getPageSize());
+		model.addAttribute("currentPage", page);		
+		model.addAttribute("totalPages", pageVotes.getTotalPages());
+		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
+		    	
+		return "user_votes_plus";
+    }   
+    
+    @GetMapping("/users/{userId}/votes/minus")
+    public String showNegativeVotesByUser(@PathVariable Long userId, Model model, 
+			@RequestParam(defaultValue = "1") int page, 
+			@RequestParam(defaultValue = "12") int pageSize) {
+    	
+    	User user = userService.findUserById(userId);
+    	
+    	Sort sort = Sort.by("createdAt").descending();
+    	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+    	Page<Vote> pageVotes = voteService.getVotesByVoteTypeAndUserId(pageable, VoteType.DOWNVOTE, userId);
+    	
+    	int totalVotes = voteService.getAllVotesByUserId(userId).size();
+    	int totalPositiveVotes = voteService.getAllByVoteTypeAndUserId(VoteType.UPVOTE, userId).size();
+    	
+    	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
+    	List<Comment> userComments = commentService.getAllCommentsByUserId(userId);
+    	int totalUserBargains = bargainService.getAllBargainsByUserId(userId).size();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+    	
+		model.addAttribute("loggedUser", email);
+		model.addAttribute("currentUser", userService.findUserByEmail(email));
+		model.addAttribute("profileUser", user); 	
+		model.addAttribute("totalVotes", totalVotes);
+		model.addAttribute("totalPositiveVotes", totalPositiveVotes);
+		model.addAttribute("totalNegativeVotes", pageVotes.getTotalElements());
+		model.addAttribute("pageVotes", pageVotes);
+		model.addAttribute("totalActivities", userActivities.size());
+		model.addAttribute("totalBargains", totalUserBargains);
+		model.addAttribute("totalComments", userComments.size());
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("currentSize", pageable.getPageSize());
+		model.addAttribute("currentPage", page);		
+		model.addAttribute("totalPages", pageVotes.getTotalPages());
+		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
+		    	
+		return "user_votes_minus";
     }   
     
     @GetMapping("/users/{userId}/profile")

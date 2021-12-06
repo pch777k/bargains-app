@@ -1,0 +1,32 @@
+<div th:fragment="navigation-bargains(bestClass, newClass, commentedClass, bestHref, newHref, commentedHref, hideHref)">
+	
+<!-- Navigation-bargains -->	
+<div th:if="${totalBargains > 0}" class="container rounded bg-white">  
+  <div class="row py-2">
+	<div class="d-sm-inline mx-3 mx-sm-4">
+	  <a th:class="${bestClass}" aria-current="page" th:href="@{${bestHref}}">Best</a>
+	</div>
+	<div class="d-sm-inline mr-3 mr-sm-4">
+	  <a th:class="${newClass}" aria-current="page" th:href="@{${newHref}}">New</a>
+	</div>
+	<div class="d-sm-inline mr-3 mr-sm-4">
+	  <a th:class="${commentedClass}" aria-current="page" th:href="@{${commentedHref}}">Commented</a>
+	</div>
+	<div class="d-sm-inline mr-sm-2">
+	  <a class="user-nav" title="Total bargains"><span class="badge badge-primary p-1 mr-1">[[${totalDisplayBargains}]]</span></a>
+	</div>	
+	<div>
+ 	  <form th:action="@{${hideHref}}" method="get">  
+        <input title="Hide completed" type="checkbox" class="form-check-input checkbox-closed" name="ended" 
+               onchange='this.form.submit()' th:checked="${closed} ? 'checked'"/>                 
+ 	    <noscript>   
+  		  <button type="submit">Submit</button>  
+  	    </noscript>  	   
+  	  </form> 
+  	</div>
+  </div>
+</div>
+<!-- Navigation-bargains -->	
+</div>
+
+

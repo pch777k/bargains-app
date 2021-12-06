@@ -36,6 +36,10 @@ public class ActivityService {
 		return activityRepository.findByUser(pageable, user);
 	}
 	
+	public List<Activity> getActivitiesByUserId(Long userId) {
+		return activityRepository.findByUserId(userId);
+	}
+	
 	public List<Activity> getActivitiesByBargain(Long bargainId) {
 		return activityRepository.findByBargainId(bargainId);
 	}

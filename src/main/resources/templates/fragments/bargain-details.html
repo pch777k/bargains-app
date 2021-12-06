@@ -1,0 +1,61 @@
+<div th:fragment="bargain-details">
+	
+<!-- bargain-details -->	
+<div class="row row-margin">
+  <div class="d-inline">
+	<span th:if="${bargain.reducePrice != null}" class="text-danger mr-1 mr-md-3" th:text="${#numbers.formatCurrency(bargain.reducePrice)}"></span>			
+	<th:block th:if="${bargain.normalPrice != null and bargain.normalPrice > 0}">
+	  <del class="text-info mr-1 mr-md-3" th:text="${#numbers.formatCurrency(bargain.normalPrice)}" ></del>
+	  <span class="mr-3" th:text="${'-' + #numbers.formatDecimal((bargain.normalPrice-bargain.reducePrice)*100/bargain.normalPrice,1,0) + '%' }"></span>
+	</th:block>
+  </div>
+  <div class="d-sm-inline d-block">
+	<th:block th:if="${bargain.delivery != null}">
+	  <span ><i class="fas fa-truck text-muted"></i></span>
+	  <span th:if="${bargain.delivery > 0}" class="ml-2  text-muted" th:text="${#numbers.formatCurrency(bargain.delivery)}"></span>
+	  <span th:if="${bargain.delivery < 0.01}" class="ml-1 text-muted" >free</span>
+	</th:block>
+  </div>				        
+</div>
+
+<div class="row">
+  <div class="col-lg-6 mt-2" th:if="${!#strings.isEmpty(bargain.link)}">
+    <div class="d-none d-sm-block">
+	  <a th:href="${bargain.link}"   class="btn btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
+	</div>
+	<div class="d-block d-sm-none">
+	  <a th:href="${bargain.link}"   class="btn btn-sm btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
+	</div>
+  </div>
+  <div class="col-lg-6 text-center mt-2" th:if="${!#strings.isEmpty(bargain.coupon)}">
+	<div class="d-none d-sm-block">
+ 	  <div class="input-group">
+	    <input type="text" th:id="'couponInput' + ${bargain.id}" readonly th:value="${bargain.coupon}"
+		  class="form-control-plaintext text-danger h6 border border-warning rounded-left text-center ">
+		<div class="input-group-append">
+		  <button class="btn btn-warning coupon-tooltip" data-toggle="tooltip" title="Copy to clipboard" 
+		    type="button" th:id="'copyCouponBtn' + ${bargain.id}" onClick="copyCouponClick(this.id)">
+		    <i class="fas fa-cut text-danger"></i>
+		  </button>
+	    </div>
+	  </div>
+	</div>
+	<div class="d-block d-sm-none">
+	  <div class="input-group ">
+	    <input type="text" th:id="'couponInput' + ${bargain.id}" readonly th:value="${bargain.coupon}"
+		  class="form-control-plaintext form-control-sm text-danger h6 border border-warning rounded-left text-center " >
+		<div class="input-group-append">
+		  <button class="btn btn-sm btn-warning coupon-tooltip" data-toggle="tooltip" title="Copy to clipboard" 
+		    type="button" th:id="'copyCouponBtn' + ${bargain.id}" onClick="copyCouponClick(this.id)"><i class="fas fa-cut text-danger"></i>
+		  </button>
+		</div>
+ 	  </div>
+	</div>
+  </div>
+</div>	
+<!-- bargain-details -->
+	
+</div>
+
+
+  
