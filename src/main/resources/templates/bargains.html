@@ -16,6 +16,9 @@
 
   <div id="main" class="container text-center">
   
+  <!-- Results-found -->
+  <div th:replace="fragments/results-found :: results-found(href='/')"></div>
+  
   <!-- Navigation-bargains -->
   <div th:replace="fragments/navigation-bargains :: navigation-bargains(
   				   bestClass='user-nav text-primary text-bold border-3', 
@@ -26,7 +29,7 @@
   				   commentedHref='/commented', 
   				   hideHref='/')"></div>
 
-  <div th:if="${totalBargains == 0}" class="text-light">	
+  <div th:if="${isEmptyListOfBargains}" class="text-light">	
     <div class="jumbotron pt-4 margin-jumbotron">
       <h3>Welcome</h3>
       <p class="lead">It's a demo project that allows you to share bargains, cheap deals, discounts and sales. </p>

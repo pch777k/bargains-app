@@ -32,6 +32,8 @@ public interface BargainRepository extends JpaRepository<Bargain, Long> {
 	
 	List<Bargain> findByUserId(Long userId);
 	
+	List<Bargain> findByCategory(Category category);
+	
 	@Query ("SELECT b FROM Bargain b where (b.user.id = ?2 and lower(b.title) LIKE %?1%)")
 	Page<Bargain> findByTitleLikeAndUserId(Pageable pageable, String keyword, Long userId);
 	

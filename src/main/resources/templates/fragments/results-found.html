@@ -1,0 +1,37 @@
+<div th:fragment="results-found(href)">
+	
+<!-- results-found -->	
+<div class="container rounded bg-white" th:if="${noResultsFound}">
+  <div class="row row-margin mx-sm-2">
+	<div class="col-12 py-1">
+	  <div class="row align-items-center d-flex justify-content-center">
+	    <div>
+	      <span class="mx-2 pl-1">No result found for:</span><strong><span class="mr-4" th:text="${title}"></span></strong>
+	    </div>
+		<div>
+		  <a class="btn btn-sm btn-primary" th:href="@{${href}}">back</a>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+	  
+<div class="container rounded bg-white mb-3" th:if="${resultsFound}">
+  <div class="row row-margin mx-sm-2">
+	<div class="col-12 py-1">
+	  <div class="row align-items-center d-flex justify-content-center">
+	    <div>
+	      <span class="mx-2 pl-1">Result found for:</span><strong><span class="mr-4" th:text="${title}"></span></strong>
+	    </div>
+		<div>
+		  <a class="btn btn-sm btn-primary" th:href="@{${href}}">back</a>
+	    </div>
+	  </div>
+	</div>
+  </div>
+</div>
+<!-- results-found -->
+	
+</div>
+
+

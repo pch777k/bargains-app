@@ -99,6 +99,20 @@ public class BargainController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 	
+		boolean isEmpty = bargainService.getAllBargains().isEmpty();	
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
+		
+		if(!isEmpty && keyword.length() > 0) {
+			if(totalDisplayBargains == 0) {
+				noResultsFound = true;
+			}			
+		}
+		
+		if(!isEmpty && keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
+		
 		model.addAttribute("loggedUser", email);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
 		model.addAttribute("title", keyword);
@@ -112,6 +126,9 @@ public class BargainController {
 		model.addAttribute("closed", ended);
 		model.addAttribute("totalBargains", totalBargains);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute("isEmptyListOfBargains", isEmpty);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
 		
 		return "bargains";
 	}
@@ -123,6 +140,9 @@ public class BargainController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
 
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
+				
 		Sort sort = Sort.by("createdAt").descending();
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 		Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLike(pageable, keyword);
@@ -133,6 +153,14 @@ public class BargainController {
 		long totalDisplayBargains = pageBargains.getTotalElements();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+				
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
 
 		model.addAttribute("loggedUser", email);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
@@ -147,6 +175,8 @@ public class BargainController {
 		model.addAttribute("closed", ended);
 		model.addAttribute("totalBargains", totalBargains);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
 
 		return "bargains_new";
 	}
@@ -158,6 +188,9 @@ public class BargainController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
 
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
+		
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 		Page<Bargain> pageBargains = bargainService.getBargainsMostCommented(pageable, keyword);
 		long totalBargains = pageBargains.getTotalElements();
@@ -167,6 +200,14 @@ public class BargainController {
 		long totalDisplayBargains = pageBargains.getTotalElements();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+		
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
 		
 		model.addAttribute("loggedUser", email);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
@@ -181,6 +222,8 @@ public class BargainController {
 		model.addAttribute("closed", ended);
 		model.addAttribute("totalBargains", totalBargains);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
 	
 		return "bargains_commented";
 	}
@@ -192,6 +235,8 @@ public class BargainController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
 
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
 		
 		Category category = converter.convert(bargainCategory);
 		Category[] categories = Category.values();
@@ -210,6 +255,14 @@ public class BargainController {
 		long totalDisplayBargains = pageBargainsByCategory.getTotalElements();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+		
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
 	
 		model.addAttribute("category", category);
 		model.addAttribute("loggedUser", email);
@@ -225,6 +278,8 @@ public class BargainController {
 		model.addAttribute("today", LocalDate.now());
 		model.addAttribute("closed", ended);
 		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
 		
 		return "category";
 	}
@@ -235,6 +290,9 @@ public class BargainController {
 			@RequestParam(value = "ended", required = false) String ended,
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
+		
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
 
 		Sort sort = Sort.by("createdAt").descending();
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
@@ -248,6 +306,14 @@ public class BargainController {
 		long totalDisplayBargains = pageBargainsByCategory.getTotalElements();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+		
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
 	
 		model.addAttribute("category", category);
 		model.addAttribute("loggedUser", email);
@@ -263,6 +329,8 @@ public class BargainController {
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("today", LocalDate.now());	
 		model.addAttribute("closed", ended);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
 		
 		return "category_new";
 	}
@@ -273,6 +341,9 @@ public class BargainController {
 			@RequestParam(value = "ended", required = false) String ended,
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
+		
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
 
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
 
@@ -285,6 +356,14 @@ public class BargainController {
 		long totalDisplayBargains = pageBargainsByCategory.getTotalElements();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+		
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
 	
 		model.addAttribute("category", category);
 		model.addAttribute("loggedUser", email);
@@ -300,6 +379,8 @@ public class BargainController {
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("today", LocalDate.now());
 		model.addAttribute("closed", ended);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
 		
 		return "category_commented";
 	}

@@ -14,10 +14,8 @@ import com.pch777.bargains.model.User;
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
 	Page<Activity> findByUser(Pageable pageable, User user);
-
-	void deleteActivitiesByBargainId(Long bargainId);
-
 	List<Activity> findByBargainId(Long bargainId);
-
 	List<Activity> findByUserId(Long userId);
+	void deleteActivitiesByBargainId(Long bargainId);
+	
 }

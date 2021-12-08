@@ -22,6 +22,9 @@
 				   votesLink='text-secondary', votesBadge='badge badge-secondary ml-1')"></div>
   
   <div id="main" class="container">
+  
+  <!-- Results-found -->
+  <div th:replace="fragments/results-found :: results-found(href=${'/users/'+#strings.toString(profileUser.id)+'/bargains'})"></div>
 
   <div th:replace="fragments/navigation-bargains :: navigation-bargains(
   				   bestClass='user-nav text-primary text-bold border-3', 
@@ -32,7 +35,7 @@
   				   commentedHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/commented'}, 
   				   hideHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains'})"></div>
 
-  <div th:if="${totalBargains == 0}" class="container rounded bg-white mt-3 ">   
+  <div th:if="${totalBargains == 0 && !noResultsFound}" class="container rounded bg-white mt-3 ">   
 	<p class="p-2 text-center">There are not any bargains</p>
   </div>
 

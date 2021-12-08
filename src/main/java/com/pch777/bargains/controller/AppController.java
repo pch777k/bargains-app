@@ -204,6 +204,9 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
     	
+    	boolean noResultsFound = false;
+		boolean resultsFound = false;
+    	
     	User user = userService.findUserById(userId);
     	
     	Sort sort = Sort.by("voteCount").descending();
@@ -221,6 +224,14 @@ public class AppController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
+		
 		model.addAttribute("loggedUser", email);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
 		model.addAttribute("profileUser", user); 	
@@ -238,6 +249,8 @@ public class AppController {
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("closed", ended);
 		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
     	
 		return "user_bargains";
     } 
@@ -248,6 +261,9 @@ public class AppController {
     		@RequestParam(value = "ended", required = false) String ended,
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
+    	
+    	boolean noResultsFound = false;
+		boolean resultsFound = false;
     	
     	User user = userService.findUserById(userId);
     	
@@ -267,6 +283,14 @@ public class AppController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
+		
 		model.addAttribute("loggedUser", email);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
 		model.addAttribute("profileUser", user); 	
@@ -284,6 +308,8 @@ public class AppController {
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("closed", ended);
 		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
     	
 		return "user_bargains_new";
     }
@@ -294,6 +320,9 @@ public class AppController {
     		@RequestParam(value = "ended", required = false) String ended,
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
+    	
+    	boolean noResultsFound = false;
+		boolean resultsFound = false;
     	
     	User user = userService.findUserById(userId);
     	
@@ -311,6 +340,14 @@ public class AppController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
+		if(keyword.length() > 0 && totalDisplayBargains == 0) {
+			noResultsFound = true;			
+		}
+		
+		if(keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
+		
 		model.addAttribute("loggedUser", email);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
 		model.addAttribute("profileUser", user); 	
@@ -328,6 +365,8 @@ public class AppController {
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("closed", ended);
 		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
     	
 		return "user_bargains_commented";
     }

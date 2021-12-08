@@ -66,12 +66,10 @@ input[type=radio]:checked+label {
 
 .btn-width {
     width: 94px;
-/*     width: 100px !important; */
 }
 
 .btn-width-md {
     width: 120px;
-/*     width: 100px !important; */
 }
 
 .text-bold {
@@ -90,7 +88,6 @@ input[type=radio]:checked+label {
 	margin-top: 3px;
 	margin-left: 12px;
 }
-
 
 .label-checkbox-closed {
 	margin-top: 12px;

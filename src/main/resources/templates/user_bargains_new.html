@@ -22,13 +22,10 @@
   
   
   <div id="main" class="container">
-
-  <!-- Navigation-bargains -->
-<!--   <div th:replace="fragments/navigation-bargains :: navigation-bargains(bestClass='nav-link', newClass='nav-link active', commentedClass='nav-link',  -->
-<!-- 				  bestHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains'},  -->
-<!-- 				  newHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'},  -->
-<!-- 				  commentedHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/commented'},  -->
-<!-- 				  hideHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'})"></div> -->
+  
+  <!-- Results-found -->
+  <div th:replace="fragments/results-found :: results-found(href=${'/users/'+#strings.toString(profileUser.id)+'/bargains/new'})"></div>
+  
   <div th:replace="fragments/navigation-bargains :: navigation-bargains(
   				   bestClass='user-nav text-dark', 
   				   newClass='user-nav text-primary text-bold border-3', 
@@ -37,6 +34,10 @@
   				   newHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'}, 
   				   commentedHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/commented'}, 
   				   hideHref=${'/users/'+ #strings.toString(profileUser.id)+'/bargains/new'})"></div>
+  				   
+  <div th:if="${totalBargains == 0 && !noResultsFound}" class="container rounded bg-white mt-3 ">   
+	<p class="p-2 text-center">There are not any bargains</p>
+  </div>
 
   <div th:each="bargain: ${bargains}" class="card my-3" >
 	<!-- Bargains display -->

@@ -9,7 +9,6 @@ import com.pch777.bargains.service.InitializerService;
 @Controller
 public class InitializerController {
 	
-	
 	private InitializerService initializerService;
 	private final int NUMBER_OF_VOTES;
 	

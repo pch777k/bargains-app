@@ -21,7 +21,6 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 	List<Vote> findVoteByUserId(Long userId);
 	List<Vote> findByBargainId(Long bargainId);
 	
-	
 	@Query ("SELECT v FROM Vote v where (v.user.id = ?1)")
 	Page<Vote> findByUserId(Pageable pageable, Long userId);
 	

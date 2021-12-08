@@ -16,9 +16,6 @@
 	<div class="d-sm-inline d-block">
 	  <a class="user-nav" th:href="@{/users/{userId}/votes (userId=${profileUser.id})}"><span th:class="${votesLink}">Votes</span><span th:class="${votesBadge}">[[${totalVotes}]]</span></a>
 	</div>	
-<!-- 	<div class="d-sm-inline d-block"> -->
-<!-- 	  <a class="user-nav" th:href="@{/users/{userId}/voted (userId=${profileUser.id})}"><span>Voted ([[${totalBargains}]])</span></a> -->
-<!-- 	</div> -->
   </div>
 </div>
 <!-- Bar-tiny-under-navigation -->

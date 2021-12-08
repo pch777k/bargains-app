@@ -17,15 +17,11 @@
   <!-- Navigation-breadcrumb -->
   <div th:replace="fragments/navigation-breadcrumb :: navigation-breadcrumb"></div>
   
-
   <div id="main" class="container text-center">
 
-  <!-- Navigation-bargains -->
-<!--   <div th:replace="fragments/navigation-pills :: navigation-pills(bestClass='nav-link', newClass='nav-link', commentedClass='nav-link active',  -->
-<!-- 				  bestHref=${'/'+ #strings.toLowerCase(category)},  -->
-<!-- 				  newHref=${'/'+ #strings.toLowerCase(category)+'/new'}, -->
-<!-- 				  commentedHref=${'/'+ #strings.toLowerCase(category)+'/commented'},  -->
-<!-- 				  hideHref=${'/'+ #strings.toLowerCase(category)+'/commented'})"></div>	 -->
+  <!-- Results-found -->
+  <div th:replace="fragments/results-found :: results-found(href=${'/'+ #strings.toLowerCase(category)+'/commented'})"></div>
+  
   <div th:replace="fragments/navigation-bargains :: navigation-bargains(
   				   bestClass='user-nav text-dark', 
   				   newClass='user-nav text-dark', 

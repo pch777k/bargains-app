@@ -27,6 +27,10 @@ public class BargainService {
 		return bargainRepository.findAll();
 	}
 	
+	public List<Bargain> getAllBargainsByCategory(Category category) {
+		return bargainRepository.findByCategory(category);
+	}
+	
 	public Page<Bargain> getBargainsMostCommented(Pageable pageable, String keyword) {
 		return bargainRepository.findMostCommented(pageable, "%" + keyword.toLowerCase() + "%");
 	}
@@ -140,7 +144,7 @@ public class BargainService {
 
 	public List<Bargain> getAllBargainsByUserId(Long userId) {
 		return bargainRepository.findByUserId(userId);
-	}	
+	}
 	
 	public static boolean isBargainFinished(LocalDate date) {
 		LocalDate today = LocalDate.now();

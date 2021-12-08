@@ -9,32 +9,38 @@
     	</button>
     	<div class="navbar-collapse collapse justify-content-between" id="navbar5">
     		<ul class="navbar-nav">
-    			<li><a class="btn btn-sm btn-success mt-1 mt-sm-0" th:href="@{/init-data}" title="loading some sample data (users, bargains, comments and votes)" role="button">Load sample data <span><i class="fas fa-upload"></i></span></a></li>
+    			<li><a class="btn btn-sm btn-success mr-1 mt-1 mt-md-0" th:href="@{/init-data}" title="loading some sample data (users, bargains, comments and votes)" role="button">Load sample data <span><i class="fas fa-upload"></i></span></a></li>
       		</ul>
       		<ul class="navbar-nav">	
-      			<li><a class="btn btn-sm btn-primary mt-1 mt-sm-0" th:href="@{/bargains/add}" title="Add a new bargain" role="button">Add <span><i class="fas fa-plus"></i></span></a></li>
+      			<li><a class="btn btn-sm btn-primary mr-1 mt-1 mt-md-0" th:href="@{/bargains/add}" title="Add a new bargain" role="button">Add <span><i class="fas fa-plus"></i></span></a></li>
     		</ul>
-    		<ul class="navbar-nav">
-      			<li>
-				    <form class=" d-inline w-50" th:action="@{${href} (title=${keyword})}" >				
-						<div class="input-group mt-1 mt-sm-0">
-							<div class="input-group-prepend">
-								<a class="btn btn-sm btn-primary" role="button" th:if="${title != ''}" 
-						  	    	th:href="@{${href}}">[[${title}]] <i class="fas fa-times"></i>
-						  	 	</a>
-							</div>
-							<input type="text" class="form-control form-control-sm" name="keyword" placeholder="search"/>
-							<div class="input-group-append mr-1">
-								<input type="submit" value="Search" class="btn btn-sm btn-outline-primary"/>
-							</div>
-						</div>
-					</form>
-				</li>
-			</ul>
+			
+			<form class="d-md-none d-lg-block d-inline w-50" th:action="@{${href} (title=${keyword})}" >				
+			  <div class="input-group mt-1 mt-md-0">
+				<input type="text" class="form-control form-control-sm" name="keyword" placeholder="search"/>
+				<div class="input-group-append mr-1">
+				  <input type="submit" value="Search" class="btn btn-sm btn-outline-primary"/>
+				</div>
+			  </div>
+			</form>
+					
+			<ul class="d-none d-md-block d-lg-none navbar-nav">	
+      		  <li>
+      			<form class="d-inline" th:action="@{${href} (title=${keyword})}" >				
+				  <div class="input-group mt-1 mt-md-0">
+					<input type="text" class="form-control form-control-sm" name="keyword" placeholder="search"/>
+					<div class="input-group-append mr-1">
+					  <input type="submit" value="Search" class="btn btn-sm btn-outline-primary"/>
+					</div>
+				  </div>
+				</form>
+      		  </li>
+    		</ul>
+
 			<ul class="navbar-nav">
-			    <li><a class="btn btn-sm btn-primary mt-1 mt-sm-0 mr-1" th:href="@{/users}" role="button" sec:authorize="hasAuthority('ADMIN')">Admin </a></li>
-			    <li><a class="btn btn-sm btn-primary mt-1 mt-sm-0 mr-1" th:href="@{/login}" role="button" sec:authorize="!isAuthenticated()">Login </a></li>
-			    <li><a class="btn btn-sm btn-primary mt-1 mt-sm-0 mr-1" th:href="@{/register}" role="button" sec:authorize="!isAuthenticated()">Sign up </a></li>
+			    <li><a class="btn btn-sm btn-primary mt-1 mt-md-0 mr-1" th:href="@{/users}" role="button" sec:authorize="hasAuthority('ADMIN')">Admin </a></li>
+			    <li><a class="btn btn-sm btn-primary mt-1 mt-md-0 mr-1" th:href="@{/login}" role="button" sec:authorize="!isAuthenticated()">Login </a></li>
+			    <li><a class="btn btn-sm btn-primary mt-1 mt-md-0 mr-1" th:href="@{/register}" role="button" sec:authorize="!isAuthenticated()">Sign up </a></li>
        		</ul>
  
 		    <ul sec:authorize="isAuthenticated()" class="navbar-nav">
