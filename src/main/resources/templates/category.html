@@ -31,6 +31,11 @@
   				   commentedHref=${'/'+ #strings.toLowerCase(category)+'/commented'}, 
   				   hideHref=${'/'+ #strings.toLowerCase(category)})"></div>
 
+  <div th:if="${totalBargains == 0 && !noResultsFound}" class="container rounded bg-white py-2 mt-3 ">   
+	<span class="py-2">There are not any bargains in </span><strong>[[${#strings.toLowerCase(category)}]]</strong>
+	<span class="py-2">category.</span>
+  </div>
+
   <div th:each="bargain: ${bargains}" class="card my-3" >
 	<!-- Bargains display -->
 	<div th:replace="fragments/bargains-display :: bargains-display"></div>  	  
