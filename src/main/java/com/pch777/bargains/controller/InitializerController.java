@@ -22,7 +22,7 @@ public class InitializerController {
 	public String initSampleData() throws Exception {
 		initializerService.initUserDate();
 		initializerService.initBargainDate();
-	//	initializerService.initCommentDate();
+		initializerService.initCommentDate();
 		initializerService.initVoteDate(NUMBER_OF_VOTES);
 		return "redirect:/";
 	}
