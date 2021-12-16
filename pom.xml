@@ -55,6 +55,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.2.1.Final</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
@@ -89,7 +95,6 @@
 			<artifactId>webjars-locator</artifactId>
 			<version>0.41</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
@@ -115,5 +120,5 @@
 		</plugins>
 	</build>
 
-	
+
 </project>

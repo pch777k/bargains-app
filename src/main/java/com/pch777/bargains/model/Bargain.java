@@ -23,6 +23,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pch777.bargains.validation.ComparePrices;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
+@ComparePrices(reducePriceField = "reducePrice", normalPriceField = "normalPrice", message = "Normal price must be higher than price")
 public class Bargain extends AuditModel {
 
 	@Id

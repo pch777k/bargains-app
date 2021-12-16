@@ -45,32 +45,32 @@
 						<strong><a th:href="@{/bargains/{id} (id=${bargain.id})}" th:text="${bargain.title}" class="card-title text-dark h5"></a></strong>
 				    </div>
 				</div>
-				    
+				
 				<div class="row row-margin">
-					<div class="d-inline ">
-						<span th:if="${bargain.reducePrice != null}" class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatCurrency(bargain.reducePrice)}"></span>			
-						<th:block th:if="${bargain.normalPrice != null and bargain.normalPrice > 0}">
-							<del class="text-info mr-sm-3 mr-1" th:text="${#numbers.formatCurrency(bargain.normalPrice)}" ></del>
-							<span class="mr-3" th:text="${'-' + #numbers.formatDecimal((bargain.normalPrice-bargain.reducePrice)*100/bargain.normalPrice,1,0) + '%' }"></span>
-						</th:block>
-
+					<div class="d-inline">
+						<span th:if="${bargain.reducePrice != null}" class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.reducePrice, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+							<th:block th:if="${bargain.normalPrice != null and bargain.normalPrice > 0}">
+								<del th:if="${bargain.reducePrice != null}" class="text-info mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.normalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}" ></del>
+								<span th:if="${bargain.reducePrice != null}" class="mr-3 " th:text="${'-' + #numbers.formatDecimal((bargain.normalPrice-bargain.reducePrice)*100/bargain.normalPrice,1,0) + '%' }"></span>
+							</th:block>
+						<span th:if="${bargain.reducePrice == null and bargain.normalPrice != null}" class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.normalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
 					</div>
 					<div class="d-sm-inline d-block">
-						<th:block th:if="${bargain.delivery != null}">
-							<span ><i class="fas fa-truck text-muted"></i></span>
-							<span th:if="${bargain.delivery > 0}" class="ml-2  text-muted" th:text="${#numbers.formatCurrency(bargain.delivery)}"></span>
-							<span th:if="${bargain.delivery < 0.01}" class="ml-2 text-muted" >free</span>
-				        </th:block>
-				    </div>				        
+							<th:block th:if="${bargain.delivery != null}">
+								<span ><i class="fas fa-truck text-muted"></i></span>
+								<span th:if="${bargain.delivery > 0}" class="ml-2  text-muted " th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+								<span th:if="${bargain.delivery < 0.01}" class="ml-2   text-muted " >free</span>
+				        	</th:block>
+				     </div>	        
 				</div>
 				
 				<div class="row">
 					<div class="col-lg-6 mt-1" th:if="${!#strings.isEmpty(bargain.link)}">
 					  <div class="d-none d-sm-block">
-						<a th:href="${bargain.link}"   class="btn btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
+						<a th:href="${bargain.link}" class="btn btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
 					  </div>
 					  <div class="d-block d-sm-none">
-						<a th:href="${bargain.link}"   class="btn btn-sm btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
+						<a th:href="${bargain.link}" class="btn btn-sm btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
 					  </div>
 					</div>
 					<div th:if="${!#strings.isEmpty(bargain.coupon)}" class="col-lg-6 text-center mt-1">
@@ -143,11 +143,14 @@
 				    
 				<div class="row row-margin">
 					<div class="d-inline">
-						<span th:if="${bargain.reducePrice != null}" class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.reducePrice, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
-							<th:block th:if="${bargain.normalPrice != null and bargain.normalPrice > 0}">
-								<del class="text-info mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.normalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}" ></del>
-								<span class="mr-3 " th:text="${'-' + #numbers.formatDecimal((bargain.normalPrice-bargain.reducePrice)*100/bargain.normalPrice,1,0) + '%' }"></span>
-							</th:block>
+					  <th:block th:if="${bargain.reducePrice != null}">
+					    <span class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.reducePrice, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+						  <th:block th:if="${bargain.normalPrice != null and bargain.normalPrice > 0}">
+							<del class="text-info mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.normalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}" ></del>
+							<span class="mr-3 " th:text="${'-' + #numbers.formatDecimal((bargain.normalPrice-bargain.reducePrice)*100/bargain.normalPrice,1,0) + '%' }"></span>
+						  </th:block>
+					  </th:block>
+					  <span th:if="${bargain.reducePrice == null and bargain.normalPrice != null}" class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.normalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
 					</div>
 					<div class="d-sm-inline d-block">
 							<th:block th:if="${bargain.delivery != null}">

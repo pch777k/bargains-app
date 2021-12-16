@@ -432,15 +432,17 @@ public class BargainController {
 
 	@PostMapping("/bargains/add")
 	@Transactional
-	public String addBargain(@Valid @ModelAttribute("bargain") Bargain bargain, BindingResult bindingResult, 
+	public String addBargain(@Valid @ModelAttribute("bargain") Bargain bargain, BindingResult bindingResult,  Model model,
 			 @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 
-		if (bindingResult.hasErrors()) {
-			return "add_bargain_form";
-		}
-		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
+			return "add_bargain_form";
+		}
 
 		bargainService.addBargain(bargain);
 		bargain.setUser(userService.findUserByEmail(email));
@@ -474,12 +476,18 @@ public class BargainController {
 
 	@PostMapping("/bargains/{bargainId}/edit")
 	@Transactional
-	public String editBargain(@Valid @ModelAttribute("bargain") Bargain bargain, 
-			BindingResult bindingResult, @PathVariable Long bargainId,
+	public String editBargain(@PathVariable Long bargainId, @Valid @ModelAttribute("bargain") Bargain bargain, 
+			BindingResult bindingResult, Model model,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException, ResourceNotFoundException {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("currentUser", userService.findUserByEmail(email));
 			return "edit_bargain_form";
 		}
+		
 		Bargain editedBargain = bargainService.getBargainById(bargainId);
 		bargain.setVoteCount(editedBargain.getVoteCount());
 		bargain.setVotes(editedBargain.getVotes());
