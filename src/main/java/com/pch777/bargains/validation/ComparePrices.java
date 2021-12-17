@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = { ComparePricesValidator.class })
 public @interface ComparePrices {
 
-	String message() default "Normal price must be higher than price";
+	String message() default "Normal price must be higher than reduced price";
 
 	Class<?>[] groups() default {};
 

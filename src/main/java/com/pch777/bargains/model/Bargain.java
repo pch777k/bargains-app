@@ -37,7 +37,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@ComparePrices(reducePriceField = "reducePrice", normalPriceField = "normalPrice", message = "Normal price must be higher than price")
+@ComparePrices(reducePriceField = "reducePrice", normalPriceField = "normalPrice", message = "Normal price must be higher than reduced price")
 public class Bargain extends AuditModel {
 
 	@Id
