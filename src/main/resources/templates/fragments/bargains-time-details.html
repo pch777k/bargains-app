@@ -1,0 +1,27 @@
+<div th:fragment="bargains-time-details">
+	
+<!-- bargains-time-details -->	
+<div th:if="${bargain.startBargain != null and #temporals.formatISO(bargain.startBargain) != #temporals.formatISO(today)}" class="d-inline-flex order-3 order-sm-2 text-muted">
+  <p class="card-text pt-2" title="Started on">	      		
+	<span><i class="fas fa-hourglass-start"></i></span>
+	<small th:text="${#temporals.format(bargain.startBargain, 'dd-MM-yyyy')}"></small>
+  </p>
+</div>
+<div th:if="${bargain.endBargain != null}" class="d-inline-flex order-4 order-sm-3 text-muted">
+  <p class="card-text pt-2" title="End on">
+	<span><i class="fas fa-hourglass-end"></i></span>
+	<small th:text="${#temporals.format(bargain.endBargain, 'dd-MM-yyyy')}"></small>
+  </p>
+</div>
+<div class="d-inline-flex order-2 order-sm-4 text-muted">
+  <p class="card-text pt-2" title="Added"> 
+	<span> <i class="far fa-clock"></i></span>
+	<small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(bargain.createdAt)}"></small>
+  </p>
+</div>
+<!-- bargain-time-details -->
+	
+</div>
+
+
+  

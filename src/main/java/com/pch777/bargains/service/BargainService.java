@@ -39,6 +39,10 @@ public class BargainService {
 		return bargainRepository.findNotClosedMostCommented(pageable, "%" + keyword.toLowerCase() + "%", closed);
 	}
 	
+	public Page<Bargain> getBargainsByTitleLikeAndShopId(Pageable pageable, String keyword, Long shopId) {
+		return bargainRepository.findByTitleLikeAndShopId(pageable, "%" + keyword.toLowerCase() + "%", shopId);
+	}
+	
 	public Page<Bargain> getBargainsMostCommentedByCategory(Pageable pageable, String keyword, Category category) {
 		return bargainRepository.findByCategoryOrderByCommentsSize(pageable, "%" + keyword.toLowerCase() + "%", category);
 	}

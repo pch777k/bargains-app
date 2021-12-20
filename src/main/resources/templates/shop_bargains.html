@@ -1,38 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-  <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
+<head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
+<title>Best price deals | Bargains</title>
+<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}">
+</head>   
 
-  <title>[[${#strings.capitalize(#strings.toLowerCase(category))}]] category</title>
-  <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
-
-</head>
 <body>
-
-<div id="wrap">
+<div id="wrap">	
 
   <!-- Navigation -->
-  <div th:replace="fragments/navigation :: navigation(href=${'/'+ #strings.toLowerCase(category)+'/new'})"></div>
-
-  <!-- Navigation-breadcrumb -->
-  <div th:replace="fragments/navigation-breadcrumb :: navigation-breadcrumb"></div>
+  <div th:replace="fragments/navigation :: navigation(href='/shops/'+${shop.id})"></div>
   
+  <!-- Bar-under-navigation-shop -->
+  <div th:replace="fragments/bar-under-navigation-shop :: bar-under-navigation-shop"></div>
+
   <div id="main" class="container text-center">
-
-  <!-- Results-found -->
-  <div th:replace="fragments/results-found :: results-found(href=${'/'+ #strings.toLowerCase(category)+'/new'})"></div>
   
-  <div th:replace="fragments/navigation-bargains :: navigation-bargains(
-  				   bestClass='user-nav text-dark', 
-  				   newClass='user-nav text-primary text-bold border-3', 
-  				   commentedClass='user-nav text-dark', 
-  				   bestHref=${'/'+ #strings.toLowerCase(category)}, 
-  				   newHref=${'/'+ #strings.toLowerCase(category)+'/new'}, 
-  				   commentedHref=${'/'+ #strings.toLowerCase(category)+'/commented'}, 
-  				   hideHref=${'/'+ #strings.toLowerCase(category)+'/new'})"></div>	
-
+  <!-- Results-found -->
+  <div th:replace="fragments/results-found :: results-found(href='/shops/'+${shop.id})"></div>
+	
   <!-- Bargains display -->
-  <div th:replace="fragments/bargains-display :: bargains-display"></div>  	  		
+  <div th:replace="fragments/bargains-display :: bargains-display"></div>  	  	
 
   <!-- Delete Modal -->	
   <div th:replace="fragments/modal-delete :: modal-delete"></div>	
@@ -44,7 +32,7 @@
   <div th:replace="fragments/modal-open :: modal-open"></div>	
 		
   <!-- Pagination -->	
-  <div th:replace="fragments/pagination-bargains :: pagination-bargains(href=${'/'+ #strings.toLowerCase(category)+'/new'})"></div>	
+  <div th:replace="fragments/pagination-bargains :: pagination-bargains(href='/shops/'+${shop.id})"></div>	
 	
   </div>
 
@@ -65,6 +53,6 @@
   <script src="../static/js/modal-close.js" th:src="@{/js/modal-close.js}" type ="text/javascript"></script>
   <script src="../static/js/modal-open.js" th:src="@{/js/modal-open.js}" type ="text/javascript"></script>
   <script src="../static/js/copy-to-clipboard.js" th:src="@{/js/copy-to-clipboard.js}" type ="text/javascript"></script>
-
+      
 </body>
 </html>

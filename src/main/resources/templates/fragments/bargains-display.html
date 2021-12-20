@@ -1,7 +1,8 @@
 <div th:fragment="bargains-display">
 	
 <!-- Bargains display -->	
-<div class="row row-margin g-0">
+<div th:each="bargain: ${bargains}" class="card my-3">
+  <div class="row row-margin g-0">
 	<div class="col-12 col-sm-4 col-lg-3 d-flex justify-content-center align-items-center pt-2">
     	<!-- Display an image (clear or opacity) -->	
 		<div th:replace="fragments/is_image_opacity :: is_image_opacity(photo_url='https://i.postimg.cc/mgx3wQ42/no-bargain-photo.png')"></div>	
@@ -58,10 +59,15 @@
 					<div class="d-sm-inline d-block">
 							<th:block th:if="${bargain.delivery != null}">
 								<span ><i class="fas fa-truck text-muted"></i></span>
-								<span th:if="${bargain.delivery > 0}" class="ml-2  text-muted " th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
-								<span th:if="${bargain.delivery < 0.01}" class="ml-2   text-muted " >free</span>
+								<span th:if="${bargain.delivery > 0}" class="mx-2 text-muted" th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+								<span th:if="${bargain.delivery < 0.01}" class="mx-2 text-muted" >free</span>
 				        	</th:block>
-				     </div>	        
+				    </div>
+				    <div class="d-sm-inline d-block">
+					  <th:block th:if="${bargain.shop != null}">
+					    <a th:href="@{/shops/{id} (id=${bargain.shop.id})}" th:text="${bargain.shop.name}" class="card-title text-success"></a>
+				      </th:block>
+				    </div>			        
 				</div>
 				
 				<div class="row">
@@ -152,13 +158,19 @@
 					  </th:block>
 					  <span th:if="${bargain.reducePrice == null and bargain.normalPrice != null}" class="text-danger mr-sm-3 mr-1" th:text="${#numbers.formatDecimal(bargain.normalPrice, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
 					</div>
-					<div class="d-sm-inline d-block">
-							<th:block th:if="${bargain.delivery != null}">
-								<span ><i class="fas fa-truck text-muted"></i></span>
-								<span th:if="${bargain.delivery > 0}" class="ml-2  text-muted " th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
-								<span th:if="${bargain.delivery < 0.01}" class="ml-2   text-muted " >free</span>
-				        	</th:block>
-				     </div>	        
+					
+				    <div class="d-sm-inline d-block">
+					  <th:block th:if="${bargain.delivery != null}">
+						<span><i class="fas fa-truck text-muted"></i></span>
+						<span th:if="${bargain.delivery > 0}" class="mx-2 text-muted" th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+						<span th:if="${bargain.delivery < 0.01}" class="mx-2 text-muted " >free</span>
+				      </th:block>
+				    </div>
+				    <div class="d-sm-inline d-block">
+					  <th:block th:if="${bargain.shop != null}">
+						<a th:href="@{/shops/{id} (id=${bargain.shop.id})}" th:text="${bargain.shop.name}" class="card-title text-success"></a>
+				      </th:block>
+				    </div>		        
 				</div>
 				
 				<div class="row">
@@ -230,6 +242,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 <!-- Bargains display -->
 	
 </div>

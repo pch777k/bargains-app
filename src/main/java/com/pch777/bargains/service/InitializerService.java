@@ -15,11 +15,13 @@ import org.springframework.web.client.RestTemplate;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.Role;
+import com.pch777.bargains.model.Shop;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.repository.RoleRepository;
@@ -33,6 +35,7 @@ public class InitializerService {
 
 	private UserService userService;
 	private RoleRepository roleRepository;
+	private ShopService shopService;
 	private BargainService bargainService;
 	private CommentService commentService;
 	private VoteService voteService;
@@ -42,6 +45,7 @@ public class InitializerService {
 	
 	public InitializerService(UserService userService, 
 			RoleRepository roleRepository, 
+			ShopService shopService,
 			BargainService bargainService,
 			CommentService commentService, 
 			VoteService voteService, 
@@ -50,6 +54,7 @@ public class InitializerService {
 			@Value("${bargainapp.no-user-photo-url}") String gUEST_USER_PHOTO_URL) {
 		this.userService = userService;
 		this.roleRepository = roleRepository;
+		this.shopService = shopService;
 		this.bargainService = bargainService;
 		this.commentService = commentService;
 		this.voteService = voteService;
@@ -70,13 +75,31 @@ public class InitializerService {
 		}
 	}
 	
+	public void initShopDate() {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("shops.csv").getInputStream()))){
+			CsvToBean<CsvShop> build = new CsvToBeanBuilder<CsvShop>(reader)
+					.withType(CsvShop.class)
+					.withIgnoreLeadingWhiteSpace(true)
+					.build();
+			build.stream().forEach(this::initShop);
+		} catch (IOException e) {
+			throw new IllegalStateException("Failed to parse csv file shops.csv", e);
+		}
+	}
+	
 	public void initBargainDate() {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("bargains.csv").getInputStream()))){
 			CsvToBean<CsvBargain> build = new CsvToBeanBuilder<CsvBargain>(reader)
 					.withType(CsvBargain.class)
 					.withIgnoreLeadingWhiteSpace(true)
 					.build();
-			build.stream().forEach(this::initBargain);
+			build.stream().forEach(b -> {
+				try {
+					initBargain(b);
+				} catch (ResourceNotFoundException e) {
+					e.printStackTrace();
+				}
+			});
 		} catch (IOException e) {
 			throw new IllegalStateException("Failed to parse csv file bargains.csv", e);
 		}
@@ -88,7 +111,13 @@ public class InitializerService {
 					.withType(CsvBargain.class)
 					.withIgnoreLeadingWhiteSpace(true)
 					.build();
-			build.stream().forEach(this::initGuestsBargain);
+			build.stream().forEach(b -> {
+				try {
+					initGuestsBargain(b);
+				} catch (ResourceNotFoundException e) {
+					e.printStackTrace();
+				}
+			});
 		} catch (IOException e) {
 			throw new IllegalStateException("Failed to parse csv file bargains.csv", e);
 		}
@@ -117,6 +146,8 @@ public class InitializerService {
 		}
 	}
 	
+	
+	
 	public void initGuestUser() {
 		if(!userService.isUserPresent("guest@demomail.com")) {
 			User user = new User("guest@demomail.com", "guest", "guest");
@@ -135,6 +166,8 @@ public class InitializerService {
 		}
 	}
 	
+	
+	
 	public void initRoles() {
 		if(roleRepository.findAll().isEmpty()) {
 			roleRepository.save(new Role("USER"));
@@ -142,12 +175,19 @@ public class InitializerService {
 		}	
 	}
 	
-	public void initGuestsBargain(CsvBargain csvBargain) {
+	public void initShop(CsvShop csvShop) {
+		Shop shop = new Shop(csvShop.getName(), csvShop.getWebpage());
+		shopService.addShop(shop);
+	}
+	
+	public void initGuestsBargain(CsvBargain csvBargain) throws ResourceNotFoundException {
 		String guestEmail = "guest@demomail.com";
 			String url = csvBargain.getPhoto();
 		
 			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
 			int plusDays = randomStartBargain();
+			
+			Shop shop = shopService.getShopById(csvBargain.getShopId());
 			
 			Bargain bargain = Bargain.builder()
 					.title(csvBargain.getTitle())
@@ -163,6 +203,7 @@ public class InitializerService {
 					.startBargain(LocalDate.now().plusDays(plusDays))
 					.endBargain(LocalDate.now().plusDays(randomEndBargain(plusDays)))
 					.category(csvBargain.getCategory())
+					.shop(shop)
 					.user(userService.findUserByEmail(guestEmail))
 					.build(); 
 			
@@ -172,11 +213,13 @@ public class InitializerService {
 
 	}
 	
-	private void initBargain(CsvBargain csvBargain) {
+	private void initBargain(CsvBargain csvBargain) throws ResourceNotFoundException {
 		String url = csvBargain.getPhoto();
 	
 		byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
 		int plusDays = randomStartBargain();
+		
+		Shop shop = shopService.getShopById(csvBargain.getShopId());
 		
 		Bargain bargain = Bargain.builder()
 				.title(csvBargain.getTitle())
@@ -192,6 +235,7 @@ public class InitializerService {
 				.startBargain(LocalDate.now().plusDays(plusDays))
 				.endBargain(LocalDate.now().plusDays(randomEndBargain(plusDays)))
 				.category(csvBargain.getCategory())
+				.shop(shop)
 				.user(userService.randomUser())
 				.build(); 
 		
@@ -263,6 +307,19 @@ public class InitializerService {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
+	public static class CsvShop {
+		
+		@CsvBindByName
+		private String name;
+		
+		@CsvBindByName
+		private String webpage;
+		
+	}
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class CsvBargain {
 		
 		@CsvBindByName
@@ -297,6 +354,9 @@ public class InitializerService {
 		
 		@CsvBindByName
 		private Category category;
+		
+		@CsvBindByName
+		private Long shopId;
 		
 	}
 	

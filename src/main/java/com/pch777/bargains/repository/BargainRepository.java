@@ -21,6 +21,9 @@ public interface BargainRepository extends JpaRepository<Bargain, Long> {
 	@Query ("SELECT b FROM Bargain b where lower(b.title) LIKE %?1% and b.closed = ?2")
 	Page<Bargain> findByTitleLikeAndClosed(Pageable pageable, String keyword, boolean closed);
 	
+	@Query ("SELECT b FROM Bargain b where (b.shop.id = ?2 and lower(b.title) LIKE %?1%)")
+	Page<Bargain> findByTitleLikeAndShopId(Pageable pageable, String keyword, Long shopId);
+	
 	@Query ("SELECT b FROM Bargain b where (b.category = ?2 and lower(b.title) LIKE %?1%)")
 	Page<Bargain> findByTitleLikeAndCategory(Pageable pageable, String keyword, Category category);
 	

@@ -19,6 +19,7 @@ class ApplicationStartup implements CommandLineRunner {
 		initializerService.initRoles();
 		initializerService.initGuestUser();
 		initializerService.initAdmin();
+		initializerService.initShopDate();
 	
 	}
 

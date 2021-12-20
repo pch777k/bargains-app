@@ -79,6 +79,10 @@ public class Bargain extends AuditModel {
 	@Enumerated
 	@NotNull(message = "Please choose a category of bargain")
 	private Category category;
+	
+	@ManyToOne
+	@JoinColumn(name = "shop_id")
+	private Shop shop;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -100,8 +104,9 @@ public class Bargain extends AuditModel {
 	@JsonIgnoreProperties({ "bargain", "user" })
 	private List<Vote> votes;
 	
-	public Bargain(String title, String description, Double reducePrice, Double normalPrice, Double delivery, 
-			String coupon, String link, byte[] photo, LocalDate startBargain, LocalDate endBargain, Category category) {
+	public Bargain(String title, String description, Double reducePrice, Double normalPrice, 
+			Double delivery, String coupon, String link, byte[] photo, LocalDate startBargain, 
+			LocalDate endBargain, Category category, Shop shop) {
 			this.title = title;
 			this.description = description;
 			this.reducePrice = reducePrice;
@@ -113,14 +118,7 @@ public class Bargain extends AuditModel {
 			this.startBargain = startBargain;
 			this.endBargain = endBargain;
 			this.category = category;
+			this.shop = shop;
 		}
-
-/*	public Bargain(String title, String description, Category category) {
-		this.title = title;
-		this.description = description;
-		this.category = category;
-	} */
-	
-	
 
 }

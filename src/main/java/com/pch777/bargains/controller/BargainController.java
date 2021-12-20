@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -38,11 +39,13 @@ import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.CommentDto;
+import com.pch777.bargains.model.Shop;
 import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
 import com.pch777.bargains.service.BargainService;
 import com.pch777.bargains.service.CommentService;
+import com.pch777.bargains.service.ShopService;
 import com.pch777.bargains.service.UserService;
 import com.pch777.bargains.utility.StringToEnumConverter;
 
@@ -50,6 +53,7 @@ import com.pch777.bargains.utility.StringToEnumConverter;
 public class BargainController {
 
 	private BargainService bargainService;
+	private ShopService shopService;
 	private CommentService commentService;
 	private UserService userService;
 	private ActivityService activityService;
@@ -60,6 +64,7 @@ public class BargainController {
 	private final String NO_USER_PHOTO_URL;
 	
 	public BargainController(BargainService bargainService, 
+			ShopService shopService,
 			CommentService commentService, 
 			UserService userService,
 			ActivityService activityService, 
@@ -70,6 +75,7 @@ public class BargainController {
 			@Value("${bargainapp.no-user-photo-url}") String nO_USER_PHOTO_URL) {
 		
 		this.bargainService = bargainService;
+		this.shopService = shopService;
 		this.commentService = commentService;
 		this.userService = userService;
 		this.activityService = activityService;
@@ -385,6 +391,58 @@ public class BargainController {
 		return "category_commented";
 	}
 	
+	@GetMapping("/shops/{shopId}")
+	public String listShopBargains(@PathVariable Long shopId, Model model, 
+			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam(defaultValue = "1") int page, 
+			@RequestParam(defaultValue = "10") int pageSize) throws ResourceNotFoundException {
+
+		Sort sort = Sort.by("createdAt").descending();
+		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
+		
+		Page<Bargain> pageBargains = bargainService.getBargainsByTitleLikeAndShopId(pageable, keyword, shopId);
+		long totalBargains = pageBargains.getTotalElements();
+		
+		long totalDisplayBargains = pageBargains.getTotalElements();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+	
+		Shop shop = shopService.getShopById(shopId);
+		
+		boolean isEmpty = bargainService.getAllBargains().isEmpty();	
+		boolean noResultsFound = false;
+		boolean resultsFound = false;
+		
+		if(!isEmpty && keyword.length() > 0) {
+			if(totalDisplayBargains == 0) {
+				noResultsFound = true;
+			}			
+		}
+		
+		if(!isEmpty && keyword.length() > 0 && totalDisplayBargains > 0) {
+			resultsFound = true;
+		}
+		
+		model.addAttribute("shop", shop);
+		model.addAttribute("loggedUser", email);
+		model.addAttribute("currentUser", userService.findUserByEmail(email));
+		model.addAttribute("title", keyword);
+		model.addAttribute("bargains", pageBargains);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("currentSize", pageable.getPageSize());
+		model.addAttribute("totalPages", pageBargains.getTotalPages());
+		model.addAttribute("voteDto", new VoteDto());
+		model.addAttribute("today", LocalDate.now());	
+		model.addAttribute("totalBargains", totalBargains);
+		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute("isEmptyListOfBargains", isEmpty);
+		model.addAttribute("noResultsFound", noResultsFound);
+		model.addAttribute("resultsFound", resultsFound);
+		
+		return "shop_bargains";
+	}
+	
 	@GetMapping("/bargains/{bargainId}")
 	public String getBargainById(Model model, @PathVariable Long bargainId, 
 			@RequestParam(defaultValue = "1") int page, 
@@ -423,6 +481,9 @@ public class BargainController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		
+		List<Shop> shops = shopService.getAllShops();
+		
+		model.addAttribute("shops", shops);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));	
 		model.addAttribute("bargain", new Bargain());
 		model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
@@ -466,6 +527,9 @@ public class BargainController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		if(userSecurity.isOwnerOrAdmin(bargain.getUser().getEmail(), email)) {
+			List<Shop> shops = shopService.getAllShops();
+			
+			model.addAttribute("shops", shops);
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
 			model.addAttribute("bargain", bargain);
 		} else {

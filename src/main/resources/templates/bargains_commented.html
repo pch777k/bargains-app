@@ -29,10 +29,8 @@
   				   commentedHref='/commented', 
   				   hideHref='/commented')"></div>
 
-  <div th:each="bargain: ${bargains}" class="card my-3" >
-	<!-- Bargains display -->
-	<div th:replace="fragments/bargains-display :: bargains-display"></div>  	  
-  </div>	
+  <!-- Bargains display -->
+  <div th:replace="fragments/bargains-display :: bargains-display"></div>  	  	
 
   <!-- Delete Modal -->	
   <div th:replace="fragments/modal-delete :: modal-delete"></div>		
