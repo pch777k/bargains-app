@@ -10,11 +10,30 @@
       <p class="lead ">
         <a class="btn btn-sm btn-success my-3 " th:href="@{/init-data}" title="loading some sample data (users, bargains, comments and votes)" role="button">Load sample data <span><i class="fas fa-upload"></i></span></a>
       </p>
-      <div class="d-none d-sm-block ">
-        <img src="https://i.postimg.cc/d1x8QVFJ/Brother-printer-dashboard.jpg" class="img-fluid" alt="Responsive image">
+      <div class="d-none d-sm-block">
+      
+        <div id="carouselBargains" class="carousel slide" data-ride="carousel">
+		  <ol class="carousel-indicators">
+		    <li data-target="#carouselBargains" data-slide-to="0" class="active"></li>
+		    <li data-target="#carouselBargains" data-slide-to="1"></li>
+		    <li data-target="#carouselBargains" data-slide-to="2"></li>
+		  </ol>
+		  <div class="carousel-inner">
+		    <div class="carousel-item active">
+		      <img class="d-block w-100" src="https://i.postimg.cc/3rbRb8PT/nokia-8-3-screenshot.png" alt="First slide">
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block w-100" src="https://i.postimg.cc/595gwrGL/acer-nitro-screenshoot.png" alt="Second slide">
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block w-100" src="https://i.postimg.cc/JzQCvKGk/Xiaomi-Mijia-screenshot.png" alt="Third slide">
+		    </div>
+		  </div>
+		</div>
+      
       </div>
       <div class="d-block d-sm-none">
-        <img src="https://i.postimg.cc/dtW8NvVj/screenshot-smartphone.jpg" class="img-fluid" alt="Responsive image">
+        <img src="https://i.postimg.cc/PJCQ813x/brother-screenshot-xs.png" class="img-fluid" alt="Responsive image">
       </div>
     </div> 
   </div>

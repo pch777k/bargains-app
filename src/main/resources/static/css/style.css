@@ -142,3 +142,10 @@ input[type=radio]:checked+label {
 	width: auto;
 	max-height: 100%;
 }
+
+.carousel .carousel-indicators li {  
+	background-color: gray; 
+}
+.carousel .carousel-indicators li.active { 
+	background-color: var(--primary); 
+}
