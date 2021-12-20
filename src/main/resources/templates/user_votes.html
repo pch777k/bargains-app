@@ -43,10 +43,10 @@
 			  </a>
 		    </div>
 		    <div class="col-5 d-flex justify-content-start">
-		      <div class="border rounded pb-1 px-2 ml-2 ml-xl-0">
+		      <div class="border rounded px-2 ml-2 ml-xl-0">
 		        <span class="h6" th:text="${vote.bargain.voteCount}"></span><span class="h6">&#176;</span>
-		  	    <button type="button" class="btn btn-sm btn-primary py-0 px-1 " th:if="${vote.voteType.equals(T(com.pch777.bargains.model.VoteType).DOWNVOTE)}"><i class="fas fa-minus"></i></button>
-	            <button type="button" class="btn btn-sm btn-danger py-0 px-1" th:if="${vote.voteType.equals(T(com.pch777.bargains.model.VoteType).UPVOTE)}"><i class="fas fa-plus"></i></button>
+		  	    <button type="button" class="btn btn-sm btn-primary vote-btn-margin py-0 px-1 " th:if="${vote.voteType.equals(T(com.pch777.bargains.model.VoteType).DOWNVOTE)}"><i class="fas fa-minus"></i></button>
+	            <button type="button" class="btn btn-sm btn-danger vote-btn-margin py-0 px-1" th:if="${vote.voteType.equals(T(com.pch777.bargains.model.VoteType).UPVOTE)}"><i class="fas fa-plus"></i></button>
 		      </div>	  
 	  	    </div>
 	        <div class="col-4 flex justify-content-end">

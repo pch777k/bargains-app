@@ -149,3 +149,8 @@ input[type=radio]:checked+label {
 .carousel .carousel-indicators li.active { 
 	background-color: var(--primary); 
 }
+
+.vote-btn-margin {
+	margin-bottom: 3px;
+	margin-top: 1px;
+}
