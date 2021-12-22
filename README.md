@@ -24,15 +24,17 @@ Bargains app created with Spring.
 ##### Login Page
 [![screenshot-sign-in.jpg](https://i.postimg.cc/tTCRph7z/screenshot-sign-in.jpg)](https://postimg.cc/94KHBwd4)
 ##### Main page
-[![screenshot-bargains.jpg](https://i.postimg.cc/q7c0bGL7/screenshot-bargains.jpg)](https://postimg.cc/nsL6MBN8)
-##### View in the Electronics category, sort by the most commented
-[![screenshot-electronics-commented.jpg](https://i.postimg.cc/Zqz4xQ6g/screenshot-electronics-commented.jpg)](https://postimg.cc/Jsxf1P6c)
-##### view in the Electronics category, search by the keyword "acer", sort by the hottest offer  
-[![screenshot-electronics-search.jpg](https://i.postimg.cc/jd9sL22R/screenshot-electronics-search.jpg)](https://postimg.cc/9rd3kWyk)
+[![bargains-best-screenshot.png](https://i.postimg.cc/rFzmrcfF/bargains-best-screenshot.png)](https://postimg.cc/dLPwMMMz)
+##### View bargains, sort by the most commented
+[![bargains-commented-screenshot.png](https://i.postimg.cc/brwvLj8g/bargains-commented-screenshot.png)](https://postimg.cc/YGTkqZvL)
+##### view in the Electronics category, search by the keyword "acer", sort by the newest offers  
+[![bargains-category-search-acer.png](https://i.postimg.cc/4x9xWPCD/bargains-category-search-acer.png)](https://postimg.cc/18yStp3B)
+##### view of bargains of a specific shop
+[![bargains-shop.png](https://i.postimg.cc/QMZxw7hH/bargains-shop.png)](https://postimg.cc/sMKrZvBr)
 ##### view of bargains of a specific user 
 [![screenshot-my-bargains.jpg](https://i.postimg.cc/G2QL2j8f/screenshot-my-bargains.jpg)](https://postimg.cc/hzXWZT08)
 ##### view of activities of a specific user 
-[![screenshot-activity.jpg](https://i.postimg.cc/RVb0KGs5/screenshot-activity.jpg)](https://postimg.cc/qzy0dcHj)
+[![user-overview.png](https://i.postimg.cc/L5VvjLDw/user-overview.png)](https://postimg.cc/D48qTWtP)
 ##### view of comments of a specific user
 [![screenshot-my-comments.jpg](https://i.postimg.cc/t4x9PbnW/screenshot-my-comments.jpg)](https://postimg.cc/k27r3kcg)
 ##### view of a specific bargain 
