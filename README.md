@@ -24,19 +24,21 @@ Bargains app created with Spring.
 ##### Login Page
 [![screenshot-sign-in.jpg](https://i.postimg.cc/tTCRph7z/screenshot-sign-in.jpg)](https://postimg.cc/94KHBwd4)
 ##### Main page
-[![bargains-best-screenshot.png](https://i.postimg.cc/rFzmrcfF/bargains-best-screenshot.png)](https://postimg.cc/dLPwMMMz)
-##### View bargains, sort by the most commented
-[![bargains-commented-screenshot.png](https://i.postimg.cc/brwvLj8g/bargains-commented-screenshot.png)](https://postimg.cc/YGTkqZvL)
-##### view in the Electronics category, search by the keyword "acer", sort by the newest offers  
-[![bargains-category-search-acer.png](https://i.postimg.cc/4x9xWPCD/bargains-category-search-acer.png)](https://postimg.cc/18yStp3B)
-##### view of bargains of a specific shop
-[![bargains-shop.png](https://i.postimg.cc/QMZxw7hH/bargains-shop.png)](https://postimg.cc/sMKrZvBr)
-##### view of bargains of a specific user 
-[![screenshot-my-bargains.jpg](https://i.postimg.cc/G2QL2j8f/screenshot-my-bargains.jpg)](https://postimg.cc/hzXWZT08)
-##### view of activities of a specific user 
-[![user-overview.png](https://i.postimg.cc/L5VvjLDw/user-overview.png)](https://postimg.cc/D48qTWtP)
+<span><img src="https://i.postimg.cc/rFzmrcfF/bargains-best-screenshot.png" alt="main page" width="800"/></span>
+##### View of bargains, sorted by the most commented
+<span><img src="https://i.postimg.cc/brwvLj8g/bargains-commented-screenshot.png" alt="sorted by the most commented" width="800"/></span>
+##### View of bargains in the Electronics category, found by the keyword "acer", sorted by the latest offers
+<span><img src="https://i.postimg.cc/4x9xWPCD/bargains-category-search-acer.png" alt="sorted by the newest offers" width="800"/></span>
+##### View of bargains of a specific shop
+<span><img src="https://i.postimg.cc/QMZxw7hH/bargains-shop.png" alt="bargains of a specific shop" width="800"/></span>
+##### View of activities of a specific user 
+<span><img src="https://i.postimg.cc/L5VvjLDw/user-overview.png" alt="activities of a specific user" width="800"/></span>
+##### View of bargains of a specific user 
+<span><img src="https://i.postimg.cc/SKbYtR57/bargains-user-screenshot.png" alt="bargains of a specific user" width="800"/></span>
 ##### view of comments of a specific user
-[![screenshot-my-comments.jpg](https://i.postimg.cc/t4x9PbnW/screenshot-my-comments.jpg)](https://postimg.cc/k27r3kcg)
+<span><img src="https://i.postimg.cc/W41pHdrx/comments-user-screenshot.png" alt="comments of a specific user" width="800"/></span>
+##### view of votes of a specific user
+<span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
 ##### view of a specific bargain 
 [![screenshoot-bargain-view.jpg](https://i.postimg.cc/rsKNZDMh/screenshoot-bargain-view.jpg)](https://postimg.cc/5QWz6NHv)
 ##### add a new bargain 
