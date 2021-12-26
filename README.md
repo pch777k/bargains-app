@@ -41,8 +41,10 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
 ##### view of a specific bargain 
 [![screenshoot-bargain-view.jpg](https://i.postimg.cc/rsKNZDMh/screenshoot-bargain-view.jpg)](https://postimg.cc/5QWz6NHv)
-##### add a new bargain 
-[![screenshot-add-bargain.jpg](https://i.postimg.cc/j5Kqt15N/screenshot-add-bargain.jpg)](https://postimg.cc/CZPp4mbL)
+##### add a new bargain
+<span><img src="https://i.postimg.cc/SQ6fwfC1/add-bargain-screenshot.png" alt="add a new bargain" width="600"/></span>
+##### edit the bargain
+<span><img src="https://i.postimg.cc/qqxcyppH/edit-bargain-screenshot.png" alt="edit the bargain" width="600"/></span>
 ##### user who added a bargain or user with the "ADMIN" role can edit, open, close or delete it.  
 [![screenshot-user-bargain.jpg](https://i.postimg.cc/SsD4qNHF/screenshot-user-bargain.jpg)](https://postimg.cc/njjgGZH0)
 ##### other users can only vote or comment on bargains.  
