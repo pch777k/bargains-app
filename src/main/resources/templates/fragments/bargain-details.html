@@ -15,10 +15,15 @@
   <div class="d-sm-inline d-block">
 	<th:block th:if="${bargain.delivery != null}">
 	  <span ><i class="fas fa-truck text-muted"></i></span>
-	  <span th:if="${bargain.delivery > 0}" class="ml-2  text-muted" th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
-	  <span th:if="${bargain.delivery < 0.01}" class="ml-1 text-muted" >free</span>
+	  <span th:if="${bargain.delivery > 0}" class="mx-2  text-muted" th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
+	  <span th:if="${bargain.delivery < 0.01}" class="mx-2 text-muted" >free</span>
 	</th:block>
-  </div>				        
+  </div>
+  <div class="d-sm-inline d-block">
+	<th:block th:if="${bargain.shop != null}">
+	  <a th:href="@{/shops/{id} (id=${bargain.shop.id})}" th:text="${bargain.shop.name}" class="card-title text-success"></a>
+	</th:block>
+  </div>							        
 </div>
 
 <div class="row">
