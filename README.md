@@ -24,7 +24,7 @@ Bargains app created with Spring.
 ##### Login Page
 <span><img src="https://i.postimg.cc/tTCRph7z/screenshot-sign-in.jpg" alt="login page" width="600"/></span>
 ##### Main page
-<span><img src="https://i.postimg.cc/rFzmrcfF/bargains-best-screenshot.png" alt="main page" width="800"/></span>
+<span><img src="https://i.postimg.cc/tgwkdNJ8/bargains-best-screenshot-description.png" alt="main page" width="800"/></span>
 ##### View of bargains, sorted by the most commented
 <span><img src="https://i.postimg.cc/brwvLj8g/bargains-commented-screenshot.png" alt="sorted by the most commented" width="800"/></span>
 ##### View of bargains in the Electronics category, found by the keyword "acer", sorted by the latest offers
