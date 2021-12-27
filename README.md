@@ -45,15 +45,15 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/SQ6fwfC1/add-bargain-screenshot.png" alt="add a new bargain" width="600"/></span>
 ##### edit the bargain
 <span><img src="https://i.postimg.cc/qqxcyppH/edit-bargain-screenshot.png" alt="edit the bargain" width="600"/></span>
-##### user who added a bargain or user with the "ADMIN" role can edit, open, close or delete it.  
-[![screenshot-user-bargain.jpg](https://i.postimg.cc/SsD4qNHF/screenshot-user-bargain.jpg)](https://postimg.cc/njjgGZH0)
-##### other users can only vote or comment on bargains.  
-[![screenshot-user-no-vote-bargain.jpg](https://i.postimg.cc/ZnQhBsTw/screenshot-user-no-vote-bargain.jpg)](https://postimg.cc/YLQPT3LF)
+##### user who added a bargain or user with the "ADMIN" role can edit, open, close or delete it, but can't vote.  
+<span><img src="https://i.postimg.cc/FsZXyvZm/bargain-view-owner-or-admin.png" alt="view of the bargain for creator or admin" width="800"/></span>
+##### other users can only vote or comment on bargains. 
+<span><img src="https://i.postimg.cc/yYBz3x0v/bargain-view-normal-user.png" alt="view of the bargain for other users" width="800"/></span>
 ##### vote  
 [![screenshot-vote-4-options.png](https://i.postimg.cc/639KDGjf/screenshot-vote-4-options.png)](https://postimg.cc/HJPFMjCr)
-##### View of users, user with the "ADMIN" role
-[![screenshot-users-view-admin.jpg](https://i.postimg.cc/sDZjjffb/screenshot-users-view-admin.jpg)](https://postimg.cc/svsdKrhJ)
-##### View of users, user with the "USER" role
-[![screenshot-users-view-user.jpg](https://i.postimg.cc/2jtjNLY4/screenshot-users-view-user.jpg)](https://postimg.cc/qg8H8RzR)
+##### View of users, user with the "ADMIN" role, admin can edit or delete a user
+<span><img src="https://i.postimg.cc/BQfkhBBJ/view-of-users-admin-screenshot.png" alt="view of users" width="800"/></span>
+##### View of users, user with the "USER" role, the user can only edit his profile 
+<span><img src="https://i.postimg.cc/Njgh0jWm/view-of-users-normal-user-screenshot.png" alt="view of users" width="800"/></span>
 ##### user - profile view
 [![screenshot-user-profile.jpg](https://i.postimg.cc/wjp7nR5w/screenshot-user-profile.jpg)](https://postimg.cc/svTjhXNW)
