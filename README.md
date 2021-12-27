@@ -40,7 +40,7 @@ Bargains app created with Spring.
 ##### view of votes of a specific user
 <span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
 ##### view of a specific bargain 
-[![screenshoot-bargain-view.jpg](https://i.postimg.cc/rsKNZDMh/screenshoot-bargain-view.jpg)](https://postimg.cc/5QWz6NHv)
+<span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
 ##### add a new bargain
 <span><img src="https://i.postimg.cc/SQ6fwfC1/add-bargain-screenshot.png" alt="add a new bargain" width="600"/></span>
 ##### edit the bargain
