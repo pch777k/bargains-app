@@ -1,6 +1,5 @@
 package com.pch777.bargains.model;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.pch777.bargains.validation.ComparePasswords;
@@ -14,20 +13,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ComparePasswords(passwordField = "password", confirmPasswordField = "confirmPassword", message = "The password confirmation does not match")
-public class UserDto {
+@ComparePasswords(passwordField = "newPassword", confirmPasswordField = "confirmNewPassword", message = "The password confirmation does not match")
+public class PasswordDto {
 	
-    @NotEmpty(message = "Nickname must not be empty")
-	private String nickname;
-	
-    @NotEmpty(message = "Email must not be empty")
-	private String email;
+	private String oldPassword;
     
     @Size(min = 3, message = "Password should be at least 3 characters")
-	private String password;
+	private String newPassword;
     
     @Size(min = 3, message = "Password should be at least 3 characters")
-	private String confirmPassword;
-    
-	private byte[] photo;
+	private String confirmNewPassword;
+
 }

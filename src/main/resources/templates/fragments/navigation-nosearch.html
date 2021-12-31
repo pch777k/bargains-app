@@ -32,6 +32,7 @@
 		    <a sec:authorize="isAuthenticated()" class="dropdown-item text-primary" th:href="@{/users/{userId}/comments (userId=${currentUser.id})}">My Comments</a>
 		    <a sec:authorize="isAuthenticated()" class="dropdown-item text-primary" th:href="@{/users/{userId}/votes (userId=${currentUser.id})}">My Votes</a>
 		    <a sec:authorize="isAuthenticated()" class="dropdown-item text-primary" th:href="@{/users/{userId}/profile (userId=${currentUser.id})}">Profile</a>
+		    <a sec:authorize="isAuthenticated()" class="dropdown-item text-primary" th:href="@{/users/{userId}/password (userId=${currentUser.id})}">Change password</a>
 		    <a sec:authorize="isAuthenticated()" class="dropdown-item text-primary" th:href="@{/users}">Users</a>
 		  </div>
 		</li>

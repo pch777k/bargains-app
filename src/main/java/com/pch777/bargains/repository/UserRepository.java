@@ -9,5 +9,6 @@ import com.pch777.bargains.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	public User getUserByEmail(String email);
+	public User getUserByNickname(String nickname);
 	
 }

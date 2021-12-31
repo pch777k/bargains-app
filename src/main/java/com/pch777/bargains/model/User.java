@@ -16,8 +16,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,15 +41,12 @@ public class User extends AuditModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @NotEmpty(message = "Email must not be empty")
-	@Column(unique = true)   
+      
     private String email;
     
-    @NotEmpty(message = "Nickname must not be empty")
+    @Column(unique = true) 
     private String nickname; 
-    
-    @Size(min = 3, message = "Password should be at least 3 characters")
+       
     private String password;
     
     private byte[] photo;

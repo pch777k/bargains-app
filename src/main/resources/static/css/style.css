@@ -11,9 +11,17 @@ body {
 	min-height: 100%;
 }
 
+}
 #main {
 	overflow: auto;
-/* 	padding-bottom: 50px; this needs to be bigger than footer height */
+	/* 	padding-bottom: 50px; this needs to be bigger than footer height */
+}
+
+.login-singup {
+	height: 80%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .margin-jumbotron {
@@ -22,9 +30,9 @@ body {
 
 .footer {
 	position: relative;
-/* 	margin-top: -50px; negative value of footer height */
-/* 	height: 150px clear:both; */
-/*   padding-top:12px; */
+	/* 	margin-top: -50px; negative value of footer height */
+	/* 	height: 150px clear:both; */
+	/*   padding-top:12px; */
 	background-color: #292b2c;
 	color: #0275d8;
 }
@@ -44,9 +52,8 @@ input[type=radio]:checked+label {
 	background-color: #0275d8;
 }
 
-
 .card-title {
-    word-break: break-word;
+	word-break: break-word;
 }
 
 .user-nav {
@@ -59,21 +66,21 @@ input[type=radio]:checked+label {
 }
 
 .border-3 {
- 	border-width: 3px;
- 	border-bottom-style: solid;
- 	border-color: #0275d8;
+	border-width: 3px;
+	border-bottom-style: solid;
+	border-color: #0275d8;
 }
 
 .btn-width {
-    width: 94px;
+	width: 94px;
 }
 
 .btn-width-md {
-    width: 120px;
+	width: 120px;
 }
 
 .text-bold {
-	font-weight: bold;	
+	font-weight: bold;
 }
 
 .checkbox-completed {
@@ -116,7 +123,8 @@ input[type=radio]:checked+label {
 	color: #000;
 }
 
-.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before
+	{
 	border-top-color: #dea700 !important;
 }
 
@@ -143,11 +151,12 @@ input[type=radio]:checked+label {
 	max-height: 100%;
 }
 
-.carousel .carousel-indicators li {  
-	background-color: gray; 
+.carousel .carousel-indicators li {
+	background-color: gray;
 }
-.carousel .carousel-indicators li.active { 
-	background-color: var(--primary); 
+
+.carousel .carousel-indicators li.active {
+	background-color: var(- -primary);
 }
 
 .vote-btn-margin {

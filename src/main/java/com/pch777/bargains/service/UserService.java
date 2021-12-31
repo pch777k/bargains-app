@@ -75,6 +75,13 @@ public class UserService {
 		return false;
 	}
 	
+	public boolean isUserNicknamePresent(String nickname) {
+		if(userRepository.getUserByNickname(nickname)!=null) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean existsById(Long id) {
         return userRepository.existsById(id);
     }

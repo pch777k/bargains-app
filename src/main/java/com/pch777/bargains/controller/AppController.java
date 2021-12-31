@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -38,8 +39,10 @@ import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Activity;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Comment;
+import com.pch777.bargains.model.PasswordDto;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.UserDto;
+import com.pch777.bargains.model.UserProfileDto;
 import com.pch777.bargains.model.Vote;
 import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.model.VoteType;
@@ -60,6 +63,7 @@ public class AppController {
 	private ActivityService activityService;
 	private UserSecurity userSecurity;
 	private RestTemplate restTemplate;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final String NO_USER_PHOTO_URL;
      
 	@GetMapping("/login") 
@@ -74,6 +78,7 @@ public class AppController {
 		ActivityService activityService, 
 		UserSecurity userSecurity,
 		RestTemplate restTemplate,
+		BCryptPasswordEncoder bCryptPasswordEncoder,
 		@Value("${bargainapp.no-user-photo-url}") String nO_USER_PHOTO_URL) {
     	
 		this.userService = userService;
@@ -83,26 +88,40 @@ public class AppController {
 		this.activityService = activityService;
 		this.userSecurity = userSecurity;
 		this.restTemplate = restTemplate;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.NO_USER_PHOTO_URL = nO_USER_PHOTO_URL;
     }
 
 	@GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());         
+        model.addAttribute("userDto", new UserDto());         
         return "signup_form";
     }
     
     @PostMapping("/process_register")
     @Transactional 
-    public String processRegister(@Valid User user, BindingResult bindingResult, Model model) throws IOException {
+    public String processRegister(@Valid UserDto userDto, BindingResult bindingResult, Model model) throws IOException {
     	if (bindingResult.hasErrors()) {
 			return "signup_form";
 		}
-    	if (userService.isUserPresent(user.getEmail())) {
+    	
+    	if (userService.isUserPresent(userDto.getEmail())) {
 			model.addAttribute("exist", true);
 			return "signup_form";
 		}
-    	user.setPhoto(restTemplate.getForObject(NO_USER_PHOTO_URL, byte[].class));
+    	
+    	if (userService.isUserNicknamePresent(userDto.getNickname())) {
+			model.addAttribute("nicknameExist", true);
+			return "signup_form";
+		}
+    	   	
+    	User user = User.builder()
+    			.nickname(userDto.getNickname())
+    			.email(userDto.getEmail())
+    			.password(userDto.getPassword())
+    			.photo(restTemplate.getForObject(NO_USER_PHOTO_URL, byte[].class))
+    			.build();
+    	
     	userService.registerUser(user);
 		
     	model.addAttribute("nickname", user.getNickname());
@@ -528,19 +547,14 @@ public class AppController {
 		String email = auth.getName();
 			
 		if(userSecurity.isOwnerOrAdmin(user.getEmail(), email)) {	
-		
-			List<Bargain> userBargains = bargainService.getAllBargainsByUserId(userId);
 	
-			UserDto userDto = UserDto.builder()
-					.id(user.getId())
+			UserProfileDto userProfileDto = UserProfileDto.builder()
 					.nickname(user.getNickname())
-					.password(user.getPassword())
 					.email(user.getEmail())
 					.photo(user.getPhoto())
 					.build(); 
 			
-			model.addAttribute("userDto", userDto);
-			model.addAttribute("totalBargains", userBargains.size());
+			model.addAttribute("userProfileDto", userProfileDto);
 			model.addAttribute("currentUser", userService.findUserByEmail(email)); 
 		} else {
 			throw new ForbiddenException("Access denied");
@@ -551,18 +565,77 @@ public class AppController {
     
     @Transactional
     @RequestMapping("/users/{userId}/profile")
-	public String updatePhoto(@PathVariable Long userId, @ModelAttribute("userDto") User userDto,
-			 @RequestParam("fileImage") MultipartFile multipartFile) throws IOException    {
+	public String updatePhoto(@PathVariable Long userId, 
+			@Valid @ModelAttribute("userProfileDto") UserProfileDto userProfileDto,
+			BindingResult bindingResult, Model model,
+			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException    {
+
+    	User user = userService.findUserById(userId);
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
 		
-		User user = userService.findUserById(userId);
-		user.setNickname(userDto.getNickname());
-		user.setEmail(userDto.getEmail());
-	
+    	if (bindingResult.hasErrors()) {
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		return "profile";
+    	}
+    	
+    	if (userService.isUserNicknamePresent(userProfileDto.getNickname())) {
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		model.addAttribute("nicknameExist", true);
+			return "profile";
+		}
+    	
+		user.setNickname(userProfileDto.getNickname());
+
 		if (!multipartFile.isEmpty()) {
 			user.setPhoto(multipartFile.getBytes());
 		} 
 
 		return "redirect:/users/" + userId + "/profile"; 	
+	}
+    
+    @GetMapping("/users/{userId}/password")
+	public String showChangePassword(@PathVariable Long userId, Model model) {
+		
+		User user = userService.findUserById(userId);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+			
+		if(userSecurity.isOwnerOrAdmin(user.getEmail(), email)) {			
+			model.addAttribute("passwordDto", new PasswordDto());
+			model.addAttribute("currentUser", userService.findUserByEmail(email)); 			
+		} else {
+			throw new ForbiddenException("Access denied");
+		}
+
+		return "change_password_form";
+	}  
+    
+    @Transactional
+    @RequestMapping("/users/{userId}/password")
+	public String updatePassword(@Valid @ModelAttribute("passwordDto") PasswordDto passwordDto,
+			BindingResult bindingResult, Model model, @PathVariable Long userId) {
+
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+    	
+    	if (bindingResult.hasErrors()) {
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+			return "change_password_form";
+		}
+    	
+		User user = userService.findUserById(userId);
+
+    	if (!bCryptPasswordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute("oldPasswordNotCorrect", true);
+			return "change_password_form";
+		}
+		
+		user.setPassword(bCryptPasswordEncoder.encode(passwordDto.getNewPassword()));
+
+		model.addAttribute("success", true);
+		return "redirect:/"; 	
 	}
     
     @GetMapping("users/{userId}/photo")
