@@ -14,25 +14,28 @@
   <title>Welcome</title>
 </head>
 <body>
-<div id="wrap">
+
 
   <!-- Navigation simple -->
   <div th:replace="fragments/navigation-simple :: navigation-simple"></div>	
 
-  <div id="main" class="container">
-	
-  <div class="container  rounded bg-white my-4 py-4">
-	<div class="row border rounded mx-2">
-	  <div class="col-12 py-2 text-center">
-		<span class="mx-2"><i class="text-danger"></i></span>Welcome <strong>[[${nickname}]]</strong>, you have signed up successfully!
-		<a class="ml-2" th:href="@{/login}">Click here to Login</a>
+  <div class="login-singup">
+    <div class="container ">
+	  <div class="row d-flex justify-content-center">
+  	    <div class="col-12 col-sm-10 col-lg-8">
+    	  <div class="card text-center">
+      		<div class="card-header text-primary h5">
+       		  Welcome [[${nickname}]]
+      		</div>
+      		<div class="card-body">
+        	  <p class="card-text">Thanks for joining Bargains, You can use this application now.</p>
+        	  <a th:href="@{/login}" class="btn btn-primary">Click here to Login</a>
+      		</div>
+    	  </div>
+  		</div>
 	  </div>
-	</div>
+    </div>
   </div>
-
-  </div>
-
-</div>
 	
   <!-- Footer -->	
   <div th:replace="fragments/footer :: footer"></div>

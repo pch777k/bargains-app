@@ -31,41 +31,41 @@
     		    Sign up
   		      </div>
   		      <div class="card-body">
-  		        <div class="text-center text-danger h6 pb-3" th:if="${exist}">					
+  		        <div class="text-center text-danger h6 pb-3 pb-md-1" th:if="${exist}">					
 			      User with this email already exists
 		        </div>
-		        <div class="text-center text-danger h6 pb-3" th:if="${nicknameExist}">					
+		        <div class="text-center text-danger h6 pb-3 pb-md-1" th:if="${nicknameExist}">					
 			      User with this nickname already exists
 		        </div>
-    		    <div class="input-group mt-3 px-md-3">
+    		    <div class="input-group mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
     			    <span class="input-group-text"><i class="far fa-user"></i></span>
   				  </div>
                     <input type="text" th:field="*{nickname}" id="nickname" class="form-control" placeholder="nickname"/>
 		        </div>
 		            <small><span class="text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span></small>  		      
-  		        <div class="input-group mt-3 px-md-3">
+  		        <div class="input-group mt-2 mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
     			    <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
   				  </div>
 	                <input type="email" th:field="*{email}" id="email" class="form-control" placeholder="email"/>           
 		        </div>
 		          <small><span class="text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></small>	  		      
-		        <div class="input-group mt-3 px-md-3">
+		        <div class="input-group mt-2 mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
     			    <span class="input-group-text"><i class="fas fa-lock"></i></span>
   				  </div>
 	                <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="password"/>  
 		        </div>
 		            <small><span class="text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span></small>
-		        <div class="input-group mt-3 px-md-3">
+		        <div class="input-group mt-2 mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
     			    <span class="input-group-text"><i class="fas fa-lock"></i></span>
   				  </div>
 	                <input type="password" th:field="*{confirmPassword}" id="confirmPassword" class="form-control" placeholder="confirm password"/>    
 		        </div>
 		            <small><span class="text text-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span></small> 		  
-    		    <div class="d-flex justify-content-center my-3">
+    		    <div class="d-flex justify-content-center mb-md-3 mt-2 mt-md-3">
 	              <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
 			      <button type="submit" class="btn btn-primary">Sign Up</button>
 	            </div>

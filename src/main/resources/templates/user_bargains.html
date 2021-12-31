@@ -52,9 +52,7 @@
   <div th:replace="fragments/modal-open :: modal-open"></div>	
 	
   <!-- Pagination -->	
-<!--   <th:block th:if="${bargains.totalPages > 1}"> -->
     <div th:replace="fragments/pagination-bargains :: pagination-bargains(href=${'/users/'+#strings.toString(profileUser.id)+'/bargains'})"></div>		
-<!--   </th:block> -->
   </div>
 
 </div>
