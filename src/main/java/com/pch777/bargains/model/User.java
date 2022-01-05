@@ -46,7 +46,8 @@ public class User extends AuditModel{
     
     @Column(unique = true) 
     private String nickname; 
-       
+     
+    @Column(unique = true)
     private String password;
     
     private byte[] photo;

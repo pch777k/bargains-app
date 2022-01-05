@@ -21,7 +21,6 @@ public class PasswordDto {
     @Size(min = 3, message = "Password should be at least 3 characters")
 	private String newPassword;
     
-    @Size(min = 3, message = "Password should be at least 3 characters")
 	private String confirmNewPassword;
 
 }

@@ -36,10 +36,11 @@
             <div class="card-body">          
 	          <div class="input-group">
 		        <div class="custom-file">
-		          <input type="file" class="custom-file-input" name="fileImage" id="fileImage" accept="image/png, image/jpeg" onchange="previewImage()"/>
+		          <input type="file" class="custom-file-input" name="fileImage" id="fileImage" accept="image/png, image/jpeg, image/jpg" onchange="previewImage()"/>
 		          <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label>
 		        </div>  
 		      </div>
+		      <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small>
 		      <div class="text-center text-danger h6 pt-3" th:if="${nicknameExist}">					
 			    User with this nickname already exists
 		      </div>

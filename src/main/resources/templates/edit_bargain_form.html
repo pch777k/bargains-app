@@ -30,16 +30,18 @@
 <!-- Edit bargain -->  
 <div id="main" class="container my-5">
   <div class="row d-flex justify-content-center">
-    <div class="col-auto border border-primary rounded bg-white">
-      <div>
-        <p class="pt-3 h3 text-center">Edit bargain</p>
-        <hr>
-      </div>
-      
-      <form th:action="@{/bargains/{bargainId}/edit(bargainId=${bargain.id})}" th:object="${bargain}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
- 	    
- 	    <input type="hidden" th:field="*{id}" class="form-control" />
-	    <input type="hidden" th:field="*{photo}" class="form-control"/>
+<!--     <div class="col-auto border border-primary rounded bg-white"> -->
+<!--       <div> -->
+<!--         <p class="pt-3 h3 text-center">Edit bargain</p> -->
+<!--         <hr> -->
+<!--       </div> -->
+
+       <form th:action="@{/bargains/{id}/edit (id=${bargainId})}" th:object="${bargainDto}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+ 	    <div class="card">
+            <div class="card-header text-center text-primary h4">
+    		  Edit bargain
+  		    </div>
+  		    <div class="card-body">
 	    <input type="hidden" th:field="*{closed}" class="form-control"/>
  	    
  	    <div class="form-group row">
@@ -49,10 +51,10 @@
 		  </div>  
 	    </div>
 	    
-	    <div>
-		  <p class="h3">Details</p>
-		  <hr>
-	    </div>
+<!-- 	    <div> -->
+<!-- 		  <p class="h3">Details</p> -->
+<!-- 		  <hr> -->
+<!-- 	    </div> -->
 					
 	    <div class="form-group">	                
 		  <label for="reduceprice"><strong>REDUCED PRICE</strong> <small>(Optional)</small></label>
@@ -101,8 +103,7 @@
               </option>
 			</select>
 		  </div>
-        </div>
-		
+        </div>		
 
 		<div class="form-group row">
 		  <div class="col-12">
@@ -129,10 +130,10 @@
 		<div class="form-group row">
 		  <div class="col-12">
 			<label for="category"><strong>CATEGORY</strong></label>
-			  <div class="row row-category">	
+			  <div class="row row-category justify-content-around">	
 	            <div th:each="enumcategory : ${T(com.pch777.bargains.model.Category).values()}">
 				  <input type="radio" th:field="*{category}" th:value="${enumcategory}" style="visibility: hidden;" class="custom-control-input">
-				  <label class="btn  btn-outline-primary mr-1" th:for="${#ids.prev('category')}" th:text="${enumcategory}">category</label>
+				  <label class="btn btn-sm btn-outline-primary btn-width-md" th:for="${#ids.prev('category')}" th:text="${enumcategory}">category</label>
 				</div>
 			  </div>
 			<small><span class="text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span></small>
@@ -157,7 +158,10 @@
 				  <span class="input-group-text bg-primary text-white"><i class="far fa-calendar-alt"></i></span>
 				</div>
 			  </div>
-			</div>
+		  </div>
+		  <div class="col-12">
+		    <small><span class="text text-danger" th:if="${#fields.hasErrors('endBargain')}" th:errors="*{endBargain}"></span></small>
+		  </div>
 		</div>
 	
     	<label><strong>PHOTO</strong> <small>(Optional)</small></label>
@@ -167,25 +171,25 @@
 		      <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label>
 		   </div>  
 		  </div>
-		  <div class="d-flex justify-content-center mt-2">
-		    <img th:if="*{photo != null}" th:src="*{'/bargains/' + id + '/photo'}" id="thumbnail" width="200" height="200"/>
-		    <img th:if="*{photo == null}" src="https://i.postimg.cc/mgx3wQ42/no-bargain-photo.png" id="thumbnail" width="200" height="200"/>
+		  <div class="d-flex justify-content-center mt-4">
+		    <img th:src="${'/bargains/' + bargainId + '/photo'}" id="thumbnail" width="200" height="200"/>
 		  </div>	                                 
 				
-		  <div class="d-flex justify-content-center mb-3 mt-2">
+		  <div class="d-flex justify-content-center mt-4">
 	        <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
 	        <button type="submit" class="btn btn-primary ">Edit</button>
 	      </div>
+	      </div>
+	      </div>
 		
       </form>
-    </div>
+    
   </div>
 </div>
 <!-- Edit bargain --> 
 </div>
 	<!-- Footer -->	
 	<div th:replace="fragments/footer :: footer"></div>  
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

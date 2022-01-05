@@ -2,6 +2,11 @@ package com.pch777.bargains.model;
 
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.pch777.bargains.validation.ImageContentType;
+import com.pch777.bargains.validation.ImageFileSize;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +24,8 @@ public class UserProfileDto {
     @NotEmpty(message = "Email must not be empty")
 	private String email;
     
-	private byte[] photo;
+    @ImageContentType
+    @ImageFileSize
+    private MultipartFile fileImage;
+
 }

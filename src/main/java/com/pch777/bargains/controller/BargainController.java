@@ -36,6 +36,7 @@ import com.pch777.bargains.exception.ForbiddenException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
+import com.pch777.bargains.model.BargainDto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.CommentDto;
@@ -486,6 +487,7 @@ public class BargainController {
 		model.addAttribute("shops", shops);
 		model.addAttribute("currentUser", userService.findUserByEmail(email));	
 		model.addAttribute("bargain", new Bargain());
+		model.addAttribute("bargainDto", new BargainDto());
 		model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
 
 		return "add_bargain_form";
@@ -493,7 +495,8 @@ public class BargainController {
 
 	@PostMapping("/bargains/add")
 	@Transactional
-	public String addBargain(@Valid @ModelAttribute("bargain") Bargain bargain, BindingResult bindingResult,  Model model,
+	public String addBargain(@Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
+			BindingResult bindingResult,  Model model,
 			 @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -505,6 +508,8 @@ public class BargainController {
 			return "add_bargain_form";
 		}
 
+		Bargain bargain = bargainService.bargainDtoToBargain(bargainDto);
+		
 		bargainService.addBargain(bargain);
 		bargain.setUser(userService.findUserByEmail(email));
 		
@@ -529,9 +534,11 @@ public class BargainController {
 		if(userSecurity.isOwnerOrAdmin(bargain.getUser().getEmail(), email)) {
 			List<Shop> shops = shopService.getAllShops();
 			
+			BargainDto bargainDto = bargainService.bargainToBargainDto(bargain);
 			model.addAttribute("shops", shops);
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
-			model.addAttribute("bargain", bargain);
+			model.addAttribute("bargainDto", bargainDto);
+	//		model.addAttribute("bargainId", bargainId);
 		} else {
 			throw new ForbiddenException("You don't have permission to do it.");
 		}
@@ -540,7 +547,7 @@ public class BargainController {
 
 	@PostMapping("/bargains/{bargainId}/edit")
 	@Transactional
-	public String editBargain(@PathVariable Long bargainId, @Valid @ModelAttribute("bargain") Bargain bargain, 
+	public String editBargain(@PathVariable Long bargainId, @Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
 			BindingResult bindingResult, Model model,
 			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException, ResourceNotFoundException {
 		
@@ -549,10 +556,13 @@ public class BargainController {
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
+		//	model.addAttribute("bargainId", bargainId);
 			return "edit_bargain_form";
 		}
+			
+		Bargain editedBargain = bargainService.getBargainById(bargainId);		
+		Bargain bargain = bargainService.bargainDtoToBargain(bargainDto);
 		
-		Bargain editedBargain = bargainService.getBargainById(bargainId);
 		bargain.setVoteCount(editedBargain.getVoteCount());
 		bargain.setVotes(editedBargain.getVotes());
 		bargain.setComments(editedBargain.getComments());

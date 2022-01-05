@@ -23,14 +23,19 @@
 <!-- Add bargain -->  
 <div id="main" class="container my-5">
   <div class="row d-flex justify-content-center">
-    <div class="col-auto border border-primary rounded bg-white">
-      <div>
-        <p class="pt-3 h3 text-center">Add bargain</p>
-        <hr>
-      </div>
+<!--     <div class="col-auto border border-primary rounded bg-white"> -->
+    <div class="col-auto">
+<!--       <div> -->
+<!--         <p class="pt-3 h3 text-center">Add bargain</p> -->
+<!--         <hr> -->
+<!--       </div> -->
       
-      <form th:action="@{/bargains/add}" th:object="${bargain}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
- 	    
+      <form th:action="@{/bargains/add}" th:object="${bargainDto}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+ 	      <div class="card">
+            <div class="card-header text-center text-primary h4">
+    		  Add bargain
+  		    </div>
+  		    <div class="card-body">
  	    <input type="hidden" th:name="closed" th:value="${false}" class="form-control"/>
  	    
  	    <div class="form-group row">
@@ -40,10 +45,10 @@
 		  </div>  
 	    </div>
 	    
-	    <div>
-		  <p class="h3">Details</p>
-		  <hr>
-	    </div>
+<!-- 	    <div> -->
+<!-- 		  <p class="h3">Details</p> -->
+<!-- 		  <hr> -->
+<!-- 	    </div> -->
 					
 	    <div class="form-group">	                		  
 	      <label for="reduceprice"><strong>REDUCED PRICE</strong> <small>(Optional)</small></label>
@@ -118,10 +123,10 @@
 		<div class="form-group row">
 		  <div class="col-12">
 			<label for="category"><strong>CATEGORY</strong></label>
-			<div class="row row-category">	
+			<div class="row row-category justify-content-around">	
 	          <div th:each="enumcategory : ${T(com.pch777.bargains.model.Category).values()}">
 				<input type="radio" th:field="*{category}" th:value="${enumcategory}" style="visibility: hidden;" class="custom-control-input">
-				<label class="btn  btn-outline-primary mr-1" th:for="${#ids.prev('category')}" th:text="${enumcategory}">category</label>
+				<label class="btn btn-sm btn-outline-primary btn-width-md" th:for="${#ids.prev('category')}" th:text="${enumcategory}">category</label>
 			  </div>
 			</div>
 				<small><span class="text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span></small>
@@ -147,26 +152,37 @@
 			  </div>
 			</div>
 		  </div>
+		  <div class="col-12">
+		    <small><span class="text text-danger" th:if="${#fields.hasErrors('endBargain')}" th:errors="*{endBargain}"></span></small>
+		  </div>
+		  
 		</div>
-
+	
 		<label><strong>PHOTO</strong> <small>(Optional)</small></label>
 		<div class="input-group">
 		  <div class="input-group-prepend">
 		    <span class="input-group-text" title="remove photo" id="removeImage"><i class="fas fa-times"></i></span>
 		  </div>
 		  <div class="custom-file">
-		    <input type="file"  class="custom-file-input" name="fileImage"  id="fileImage" accept="image/png, image/jpeg" onchange="previewImage()"/>
+		    <input type="file"  class="custom-file-input" name="fileImage"  id="fileImage" accept="image/png, image/jpeg, image/jpg" onchange="previewImage()"/>
 		    <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label>
-		  </div>  
+		  </div>
+		  
 		</div>
-		<div class="d-flex justify-content-center mt-2">
+		<div class="row">
+		  <div class="col-12"> 
+		    <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small> 
+		  </div>
+		</div>
+		<div class="d-flex justify-content-center mt-4">
 		  <img th:src="@{${noBargainPhoto}}" id="thumbnail" width="200" height="200"/>
-<!-- 		  <img src="https://i.postimg.cc/mgx3wQ42/no-bargain-photo.png" id="thumbnail" width="200" height="200"/> -->
 		</div>
 
-		<div class="d-flex justify-content-center mb-3 mt-2">
+		<div class="d-flex justify-content-center mt-4">
 		  <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
 		  <button type="submit" class="btn btn-primary">Add</button>
+		</div>
+		</div>
 		</div>
 	  </form>
 	

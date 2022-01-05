@@ -26,8 +26,6 @@ public class UserDto {
     @Size(min = 3, message = "Password should be at least 3 characters")
 	private String password;
     
-    @Size(min = 3, message = "Password should be at least 3 characters")
 	private String confirmPassword;
-    
-	private byte[] photo;
+
 }

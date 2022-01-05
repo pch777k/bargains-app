@@ -101,7 +101,8 @@ input[type=radio]:checked+label {
 }
 
 .row-category {
-	margin-left: 0px;
+/* 	margin-left: 0px; */
+/* 	margin-right: 1px; */
 }
 
 .row-margin {

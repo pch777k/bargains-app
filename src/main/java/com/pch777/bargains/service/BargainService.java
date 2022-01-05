@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Bargain;
+import com.pch777.bargains.model.BargainDto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.repository.BargainRepository;
 
@@ -154,6 +155,42 @@ public class BargainService {
 		LocalDate today = LocalDate.now();
 		if(date==null) return false;
 		return today.isAfter(date);
+	}
+	
+	public Bargain bargainDtoToBargain(BargainDto bargainDto) {
+		Bargain bargain = Bargain.builder()
+				.title(bargainDto.getTitle())
+				.description(bargainDto.getDescription())
+				.reducePrice(bargainDto.getReducePrice())
+				.normalPrice(bargainDto.getNormalPrice())
+				.delivery(bargainDto.getDelivery())
+				.coupon(bargainDto.getCoupon())
+				.link(bargainDto.getLink())
+				.startBargain(bargainDto.getStartBargain())
+				.endBargain(bargainDto.getEndBargain())
+				.closed(bargainDto.getClosed())
+				.category(bargainDto.getCategory())
+				.shop(bargainDto.getShop())
+				.build();
+		return bargain;
+	}
+	
+	public BargainDto bargainToBargainDto(Bargain bargain) {
+		BargainDto bargainDto = BargainDto.builder()
+				.title(bargain.getTitle())
+				.description(bargain.getDescription())
+				.reducePrice(bargain.getReducePrice())
+				.normalPrice(bargain.getNormalPrice())
+				.delivery(bargain.getDelivery())
+				.coupon(bargain.getCoupon())
+				.link(bargain.getLink())
+				.startBargain(bargain.getStartBargain())
+				.endBargain(bargain.getEndBargain())
+				.closed(bargain.getClosed())
+				.category(bargain.getCategory())
+				.shop(bargain.getShop())
+				.build();
+		return bargainDto;
 	}
 	
 	public static String whenElementAdded(LocalDateTime date) {

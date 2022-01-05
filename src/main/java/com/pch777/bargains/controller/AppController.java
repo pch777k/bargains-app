@@ -551,7 +551,6 @@ public class AppController {
 			UserProfileDto userProfileDto = UserProfileDto.builder()
 					.nickname(user.getNickname())
 					.email(user.getEmail())
-					.photo(user.getPhoto())
 					.build(); 
 			
 			model.addAttribute("userProfileDto", userProfileDto);
@@ -579,7 +578,8 @@ public class AppController {
     		return "profile";
     	}
     	
-    	if (userService.isUserNicknamePresent(userProfileDto.getNickname())) {
+    	if (userService.isUserNicknamePresent(userProfileDto.getNickname()) 
+    			&& !(user.getNickname().equals(userProfileDto.getNickname()))) {
     		model.addAttribute("currentUser", userService.findUserByEmail(email));
     		model.addAttribute("nicknameExist", true);
 			return "profile";
