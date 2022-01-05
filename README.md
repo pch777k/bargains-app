@@ -17,7 +17,8 @@ Bargains app created with Spring.
 
 #### Database
 - PostgreSQL
-
+## Database diagram
+[![diagram.png](https://i.postimg.cc/V6Gt9jZZ/diagram.png)](https://postimg.cc/XG5X4yb9)
 ## Screenshots
 ##### Sign up Page
 <span><img src="https://i.postimg.cc/TYVMZ04X/signup-screenshot.png" alt="signup page" width="456"/></span>
