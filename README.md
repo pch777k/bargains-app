@@ -25,9 +25,10 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/GmbwrDWT/signup-validation-screenshot.png" alt="signup page" width="456"/></span><br>
 <span><img src="https://i.postimg.cc/8k9jjfjK/signup-validation-password-screenshot.png" alt="signup validation password" width="456"/></span><br>
 <span><img src="https://i.postimg.cc/sDmqqHZv/signup-validation-nickname-screenshot.png" alt="signup validation nickname" width="456"/></span><br>
-<span><img src="https://i.postimg.cc/h4VtzmXK/signup-validation-email-screenshot.png" alt="signup validation email" width="456"/></span><br>
+<span><img src="https://i.postimg.cc/h4VtzmXK/signup-validation-email-screenshot.png" alt="signup validation email" width="456"/></span>
 ##### Login Page
-<span><img src="https://i.postimg.cc/tTCRph7z/screenshot-sign-in.jpg" alt="login page" width="600"/></span>
+<span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
+<span><img src="https://i.postimg.cc/vB7nYN9V/login-validation-screeenshot.png" alt="login credentials validation" width="456"/></span>
 ##### Main page
 <span><img src="https://i.postimg.cc/tgwkdNJ8/bargains-best-screenshot-description.png" alt="main page" width="800"/></span>
 ##### View of bargains, sorted by the most commented
