@@ -55,7 +55,7 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/dVYsTg6H/edit-bargain-screenshot-1.png" alt="edit the new bargain" width="597"/></span>
 <span><img src="https://i.postimg.cc/Jz513Kd1/edit-bargain-screenshot-2.png" alt="edit the new bargain" width="597"/></span>
 <span><img src="https://i.postimg.cc/N0GQdTWR/edit-bargain-screenshot-3.png" alt="edit the new bargain" width="597"/></span>
-##### Validation fields of bargain during add a bargain and edit the bargain
+##### Validation fields of bargain when adding a bargain and editing the bargain
 <span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
 ##### User who added a bargain or user with the "ADMIN" role can edit, open, close or delete it, but can't vote.  
 <span><img src="https://i.postimg.cc/FsZXyvZm/bargain-view-owner-or-admin.png" alt="view of the bargain for creator or admin" width="800"/></span>
@@ -69,3 +69,7 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/Njgh0jWm/view-of-users-normal-user-screenshot.png" alt="view of users" width="800"/></span>
 ##### User profile view
 <span><img src="https://i.postimg.cc/3rC6rRNc/profile-screenshot.png" alt="profile page" width="455"/></span><br>
+##### Change password
+<span><img src="https://i.postimg.cc/HnKJvW2m/change-password-screenshot.png" alt="change password" width="455"/></span>
+##### Change password - validation
+<span><img src="https://i.postimg.cc/zfgkCBnn/change-password-validation-screenshot.png" alt="change password validation" width="455"/></span>
