@@ -20,7 +20,12 @@ Bargains app created with Spring.
 
 ## Screenshots
 ##### Sign up Page
-<span><img src="https://i.postimg.cc/tTSqTYxG/screenshot-sign-up.jpg" alt="signup page" width="600"/></span>
+<span><img src="https://i.postimg.cc/TYVMZ04X/signup-screenshot.png" alt="signup page" width="456"/></span>
+##### Sign up Validation
+<span><img src="https://i.postimg.cc/GmbwrDWT/signup-validation-screenshot.png" alt="signup page" width="456"/></span><br>
+<span><img src="https://i.postimg.cc/8k9jjfjK/signup-validation-password-screenshot.png" alt="signup validation password" width="456"/></span><br>
+<span><img src="https://i.postimg.cc/sDmqqHZv/signup-validation-nickname-screenshot.png" alt="signup validation nickname" width="456"/></span><br>
+<span><img src="https://i.postimg.cc/h4VtzmXK/signup-validation-email-screenshot.png" alt="signup validation email" width="456"/></span><br>
 ##### Login Page
 <span><img src="https://i.postimg.cc/tTCRph7z/screenshot-sign-in.jpg" alt="login page" width="600"/></span>
 ##### Main page
