@@ -48,9 +48,13 @@ Bargains app created with Spring.
 ##### View of a specific bargain 
 <span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
 ##### Add a new bargain
-<span><img src="https://i.postimg.cc/SQ6fwfC1/add-bargain-screenshot.png" alt="add a new bargain" width="600"/></span>
+<span><img src="https://i.postimg.cc/fyWtYQkc/add-bargain-screenshot-1.png" alt="add a new bargain" width="597"/></span>
+<span><img src="https://i.postimg.cc/ZKMBvgmN/add-bargain-screenshot-2.png" alt="add a new bargain" width="597"/></span>
+<span><img src="https://i.postimg.cc/wTvRvzCH/add-bargain-screenshot-3.png" alt="add a new bargain" width="597"/></span>
 ##### Edit the bargain
-<span><img src="https://i.postimg.cc/qqxcyppH/edit-bargain-screenshot.png" alt="edit the bargain" width="600"/></span>
+<span><img src="https://i.postimg.cc/dVYsTg6H/edit-bargain-screenshot-1.png" alt="edit the new bargain" width="597"/></span>
+<span><img src="https://i.postimg.cc/Jz513Kd1/edit-bargain-screenshot-2.png" alt="edit the new bargain" width="597"/></span>
+<span><img src="https://i.postimg.cc/N0GQdTWR/edit-bargain-screenshot-3.png" alt="edit the new bargain" width="597"/></span>
 ##### User who added a bargain or user with the "ADMIN" role can edit, open, close or delete it, but can't vote.  
 <span><img src="https://i.postimg.cc/FsZXyvZm/bargain-view-owner-or-admin.png" alt="view of the bargain for creator or admin" width="800"/></span>
 ##### Other users can only vote or comment on bargains. 
