@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pch777.bargains.validation.CompareDate;
 import com.pch777.bargains.validation.ComparePrices;
-import com.pch777.bargains.validation.ImageContentType;
-import com.pch777.bargains.validation.ImageFileSize;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +22,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ComparePrices(reducePriceField = "reducePrice", normalPriceField = "normalPrice", message = "Normal price must be higher than reduced price")
-@CompareDate(starBargainField = "startBargain", endBargainField  = "endBargain", message = "The start date of the bargain should be before the end date")
+@ComparePrices(reducePriceField = "reducePrice", normalPriceField = "normalPrice")
+@CompareDate(starBargainField = "startBargain", endBargainField  = "endBargain")
 public class BargainDto {
 
 	@NotBlank(message = "Title must not be blank")
@@ -47,8 +45,8 @@ public class BargainDto {
 	
 	private String link;
 
-	@ImageContentType
-	@ImageFileSize
+//	@ImageContentType
+//	@ImageFileSize
 	private MultipartFile fileImage;
 
 	private Boolean closed;

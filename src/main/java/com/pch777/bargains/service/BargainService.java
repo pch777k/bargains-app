@@ -1,5 +1,6 @@
 package com.pch777.bargains.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -9,10 +10,12 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.BargainDto;
+import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.repository.BargainRepository;
 
@@ -109,10 +112,14 @@ public class BargainService {
 		return bargainRepository.save(bargain);
 	}
 	
-	public void deleteBargainById(Long id) throws ResourceNotFoundException {
-		if (!existsById(id)) {
-			throw new ResourceNotFoundException("Cannot find bargain with id: " + id);
-		}
+//	public void deleteBargainById(Long id) throws ResourceNotFoundException {
+//		if (!existsById(id)) {
+//			throw new ResourceNotFoundException("Cannot find bargain with id: " + id);
+//		}
+//		bargainRepository.deleteById(id);
+//	}
+	
+	public void deleteBargainById(Long id) {
 		bargainRepository.deleteById(id);
 	}
 
@@ -155,6 +162,17 @@ public class BargainService {
 		LocalDate today = LocalDate.now();
 		if(date==null) return false;
 		return today.isAfter(date);
+	}
+	
+	public BargainPhoto FileToBargainPhoto(MultipartFile multipartFile) throws IOException {
+		BargainPhoto bargainPhoto = BargainPhoto.builder()
+				.file(multipartFile.getBytes())
+				.filename(multipartFile.getOriginalFilename())
+				.contentType(multipartFile.getContentType())
+				.createdAt(LocalDate.now())
+				.fileLength(multipartFile.getSize())
+				.build();
+		return bargainPhoto;
 	}
 	
 	public Bargain bargainDtoToBargain(BargainDto bargainDto) {

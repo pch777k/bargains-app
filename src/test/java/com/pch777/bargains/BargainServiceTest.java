@@ -103,7 +103,7 @@ public class BargainServiceTest {
 				.delivery(0.0)
 				.coupon("coupon-discount")
 				.link("https://www.x-kom.pl/p/644074-smartfon-telefon-htc-desire-21-pro-5g-8-128gb-blue-0hz.html")
-				.photo(null)
+				.bargainPhotoId(null)
 				.closed(false)
 				.category(Category.ELECTRONICS)
 				.build();
@@ -120,7 +120,7 @@ public class BargainServiceTest {
 				.delivery(0.0)
 				.coupon("sale")
 				.link("https://www.zalando.pl/adidas-originals-trefoil-hoodie-unisex-bluza-crew-blue-ad122s084-k13.html?size=L")
-				.photo(null)
+				.bargainPhotoId(null)
 				.closed(false)
 				.category(Category.FASHION)
 				.build();

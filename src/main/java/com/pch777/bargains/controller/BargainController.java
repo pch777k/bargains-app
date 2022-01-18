@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pch777.bargains.exception.ForbiddenException;
@@ -37,6 +36,7 @@ import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.BargainDto;
+import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.CommentDto;
@@ -44,6 +44,7 @@ import com.pch777.bargains.model.Shop;
 import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
+import com.pch777.bargains.service.BargainPhotoService;
 import com.pch777.bargains.service.BargainService;
 import com.pch777.bargains.service.CommentService;
 import com.pch777.bargains.service.ShopService;
@@ -54,35 +55,35 @@ import com.pch777.bargains.utility.StringToEnumConverter;
 public class BargainController {
 
 	private BargainService bargainService;
+	private BargainPhotoService bargainPhotoService;
 	private ShopService shopService;
 	private CommentService commentService;
 	private UserService userService;
 	private ActivityService activityService;
 	private UserSecurity userSecurity;
-	private StringToEnumConverter converter;
-	private RestTemplate restTemplate;	
+	private StringToEnumConverter converter;	
 	private final String NO_BARGAIN_PHOTO_URL;
 	private final String NO_USER_PHOTO_URL;
 	
 	public BargainController(BargainService bargainService, 
+			BargainPhotoService bargainPhotoService,
 			ShopService shopService,
 			CommentService commentService, 
 			UserService userService,
 			ActivityService activityService, 
 			UserSecurity userSecurity,
 			StringToEnumConverter converter,
-			RestTemplate restTemplate, 
 			@Value("${bargainapp.no-bargain-photo-url}") String nO_BARGAIN_PHOTO_URL,
 			@Value("${bargainapp.no-user-photo-url}") String nO_USER_PHOTO_URL) {
 		
 		this.bargainService = bargainService;
+		this.bargainPhotoService = bargainPhotoService;
 		this.shopService = shopService;
 		this.commentService = commentService;
 		this.userService = userService;
 		this.activityService = activityService;
 		this.userSecurity = userSecurity;
 		this.converter = converter;
-		this.restTemplate = restTemplate;
 		this.NO_BARGAIN_PHOTO_URL = nO_BARGAIN_PHOTO_URL;
 		this.NO_USER_PHOTO_URL = nO_USER_PHOTO_URL;
 	}
@@ -496,7 +497,7 @@ public class BargainController {
 	@PostMapping("/bargains/add")
 	@Transactional
 	public String addBargain(@Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
-			BindingResult bindingResult,  Model model,
+			BindingResult bindingResult, Model model,
 			 @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -513,12 +514,11 @@ public class BargainController {
 		bargainService.addBargain(bargain);
 		bargain.setUser(userService.findUserByEmail(email));
 		
-		if (!multipartFile.isEmpty()) {			
-			bargain.setPhoto(multipartFile.getBytes());
-		} else {		
-			byte[] imageBytes = restTemplate.getForObject(NO_BARGAIN_PHOTO_URL, byte[].class);			
-			bargain.setPhoto(imageBytes);		
-		}
+		if(!multipartFile.isEmpty()) {			
+			bargain.setBargainPhotoId(addBargainPhoto(multipartFile));
+		} else {				
+			bargain.setBargainPhotoId(1L);		
+		 }
 
 		activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
 		
@@ -538,7 +538,6 @@ public class BargainController {
 			model.addAttribute("shops", shops);
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
 			model.addAttribute("bargainDto", bargainDto);
-	//		model.addAttribute("bargainId", bargainId);
 		} else {
 			throw new ForbiddenException("You don't have permission to do it.");
 		}
@@ -556,7 +555,6 @@ public class BargainController {
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
-		//	model.addAttribute("bargainId", bargainId);
 			return "edit_bargain_form";
 		}
 			
@@ -569,14 +567,24 @@ public class BargainController {
 		bargain.setActivities(editedBargain.getActivities());
 		bargain.setUser(editedBargain.getUser());
 	
-		if (multipartFile.isEmpty()) {
-			bargain.setPhoto(editedBargain.getPhoto());	
-		} else {
-			bargain.setPhoto(multipartFile.getBytes());
-		}
+		if (multipartFile.isEmpty()) {			
+			bargain.setBargainPhotoId(addBargainPhoto(multipartFile));	
+		} 
 			bargainService.editBargain(bargain, bargainId);
 			
 		return "redirect:/";
+	}
+	
+	public long addBargainPhoto(MultipartFile multipartFile) throws IOException {
+		BargainPhoto bargainPhoto = BargainPhoto.builder()
+				.file(multipartFile.getBytes())
+				.filename(multipartFile.getOriginalFilename())
+				.contentType(multipartFile.getContentType())
+				.createdAt(LocalDate.now())
+				.fileLength(multipartFile.getSize())
+				.build();
+		bargainPhotoService.saveBargainPhoto(bargainPhoto);
+		return bargainPhoto.getId();
 	}
 
 	@GetMapping("/bargains/{bargainId}/delete")
@@ -620,7 +628,9 @@ public class BargainController {
 	  @GetMapping("bargains/{bargainId}/photo")
 	    public void getImage(@PathVariable Long bargainId, HttpServletResponse response) throws Exception {
 		    Bargain bargain = bargainService.getBargainById(bargainId);
-	        byte[] bytes = bargain.getPhoto();
+		    BargainPhoto bargainPhoto = bargainPhotoService.getBargainPhotoById(bargain.getBargainPhotoId())
+					.orElseThrow(() -> new ResourceNotFoundException());
+	        byte[] bytes = bargainPhoto.getFile();
 	        InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
 	        String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
 	        response.setContentType(mimeType);

@@ -56,7 +56,7 @@ public class Bargain extends AuditModel {
 	
 	private String link;
 
-	private byte[] photo;
+	private Long bargainPhotoId;
 	
 	private Boolean closed;
 
@@ -97,7 +97,7 @@ public class Bargain extends AuditModel {
 	private List<Vote> votes;
 	
 	public Bargain(String title, String description, Double reducePrice, Double normalPrice, 
-			Double delivery, String coupon, String link, byte[] photo, LocalDate startBargain, 
+			Double delivery, String coupon, String link, long bargainPhotoId, LocalDate startBargain, 
 			LocalDate endBargain, Category category, Shop shop) {
 			this.title = title;
 			this.description = description;
@@ -106,7 +106,7 @@ public class Bargain extends AuditModel {
 			this.delivery = delivery;
 			this.coupon = coupon;
 			this.link = link;
-			this.photo = photo;
+			this.bargainPhotoId = bargainPhotoId;
 			this.startBargain = startBargain;
 			this.endBargain = endBargain;
 			this.category = category;
