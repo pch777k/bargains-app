@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pch777.bargains.model.Vote;
 import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.BargainService;
@@ -34,14 +34,29 @@ public class VoteRestController {
 	private UserSecurity userSecurity;
 
 	@GetMapping
-	public List<Vote> getAllVotes() {
-		return voteService.getAllVotes();
+	public List<VoteResponse> getAllVotes() {
+		return voteService.getAllVotes()
+				.stream()
+				.map(v -> new VoteResponse(v.getId(),
+										   v.getVoteType(),
+										   v.getCreatedAt(),
+										   v.getBargain().getId(),
+										   v.getBargain().getTitle(),
+										   v.getUser().getId(),
+										   v.getUser().getNickname()))
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Vote> getVoteById(@PathVariable Long id) {
+	public ResponseEntity<VoteResponse> getVoteById(@PathVariable Long id) {
 		return voteService.getById(id)
-				.map(vote -> ResponseEntity.ok(vote))
+				.map(v -> ResponseEntity.ok(new VoteResponse(v.getId(),
+														     v.getVoteType(),
+														     v.getCreatedAt(),
+														     v.getBargain().getId(),
+														     v.getBargain().getTitle(),
+														     v.getUser().getId(),
+														     v.getUser().getNickname())))				
 				.orElse(ResponseEntity.notFound().build());
 	}
 
