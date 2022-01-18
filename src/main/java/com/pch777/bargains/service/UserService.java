@@ -2,6 +2,7 @@ package com.pch777.bargains.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -14,13 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Role;
 import com.pch777.bargains.model.User;
+import com.pch777.bargains.model.UserDto;
 import com.pch777.bargains.repository.RoleRepository;
 import com.pch777.bargains.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
-@Service
 @AllArgsConstructor
+@Service
 public class UserService {
 	
 	private UserRepository userRepository;
@@ -29,8 +31,12 @@ public class UserService {
 	
 	@Transactional
 	public void registerUser(User user) {
+		
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-	
+
+		if(user.getUserPhotoId() == null) {
+			user.setUserPhotoId(1L);
+		}
 		Role userRole = roleRepository.findRoleByName("USER");
 	  
 	    Set<Role> roles = new HashSet<>();
@@ -51,6 +57,15 @@ public class UserService {
 		userRepository.save(admin);
 	}
 	
+	public User userDtoToUser(UserDto userDto) {
+		User user = User.builder()
+				.nickname(userDto.getNickname())
+				.email(userDto.getEmail())
+				.password(bCryptPasswordEncoder.encode(userDto.getPassword()))
+				.build();
+		return user;
+	}
+	
 	public User findUserByEmail(String email) {
 		
 		return userRepository.getUserByEmail(email);
@@ -58,6 +73,10 @@ public class UserService {
 	
 	public User findUserById(Long id) {
 		return userRepository.findById(id).get();
+	}
+	
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
 	}
 	
 	public List<User> getAllUsers() {
@@ -69,17 +88,11 @@ public class UserService {
 	}
 	
 	public boolean isUserPresent(String email) {
-		if(userRepository.getUserByEmail(email)!=null) {
-			return true;
-		}
-		return false;
+		return userRepository.existsByEmail(email);
 	}
 	
 	public boolean isUserNicknamePresent(String nickname) {
-		if(userRepository.getUserByNickname(nickname)!=null) {
-			return true;
-		}
-		return false;
+		return userRepository.existsByNickname(nickname);
 	}
 	
 	public boolean existsById(Long id) {
@@ -104,6 +117,10 @@ public class UserService {
 		if (!existsById(id)) {
 			throw new ResourceNotFoundException("Cannot find bargain with id: " + id);
 		}
+		userRepository.deleteById(id);		
+	}
+	
+	public void deleteById(Long id) {
 		userRepository.deleteById(id);		
 	}
 

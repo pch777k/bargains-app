@@ -49,8 +49,7 @@
     					<div class="row">
     						<div class="col-2 col-sm-1 mr-3 mr-md-4 mr-lg-2 mr-xl-1">
     							<a th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">				    					    	 
-									<img th:if="${activity.bargain.photo != null}" 
-									 th:src="@{${'/bargains/' + activity.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
+									<img th:src="@{${'/bargains/' + activity.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
 								</a>
     						</div>
     						<div class="col-9 col-sm-10">

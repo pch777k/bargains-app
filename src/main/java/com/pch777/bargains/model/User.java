@@ -50,7 +50,7 @@ public class User extends AuditModel{
     @Column(unique = true)
     private String password;
     
-    private byte[] photo;
+    private Long userPhotoId;
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles",
@@ -95,12 +95,14 @@ public class User extends AuditModel{
 		this.nickname = nickname;
 		this.password = password;
 	}
-	
-	public User(String email, String nickname, String password, byte[] photo) {
+
+	public User(String email, String nickname, String password, Long userPhotoId) {
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
-		this.photo = photo;
+		this.userPhotoId = userPhotoId;
 	}
+	
+	
      
 }

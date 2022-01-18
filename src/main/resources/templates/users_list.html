@@ -22,7 +22,7 @@
 	    	
 	    	<div class="card">
 	    	  <a th:href="@{/users/{userId}/overview ((userId=${user.id}))}">
-			    <img class="card-img-top" th:if="${user.photo != null}" th:src="${'users/' + user.id + '/photo'}" alt="photo">
+			    <img class="card-img-top" th:src="${'users/' + user.id + '/photo'}" alt="photo">
 			  </a>
 			  <div class="card-body">
 			    <h5 class="card-title"><a th:href="@{/users/{userId}/overview ((userId=${user.id}))}"> 
