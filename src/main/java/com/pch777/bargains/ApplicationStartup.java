@@ -16,10 +16,11 @@ class ApplicationStartup implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		initializerService.initPhotos();
 		initializerService.initRoles();
 		initializerService.initGuestUser();
 		initializerService.initAdmin();
-		initializerService.initShopDate();
+		initializerService.initShopData();
 	
 	}
 

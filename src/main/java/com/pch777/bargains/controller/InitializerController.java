@@ -20,10 +20,10 @@ public class InitializerController {
 
 	@RequestMapping("/init-data")
 	public String initSampleData() throws Exception {
-		initializerService.initUserDate();
-		initializerService.initBargainDate();
-		initializerService.initCommentDate();
-		initializerService.initVoteDate(NUMBER_OF_VOTES);
+		initializerService.initUserData();
+		initializerService.initBargainData();
+		initializerService.initCommentData();
+		initializerService.initVoteData(NUMBER_OF_VOTES);
 		return "redirect:/";
 	}
 

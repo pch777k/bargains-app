@@ -25,6 +25,11 @@ public class ShopService {
 				.orElseThrow(() -> new ResourceNotFoundException("Not found a shop with id: " + id));
 	}
 	
+	public Shop getShopByName(String name) throws ResourceNotFoundException {
+		return shopRepository.findByName(name)
+				.orElseThrow(() -> new ResourceNotFoundException("Not found a shop : " + name));
+	}
+	
 	public void addShop(Shop shop) {
 		shopRepository.save(shop);
 	}

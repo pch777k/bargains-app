@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pch777.bargains.exception.ForbiddenException;
@@ -42,6 +42,7 @@ import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.PasswordDto;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.UserDto;
+import com.pch777.bargains.model.UserPhoto;
 import com.pch777.bargains.model.UserProfileDto;
 import com.pch777.bargains.model.Vote;
 import com.pch777.bargains.model.VoteDto;
@@ -50,6 +51,7 @@ import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
 import com.pch777.bargains.service.BargainService;
 import com.pch777.bargains.service.CommentService;
+import com.pch777.bargains.service.UserPhotoService;
 import com.pch777.bargains.service.UserService;
 import com.pch777.bargains.service.VoteService;
 
@@ -57,41 +59,41 @@ import com.pch777.bargains.service.VoteService;
 public class AppController {
 
 	private UserService userService;
+	private UserPhotoService userPhotoService;
 	private BargainService bargainService;
 	private CommentService commentService;
 	private VoteService voteService;
 	private ActivityService activityService;
 	private UserSecurity userSecurity;
-	private RestTemplate restTemplate;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final String NO_USER_PHOTO_URL;
-     
-	@GetMapping("/login") 
-	public String showLoginForm() {		
-		return "login";  
-	}
 		
-    public AppController(UserService userService, 
+    public AppController(UserService userService,
+    		UserPhotoService userPhotoService,
     	BargainService bargainService, 
     	CommentService commentService,
 		VoteService voteService, 
 		ActivityService activityService, 
 		UserSecurity userSecurity,
-		RestTemplate restTemplate,
 		BCryptPasswordEncoder bCryptPasswordEncoder,
 		@Value("${bargainapp.no-user-photo-url}") String nO_USER_PHOTO_URL) {
     	
 		this.userService = userService;
+		this.userPhotoService = userPhotoService;
 		this.bargainService = bargainService;
 		this.commentService = commentService;
 		this.voteService = voteService;
 		this.activityService = activityService;
 		this.userSecurity = userSecurity;
-		this.restTemplate = restTemplate;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.NO_USER_PHOTO_URL = nO_USER_PHOTO_URL;
     }
 
+    @GetMapping("/login") 
+	public String showLoginForm() {		
+		return "login";  
+	}
+    
 	@GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userDto", new UserDto());         
@@ -114,17 +116,11 @@ public class AppController {
 			model.addAttribute("nicknameExist", true);
 			return "signup_form";
 		}
-    	   	
-    	User user = User.builder()
-    			.nickname(userDto.getNickname())
-    			.email(userDto.getEmail())
-    			.password(userDto.getPassword())
-    			.photo(restTemplate.getForObject(NO_USER_PHOTO_URL, byte[].class))
-    			.build();
     	
+    	User user = userService.userDtoToUser(userDto);
     	userService.registerUser(user);
 		
-    	model.addAttribute("nickname", user.getNickname());
+    	model.addAttribute("nickname", userDto.getNickname());
         return "register_success";
     }
     
@@ -170,11 +166,9 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
     	
-    	User user = userService.findUserById(userId);
-    	
     	Sort sort = Sort.by("createdAt").descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
-    	Page<Activity> pageActivitiesByUser = activityService.getActivitiesByUser(pageable, user);
+    	Page<Activity> pageActivitiesByUser = activityService.getActivitiesByUserId(pageable, userId);
     	
     	double average = 0;
     	int hottest = 0;
@@ -198,7 +192,7 @@ public class AppController {
 		String email = auth.getName();
     	
 		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
+		model.addAttribute("profileUser", userService.findUserById(userId)); 	
 		model.addAttribute("activities", pageActivitiesByUser);
 		model.addAttribute("totalActivities", pageActivitiesByUser.getTotalElements());
 		model.addAttribute("totalBargains", listBargainsByUser.size());
@@ -588,7 +582,15 @@ public class AppController {
 		user.setNickname(userProfileDto.getNickname());
 
 		if (!multipartFile.isEmpty()) {
-			user.setPhoto(multipartFile.getBytes());
+			UserPhoto userPhoto = UserPhoto.builder()
+					.file(multipartFile.getBytes())
+					.filename(multipartFile.getOriginalFilename())
+					.contentType(multipartFile.getContentType())
+					.createdAt(LocalDate.now())
+					.fileLength(multipartFile.getSize())
+					.build();
+			userPhotoService.saveUserPhoto(userPhoto);
+			user.setUserPhotoId(userPhoto.getId());
 		} 
 
 		return "redirect:/users/" + userId + "/profile"; 	
@@ -641,7 +643,9 @@ public class AppController {
     @GetMapping("users/{userId}/photo")
     public void getImage(@PathVariable("userId") Long userId, HttpServletResponse response) throws Exception {
         User user = userService.findUserById(userId);
-        byte[] bytes = user.getPhoto();
+        UserPhoto userPhoto = userPhotoService.getUserPhotoById(user.getUserPhotoId())
+        															.orElseThrow(() -> new ResourceNotFoundException());
+        byte[] bytes = userPhoto.getFile();
         InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
         String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
         response.setContentType(mimeType);

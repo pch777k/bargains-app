@@ -18,11 +18,13 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
+import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.Role;
 import com.pch777.bargains.model.Shop;
 import com.pch777.bargains.model.User;
+import com.pch777.bargains.model.UserPhoto;
 import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.repository.RoleRepository;
 
@@ -34,36 +36,45 @@ import lombok.NoArgsConstructor;
 public class InitializerService {
 
 	private UserService userService;
+	private UserPhotoService userPhotoService;
 	private RoleRepository roleRepository;
 	private ShopService shopService;
 	private BargainService bargainService;
+	private BargainPhotoService bargainPhotoService;
 	private CommentService commentService;
 	private VoteService voteService;
 	private ActivityService activityService;
 	private RestTemplate restTemplate;
 	private final String GUEST_USER_PHOTO_URL;
+	private final String NO_BARGAIN_PHOTO_URL;
 	
-	public InitializerService(UserService userService, 
+	public InitializerService(UserService userService,
+			UserPhotoService userPhotoService,
 			RoleRepository roleRepository, 
 			ShopService shopService,
 			BargainService bargainService,
+			BargainPhotoService bargainPhotoService,
 			CommentService commentService, 
 			VoteService voteService, 
 			ActivityService activityService,
 			RestTemplate restTemplate, 
-			@Value("${bargainapp.no-user-photo-url}") String gUEST_USER_PHOTO_URL) {
+			@Value("${bargainapp.no-user-photo-url}") String gUEST_USER_PHOTO_URL,
+			@Value("${bargainapp.no-bargain-photo-url}") String nO_BARGAIN_PHOTO_URL) {
 		this.userService = userService;
+		this.userPhotoService = userPhotoService;
 		this.roleRepository = roleRepository;
 		this.shopService = shopService;
 		this.bargainService = bargainService;
+		this.bargainPhotoService = bargainPhotoService;
 		this.commentService = commentService;
 		this.voteService = voteService;
 		this.activityService = activityService;
 		this.restTemplate = restTemplate;
+		this.NO_BARGAIN_PHOTO_URL = nO_BARGAIN_PHOTO_URL;
 		this.GUEST_USER_PHOTO_URL = gUEST_USER_PHOTO_URL;
 	}
 	
-	public void initUserDate() {
+	public void initUserData() {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("users.csv").getInputStream()))){
 			CsvToBean<CsvUser> build = new CsvToBeanBuilder<CsvUser>(reader)
 					.withType(CsvUser.class)
@@ -75,7 +86,7 @@ public class InitializerService {
 		}
 	}
 	
-	public void initShopDate() {
+	public void initShopData() {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("shops.csv").getInputStream()))){
 			CsvToBean<CsvShop> build = new CsvToBeanBuilder<CsvShop>(reader)
 					.withType(CsvShop.class)
@@ -87,7 +98,7 @@ public class InitializerService {
 		}
 	}
 	
-	public void initBargainDate() {
+	public void initBargainData() {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("bargains.csv").getInputStream()))){
 			CsvToBean<CsvBargain> build = new CsvToBeanBuilder<CsvBargain>(reader)
 					.withType(CsvBargain.class)
@@ -105,25 +116,7 @@ public class InitializerService {
 		}
 	}
 	
-	public void initGuestBargainDate() {
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("bargains-guest.csv").getInputStream()))){
-			CsvToBean<CsvBargain> build = new CsvToBeanBuilder<CsvBargain>(reader)
-					.withType(CsvBargain.class)
-					.withIgnoreLeadingWhiteSpace(true)
-					.build();
-			build.stream().forEach(b -> {
-				try {
-					initGuestsBargain(b);
-				} catch (ResourceNotFoundException e) {
-					e.printStackTrace();
-				}
-			});
-		} catch (IOException e) {
-			throw new IllegalStateException("Failed to parse csv file bargains.csv", e);
-		}
-	}
-	
-	public void initCommentDate() {
+	public void initCommentData() {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("comments.csv").getInputStream()))){
 			CsvToBean<CsvComment> build = new CsvToBeanBuilder<CsvComment>(reader)
 					.withType(CsvComment.class)
@@ -140,33 +133,54 @@ public class InitializerService {
 		
 			String url = csvUser.getPhoto();
 			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
-			User user = new User(csvUser.getEmail(), csvUser.getNickname(), csvUser.getPassword(), imageBytes);
+			UserPhoto userPhoto = UserPhoto.builder()
+					.file(imageBytes)
+					.filename(csvUser.getFilename())
+					.contentType(csvUser.getContentType())
+					.createdAt(LocalDate.now())
+					.fileLength(imageBytes.length)
+					.build();
+			userPhotoService.saveUserPhoto(userPhoto);
+			User user = new User(csvUser.getEmail(), csvUser.getNickname(), csvUser.getPassword(), userPhoto.getId());
 			userService.registerUser(user);
 
 		}
 	}
 	
-	
-	
 	public void initGuestUser() {
 		if(!userService.isUserPresent("guest@demomail.com")) {
-			User user = new User("guest@demomail.com", "guest", "guest");
-			byte[] imageBytes = restTemplate.getForObject(GUEST_USER_PHOTO_URL, byte[].class);
-			user.setPhoto(imageBytes);
+			User user = new User("guest@demomail.com", "guest", "guest",1L);
 			userService.registerUser(user);
 		}
 	}
 	
 	public void initAdmin() {
 		if(!userService.isUserPresent("admin@demomail.com")) {
-			User admin = new User("admin@demomail.com", "admin", "admin");
-			byte[] imageBytes = restTemplate.getForObject(GUEST_USER_PHOTO_URL, byte[].class);
-			admin.setPhoto(imageBytes);
+			User admin = new User("admin@demomail.com", "admin", "admin",1L);
 			userService.registerAdmin(admin);
 		}
 	}
 	
-	
+	public void initPhotos() {
+		byte[] userPhotoBytes = restTemplate.getForObject(GUEST_USER_PHOTO_URL, byte[].class);
+		UserPhoto userPhoto = UserPhoto.builder()
+				.file(userPhotoBytes)
+				.filename("guest.png")
+				.contentType("image/png")
+				.fileLength(userPhotoBytes.length)
+				.createdAt(LocalDate.now())
+				.build();
+		userPhotoService.saveUserPhoto(userPhoto);
+		byte[] bargainPhotoBytes = restTemplate.getForObject(NO_BARGAIN_PHOTO_URL, byte[].class);
+		BargainPhoto bargainPhoto = BargainPhoto.builder()
+				.file(bargainPhotoBytes)
+				.filename("no-bargain-photo.png")
+				.contentType("image/png")
+				.fileLength(bargainPhotoBytes.length)
+				.createdAt(LocalDate.now())
+				.build();
+		bargainPhotoService.saveBargainPhoto(bargainPhoto);
+	}
 	
 	public void initRoles() {
 		if(roleRepository.findAll().isEmpty()) {
@@ -180,43 +194,19 @@ public class InitializerService {
 		shopService.addShop(shop);
 	}
 	
-	public void initGuestsBargain(CsvBargain csvBargain) throws ResourceNotFoundException {
-		String guestEmail = "guest@demomail.com";
-			String url = csvBargain.getPhoto();
-		
-			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
-			int plusDays = randomStartBargain();
-			
-			Shop shop = shopService.getShopById(csvBargain.getShopId());
-			
-			Bargain bargain = Bargain.builder()
-					.title(csvBargain.getTitle())
-					.description(csvBargain.getDescription())
-					.reducePrice(csvBargain.getReducePrice())
-					.normalPrice(csvBargain.getNormalPrice())
-					.delivery(csvBargain.getDelivery())
-					.coupon(csvBargain.getCoupon())
-					.link(csvBargain.getLink())
-					.photo(imageBytes)
-					.closed(csvBargain.getClosed())
-					.voteCount(0)				
-					.startBargain(LocalDate.now().plusDays(plusDays))
-					.endBargain(LocalDate.now().plusDays(randomEndBargain(plusDays)))
-					.category(csvBargain.getCategory())
-					.shop(shop)
-					.user(userService.findUserByEmail(guestEmail))
-					.build(); 
-			
-			bargainService.addBargain(bargain);
-
-			activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
-
-	}
-	
 	private void initBargain(CsvBargain csvBargain) throws ResourceNotFoundException {
 		String url = csvBargain.getPhoto();
 	
 		byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+		BargainPhoto bargainPhoto = BargainPhoto.builder()
+				.file(imageBytes)
+				.filename(csvBargain.getFilename())
+				.contentType(csvBargain.getContentType())
+				.createdAt(LocalDate.now())
+				.fileLength(imageBytes.length)
+				.build();
+			
+		bargainPhotoService.saveBargainPhoto(bargainPhoto);
 		int plusDays = randomStartBargain();
 		
 		Shop shop = shopService.getShopById(csvBargain.getShopId());
@@ -229,7 +219,7 @@ public class InitializerService {
 				.delivery(csvBargain.getDelivery())
 				.coupon(csvBargain.getCoupon())
 				.link(csvBargain.getLink())
-				.photo(imageBytes)
+				.bargainPhotoId(bargainPhoto.getId())
 				.closed(csvBargain.getClosed())
 				.voteCount(0)				
 				.startBargain(LocalDate.now().plusDays(plusDays))
@@ -241,8 +231,6 @@ public class InitializerService {
 		
 		bargainService.addBargain(bargain);
 		activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
-
-
 	}
 	
 	private void initComment(CsvComment csvComment) {
@@ -268,7 +256,7 @@ public class InitializerService {
 		voteService.initVote(randomBargain().getId(), userService.randomUser().getId(), voteType);
 	}
 	
-	public void initVoteDate(int amountOfVotes) throws Exception {		
+	public void initVoteData(int amountOfVotes) throws Exception {		
 		for(int i=0; i<amountOfVotes; i++) {
 			randomVote();
 		}		
@@ -301,6 +289,12 @@ public class InitializerService {
 		
 		@CsvBindByName
 		private String photo;
+		
+		@CsvBindByName
+		private String filename;
+		
+		@CsvBindByName
+		private String contentType;
 		
 	}
 	
@@ -347,7 +341,10 @@ public class InitializerService {
 		private String photo;
 		
 		@CsvBindByName
-		private String photoName;
+		private String filename;
+		
+		@CsvBindByName
+		private String contentType;
 		
 		@CsvBindByName
 		private Boolean closed;

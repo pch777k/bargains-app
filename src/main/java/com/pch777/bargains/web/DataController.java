@@ -1,6 +1,7 @@
 package com.pch777.bargains.web;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,28 +22,14 @@ public class DataController {
 		this.NUMBER_OF_VOTES = nUMBER_OF_VOTES;
 	}
 
-	@PostMapping("/data")
+	@PostMapping("/init-data")
 	@Transactional
-	public void initializeUsers() {
-		initializerService.initUserDate();
-	}
-	
-	@PostMapping("/data-bargains")
-	@Transactional
-	public void initializeBargains() {
-		initializerService.initBargainDate();
-	}
-	
-	@PostMapping("/data-comments")
-	@Transactional
-	public void initializeComments() {
-		initializerService.initCommentDate();
-	}
-	
-	@PostMapping("/data-votes")
-	@Transactional
-	public void initializeVotes() throws Exception {
-		initializerService.initVoteDate(NUMBER_OF_VOTES);
+	public ResponseEntity<String> initializeData() throws Exception {
+		initializerService.initUserData();
+		initializerService.initBargainData();
+		initializerService.initCommentData();
+		initializerService.initVoteData(NUMBER_OF_VOTES);
+		return ResponseEntity.ok("successful data initialization");
 	}
 
 }
