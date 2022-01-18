@@ -32,8 +32,8 @@ public class ActivityService {
 		activityRepository.save(activity);
 	}
 	
-	public Page<Activity> getActivitiesByUser(Pageable pageable, User user) {
-		return activityRepository.findByUser(pageable, user);
+	public Page<Activity> getActivitiesByUserId(Pageable pageable, Long userId) {
+		return activityRepository.findByUserId(pageable, userId);
 	}
 	
 	public List<Activity> getActivitiesByUserId(Long userId) {
