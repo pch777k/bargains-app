@@ -96,7 +96,7 @@
 
 					<div class="d-inline-flex order-1 border rounded pt-1 px-2">
 						<!-- Vote  -->
-						<form id="vote-form" th:action="@{/votes}" method="post" th:object="${voteDto}" >
+						<form id="vote-form" th:action="@{/votes/{id} (id=${bargain.id})}" method="post" th:object="${voteDto}" >
 						  	<!-- Vote part -->
 							<div th:replace="fragments/vote-part :: vote-part"></div>							
 						</form>
@@ -177,8 +177,8 @@
 					<div class="col-12 col-lg-6">
 						<div class="row d-flex justify-content-between">        
 							<div class="col-auto mb-2">
-								<span th:if="${bargain.user.photo == null}"><img src="https://i.postimg.cc/nc5XP8HW/guest.png" width="25" height="25" class="rounded-circle"></span>
-								<span th:if="${bargain.user.photo != null}"><img th:src="${'/users/' + bargain.user.id + '/photo'}" width="25" height="25" class="rounded-circle"></span>
+<!-- 								<span th:if="${bargain.user.photo == null}"><img src="https://i.postimg.cc/nc5XP8HW/guest.png" width="25" height="25" class="rounded-circle"></span> -->
+								<span><img th:src="${'/users/' + bargain.user.id + '/photo'}" width="25" height="25" class="rounded-circle"></span>
 	 							 
 								<a th:href="@{/users/{userId}/overview ((userId=${bargain.user.id}))}">
 									<span class="ml-1" th:text="${bargain.user.nickname}"></span>

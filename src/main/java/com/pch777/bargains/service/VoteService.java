@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.User;
@@ -35,24 +34,30 @@ public class VoteService {
 	private final ActivityService activityService;
 
 	@Transactional
-	public void vote(VoteDto voteDto) throws Exception {
-		Bargain bargain = bargainRepository.findById(voteDto.getBargainId()).get();
+	public boolean vote(VoteDto voteDto, Long bargainId) {
+		Bargain bargain = bargainRepository.findById(bargainId).get();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
-		Optional<Vote> voteByBargainAndUser = voteRepository.findTopByBargainAndUserOrderByIdDesc(bargain,
-				userService.findUserByEmail(email));
 
-		if (!voteByBargainAndUser.isPresent() && email!="anonymousUser") {
+		Optional<Vote> voteByBargainAndUser = voteRepository
+				.findByBargainIdAndUserEmail(bargainId, email);
+		
+		if (!voteByBargainAndUser.isPresent() && !(bargain.getUser().getEmail().equals(email))) {
+
 			if (VoteType.UPVOTE.equals(voteDto.getVoteType())) {
 				bargain.setVoteCount(bargain.getVoteCount() + 1);
 			} else {
 				bargain.setVoteCount(bargain.getVoteCount() - 1);
 			}
+			
+			User user = userService.findUserByEmail(email);
 			Vote vote = mapToVote(voteDto, bargain, email);
 			voteRepository.save(vote);
-			activityService.addActivity(userRepository.getUserByEmail(email), vote.getCreatedAt(), bargain, ActivityType.VOTE);
+			activityService.addActivity(user, vote.getCreatedAt(), bargain, ActivityType.VOTE);
+			return true;
 		}
-		
+
+		return false;
 	}
 	
 	@Transactional
@@ -88,7 +93,10 @@ public class VoteService {
 	}
 
 	public static boolean userVoted(List<Vote> votes, User user) {
-		Vote vote = votes.stream().filter(v -> user.getId().equals(v.getUser().getId())).findAny().orElse(null);
+		Vote vote = votes.stream()
+				.filter(v -> user.getId().equals(v.getUser().getId()))
+				.findAny()
+				.orElse(null);
 		return vote != null;
 	}
 	
@@ -120,12 +128,8 @@ public class VoteService {
 		return voteRepository.existsById(id);
 	}
 
-	public void deleteVoteById(Long id) throws ResourceNotFoundException {
-		if (!existsById(id)) {
-			throw new ResourceNotFoundException("Cannot find vote with id: " + id);
-		}
-		voteRepository.deleteById(id);
-		
+	public void deleteVoteById(Long id) {
+		voteRepository.deleteById(id);	
 	}
 
 	public List<Vote> getAllVotesByBargainId(Long bargainId) {		

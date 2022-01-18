@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VoteDto {
     private VoteType voteType;
-    private Long bargainId;
+  //  private Long bargainId;
 }

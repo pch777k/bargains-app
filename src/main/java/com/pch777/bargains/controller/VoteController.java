@@ -1,6 +1,7 @@
 package com.pch777.bargains.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,17 +14,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class VoteController {
 
-    private final VoteService voteService;
+    private VoteService voteService;
     
-    @RequestMapping("/votes")
-    public String vote(VoteDto voteDto) throws Exception {
-        voteService.vote(voteDto);      
+    @RequestMapping("/votes/{bargainId}")
+    public String vote(@PathVariable Long bargainId, VoteDto voteDto) throws Exception {
+        voteService.vote(voteDto, bargainId);      
         return "redirect:/"; 
     }
     
-    @PostMapping("/vote-bargain")
-    public String voteBargain(VoteDto voteDto) throws Exception {
-        voteService.vote(voteDto);
-        return "redirect:/bargains/" + voteDto.getBargainId();
+    @PostMapping("/vote-bargain/{bargainId}")
+    public String voteBargain(@PathVariable Long bargainId, VoteDto voteDto) throws Exception {
+        voteService.vote(voteDto, bargainId);
+        return "redirect:/bargains/" + bargainId;
     }
 }
