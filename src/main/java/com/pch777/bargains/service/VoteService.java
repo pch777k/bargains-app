@@ -67,7 +67,7 @@ public class VoteService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new IllegalArgumentException("Not found a bargain with id: " + userId));
 		
-		Optional<Vote> voteByBargainAndUser = voteRepository.findTopByBargainAndUserOrderByIdDesc(bargain, user);
+		Optional<Vote> voteByBargainAndUser = voteRepository.findByBargainIdAndUserEmail(bargainId, user.getEmail());
 
 		if (!voteByBargainAndUser.isPresent() && userId!=bargain.getUser().getId()) {
 			if (VoteType.UPVOTE.equals(voteType)) {
@@ -124,10 +124,6 @@ public class VoteService {
 		return voteRepository.findById(id);
 	}
 	
-	public boolean existsById(Long id) {
-		return voteRepository.existsById(id);
-	}
-
 	public void deleteVoteById(Long id) {
 		voteRepository.deleteById(id);	
 	}

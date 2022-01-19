@@ -9,15 +9,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.pch777.bargains.model.Bargain;
-import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.Vote;
 import com.pch777.bargains.model.VoteType;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-	Optional<Vote> findTopByBargainAndUserOrderByIdDesc(Bargain bargain, User currentUser);
+	//Optional<Vote> findTopByBargainAndUserOrderByIdDesc(Bargain bargain, User currentUser);
 	Optional<Vote> findByBargainIdAndUserEmail(Long id, String email);
 	List<Vote> findVoteByUserId(Long userId);
 	List<Vote> findByBargainId(Long bargainId);
