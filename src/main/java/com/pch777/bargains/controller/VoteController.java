@@ -1,5 +1,7 @@
 package com.pch777.bargains.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +20,17 @@ public class VoteController {
     
     @RequestMapping("/votes/{bargainId}")
     public String vote(@PathVariable Long bargainId, VoteDto voteDto) throws Exception {
-        voteService.vote(voteDto, bargainId);      
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+        voteService.vote(voteDto, bargainId, email);      
         return "redirect:/"; 
     }
     
     @PostMapping("/vote-bargain/{bargainId}")
     public String voteBargain(@PathVariable Long bargainId, VoteDto voteDto) throws Exception {
-        voteService.vote(voteDto, bargainId);
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+    	voteService.vote(voteDto, bargainId, email);
         return "redirect:/bargains/" + bargainId;
     }
 }

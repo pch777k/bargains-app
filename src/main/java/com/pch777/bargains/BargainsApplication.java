@@ -21,5 +21,7 @@ public class BargainsApplication {
 	RestTemplate restTemplate() {
 		return new RestTemplateBuilder().build();
 	}
+	
+	
 
 }

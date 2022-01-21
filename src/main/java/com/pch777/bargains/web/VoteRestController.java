@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,10 +63,13 @@ public class VoteRestController {
 	}
 
 	@PostMapping("/{bargainId}")
-	public ResponseEntity<Object> vote(@PathVariable("bargainId") Long bargainId, @RequestBody VoteDto voteDto) {
-
+	public ResponseEntity<Object> vote(@PathVariable("bargainId") Long bargainId, 
+			@RequestBody VoteDto voteDto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		
 		return bargainService.getById(bargainId).map(bargain -> {
-			if(voteService.vote(voteDto, bargainId)) {
+			if(voteService.vote(voteDto, bargainId, email)) {
 			   return ResponseEntity.accepted().build();
 			}
 			

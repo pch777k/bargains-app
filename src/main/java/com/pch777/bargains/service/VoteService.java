@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,10 +32,10 @@ public class VoteService {
 	private final ActivityService activityService;
 
 	@Transactional
-	public boolean vote(VoteDto voteDto, Long bargainId) {
+	public boolean vote(VoteDto voteDto, Long bargainId, String email) {
 		Bargain bargain = bargainRepository.findById(bargainId).get();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		String email = auth.getName();
 
 		Optional<Vote> voteByBargainAndUser = voteRepository
 				.findByBargainIdAndUserEmail(bargainId, email);

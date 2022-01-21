@@ -61,7 +61,7 @@ public class UserService {
 		User user = User.builder()
 				.nickname(userDto.getNickname())
 				.email(userDto.getEmail())
-				.password(bCryptPasswordEncoder.encode(userDto.getPassword()))
+				.password(userDto.getPassword())
 				.build();
 		return user;
 	}
