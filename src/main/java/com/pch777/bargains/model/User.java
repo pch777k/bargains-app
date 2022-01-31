@@ -102,7 +102,5 @@ public class User extends AuditModel{
 		this.password = password;
 		this.userPhotoId = userPhotoId;
 	}
-	
-	
-     
+	   
 }

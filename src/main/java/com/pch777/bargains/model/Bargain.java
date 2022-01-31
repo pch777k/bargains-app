@@ -17,8 +17,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pch777.bargains.validation.ComparePrices;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +32,6 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@ComparePrices(reducePriceField = "reducePrice", normalPriceField = "normalPrice", message = "Normal price must be higher than reduced price")
 public class Bargain extends AuditModel {
 
 	@Id
@@ -60,10 +59,8 @@ public class Bargain extends AuditModel {
 	
 	private Boolean closed;
 
-	//@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate startBargain;
 
-	//@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate endBargain;
 
 	@Builder.Default
@@ -78,39 +75,40 @@ public class Bargain extends AuditModel {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({ "comments", "bargains", "votes", "activities" })
+	@JsonIgnoreProperties({"createdAt","updatedAt","email","password","userPhotoId","roles",
+		"comments", "bargains", "votes", "activities" })
 	private User user;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bargain_id")
-	@JsonIgnoreProperties({ "bargain", "user" })
+	@JsonIgnore
 	private List<Comment> comments;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bargain_id")
-	@JsonIgnoreProperties({ "bargain", "user" })
+	@JsonIgnore
 	private List<Activity> activities;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bargain_id")
-	@JsonIgnoreProperties({ "bargain", "user" })
+	@JsonIgnore
 	private List<Vote> votes;
 	
-	public Bargain(String title, String description, Double reducePrice, Double normalPrice, 
-			Double delivery, String coupon, String link, long bargainPhotoId, LocalDate startBargain, 
-			LocalDate endBargain, Category category, Shop shop) {
-			this.title = title;
-			this.description = description;
-			this.reducePrice = reducePrice;
-			this.normalPrice = normalPrice;
-			this.delivery = delivery;
-			this.coupon = coupon;
-			this.link = link;
-			this.bargainPhotoId = bargainPhotoId;
-			this.startBargain = startBargain;
-			this.endBargain = endBargain;
-			this.category = category;
-			this.shop = shop;
-		}
+//	public Bargain(String title, String description, Double reducePrice, Double normalPrice, 
+//			Double delivery, String coupon, String link, long bargainPhotoId, LocalDate startBargain, 
+//			LocalDate endBargain, Category category, Shop shop) {
+//			this.title = title;
+//			this.description = description;
+//			this.reducePrice = reducePrice;
+//			this.normalPrice = normalPrice;
+//			this.delivery = delivery;
+//			this.coupon = coupon;
+//			this.link = link;
+//			this.bargainPhotoId = bargainPhotoId;
+//			this.startBargain = startBargain;
+//			this.endBargain = endBargain;
+//			this.category = category;
+//			this.shop = shop;
+//		}
 
 }

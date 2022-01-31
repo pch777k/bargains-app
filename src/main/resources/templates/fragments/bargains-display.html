@@ -4,9 +4,27 @@
 <div th:each="bargain: ${bargains}" class="card my-3">
   <div class="row row-margin g-0">
 	<div class="col-12 col-sm-4 col-lg-3 d-flex justify-content-center align-items-center py-2">
+	  <div class="row">
+	    <div class="col-12">
     	<!-- Display an image (clear or opacity) -->	
 		<div th:replace="fragments/is_image_opacity :: is_image_opacity(photo_url='https://i.postimg.cc/mgx3wQ42/no-bargain-photo.png')"></div>	
-		<!-- Display an image (clear or opacity) -->	
+		<!-- Display an image (clear or opacity) -->
+		</div>
+		<th:block sec:authorize="hasAuthority('USER')">
+          <th:block th:if="${bargain.user.email.equals(currentUser.email)}">
+		    <div class="col-12 d-block d-sm-none">
+			  <a class="btn btn-sm btn-info mt-3" role="button"
+			     th:href="@{/bargains/{id}/photo/edit (id=${bargain.id})}">edit photo</a>
+		    </div>
+		  </th:block>
+		</th:block>
+		<th:block sec:authorize="hasAuthority('ADMIN')">
+		  <div class="col-12 d-block d-sm-none">
+		    <a class="btn btn-sm btn-info mt-3" role="button"
+			   th:href="@{/bargains/{id}/edit (id=${bargain.id})}">edit photo</a>
+		  </div>
+		</th:block>
+	  </div>	     	
 	</div>
 	    	
 	<div class="col-12 col-sm-8 col-lg-9">
@@ -197,12 +215,11 @@
 						</div>	
 					</div>
 					
-					<div class="col-12 col-lg-6 ">
-						<!-- Modify Bargains Buttons -->
-						<div th:replace="fragments/modify_bargains_buttons :: modify_bargains_buttons"></div>	
-						<!-- Modify Bargains Buttons -->
-					</div>										        	
-				</div>	   
+				</div>	
+
+			    <!-- Modify Bargains Buttons -->
+			    <div th:replace="fragments/modify_bargains_buttons :: modify_bargains_buttons"></div>	
+			    <!-- Modify Bargains Buttons -->
 			</div>
 		</div>
 	</div>

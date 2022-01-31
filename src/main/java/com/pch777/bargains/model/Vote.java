@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,10 +40,14 @@ public class Vote {
 
 	@ManyToOne
 	@JoinColumn(name="bargain_id")
+	@JsonIgnoreProperties({"createdAt","updatedAt","description", "reducePrice", "normalPrice", "delivery", "coupon", 
+		"link","bargainPhotoId","closed","startBargain","endBargain","category",
+		"shop","user","comments","activities","votes"})
 	private Bargain bargain;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({"createdAt","updatedAt","email","password","userPhotoId","roles"})
 	private User user;
 	
 	public Vote(VoteType voteType, LocalDateTime createdAt, Bargain bargain, User user) {

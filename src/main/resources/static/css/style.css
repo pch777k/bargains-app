@@ -152,6 +152,20 @@ input[type=radio]:checked+label {
 	max-height: 100%;
 }
 
+.img-profile {
+	height: 50%;
+	width: 50%;
+}
+
+.card-profile {
+	align-items: center;
+}
+
+.img-bargain {
+	height: 75%;
+	width: 75%;
+}
+
 .carousel .carousel-indicators li {
 	background-color: gray;
 }

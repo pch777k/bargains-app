@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pch777.bargains.exception.ForbiddenException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
@@ -40,6 +39,7 @@ import com.pch777.bargains.model.Activity;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.PasswordDto;
+import com.pch777.bargains.model.PhotoFileDto;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.UserDto;
 import com.pch777.bargains.model.UserPhoto;
@@ -55,6 +55,9 @@ import com.pch777.bargains.service.UserPhotoService;
 import com.pch777.bargains.service.UserService;
 import com.pch777.bargains.service.VoteService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Controller
 public class AppController {
 
@@ -66,28 +69,6 @@ public class AppController {
 	private ActivityService activityService;
 	private UserSecurity userSecurity;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final String NO_USER_PHOTO_URL;
-		
-    public AppController(UserService userService,
-    		UserPhotoService userPhotoService,
-    	BargainService bargainService, 
-    	CommentService commentService,
-		VoteService voteService, 
-		ActivityService activityService, 
-		UserSecurity userSecurity,
-		BCryptPasswordEncoder bCryptPasswordEncoder,
-		@Value("${bargainapp.no-user-photo-url}") String nO_USER_PHOTO_URL) {
-    	
-		this.userService = userService;
-		this.userPhotoService = userPhotoService;
-		this.bargainService = bargainService;
-		this.commentService = commentService;
-		this.voteService = voteService;
-		this.activityService = activityService;
-		this.userSecurity = userSecurity;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-		this.NO_USER_PHOTO_URL = nO_USER_PHOTO_URL;
-    }
 
     @GetMapping("/login") 
 	public String showLoginForm() {		
@@ -205,7 +186,6 @@ public class AppController {
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("average", (int)Math.round(average));
 		model.addAttribute("hottest", hottest);	
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
     	
 		return "user_overview";
     }
@@ -261,7 +241,6 @@ public class AppController {
 		model.addAttribute("totalPages", pageBargainsByUser.getTotalPages());
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("closed", ended);
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		model.addAttribute("noResultsFound", noResultsFound);
 		model.addAttribute("resultsFound", resultsFound);
     	
@@ -320,7 +299,6 @@ public class AppController {
 		model.addAttribute("totalPages", pageBargainsByUser.getTotalPages());
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("closed", ended);
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		model.addAttribute("noResultsFound", noResultsFound);
 		model.addAttribute("resultsFound", resultsFound);
     	
@@ -377,7 +355,6 @@ public class AppController {
 		model.addAttribute("totalPages", pageBargainsByUserIdOrderByCommentSize.getTotalPages());
 		model.addAttribute("voteDto", new VoteDto());
 		model.addAttribute("closed", ended);
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		model.addAttribute("noResultsFound", noResultsFound);
 		model.addAttribute("resultsFound", resultsFound);
     	
@@ -412,7 +389,6 @@ public class AppController {
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);		
 		model.addAttribute("totalPages", pageComments.getTotalPages());
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		    	
 		return "user_comments";
     }   
@@ -451,7 +427,6 @@ public class AppController {
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);		
 		model.addAttribute("totalPages", pageVotes.getTotalPages());
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		    	
 		return "user_votes";
     }   
@@ -489,7 +464,6 @@ public class AppController {
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);		
 		model.addAttribute("totalPages", pageVotes.getTotalPages());
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		    	
 		return "user_votes_plus";
     }   
@@ -528,7 +502,6 @@ public class AppController {
 		model.addAttribute("currentSize", pageable.getPageSize());
 		model.addAttribute("currentPage", page);		
 		model.addAttribute("totalPages", pageVotes.getTotalPages());
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		    	
 		return "user_votes_minus";
     }   
@@ -538,8 +511,7 @@ public class AppController {
 		
 		User user = userService.findUserById(userId);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String email = auth.getName();
-			
+		String email = auth.getName();	
 		if(userSecurity.isOwnerOrAdmin(user.getEmail(), email)) {	
 	
 			UserProfileDto userProfileDto = UserProfileDto.builder()
@@ -548,6 +520,7 @@ public class AppController {
 					.build(); 
 			
 			model.addAttribute("userProfileDto", userProfileDto);
+			model.addAttribute("photoFileDto", new PhotoFileDto());
 			model.addAttribute("currentUser", userService.findUserByEmail(email)); 
 		} else {
 			throw new ForbiddenException("Access denied");
@@ -557,11 +530,47 @@ public class AppController {
 	}   
     
     @Transactional
-    @RequestMapping("/users/{userId}/profile")
-	public String updatePhoto(@PathVariable Long userId, 
+    @RequestMapping("/users/{userId}/photo/edit") 
+	public String updatePhoto(@PathVariable Long userId,
+			 RedirectAttributes redirectAttributes,
+			 @Valid @ModelAttribute("photoFileDto") PhotoFileDto photoFileDto, 
+			 BindingResult result, Model model,
+			 @ModelAttribute("userProfileDto") UserProfileDto userProfileDto) throws IOException    {
+    	
+    	User user = userService.findUserById(userId);
+		
+		if (result.hasErrors()) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String email = auth.getName();
+			userProfileDto = UserProfileDto.builder()
+					.nickname(user.getNickname())
+					.email(user.getEmail())
+					.build(); 
+			model.addAttribute("userProfileDto", userProfileDto);
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		return "profile";
+    	}
+			
+		UserPhoto userPhoto = UserPhoto.builder()
+				.file(photoFileDto.getFileImage().getBytes())
+				.filename(photoFileDto.getFileImage().getOriginalFilename())
+				.contentType(photoFileDto.getFileImage().getContentType())
+				.createdAt(LocalDate.now())
+				.fileLength(photoFileDto.getFileImage().getSize())
+				.build();
+		userPhotoService.saveUserPhoto(userPhoto);
+		user.setUserPhotoId(userPhoto.getId());
+		redirectAttributes.addFlashAttribute("editedPhoto", "The photo has been edited successfully.");		
+		
+		return "redirect:/users/" + userId + "/profile"; 	
+	}
+    
+    @Transactional
+    @RequestMapping("/users/{userId}/nickname")
+	public String updateNickname(@PathVariable Long userId, 
 			@Valid @ModelAttribute("userProfileDto") UserProfileDto userProfileDto,
-			BindingResult bindingResult, Model model,
-			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException    {
+			BindingResult bindingResult, Model model, 
+			@ModelAttribute("photoFileDto") PhotoFileDto photoFileDto, RedirectAttributes redirectAttributes)    {
 
     	User user = userService.findUserById(userId);
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -572,6 +581,12 @@ public class AppController {
     		return "profile";
     	}
     	
+    	if (user.getNickname().equals(userProfileDto.getNickname())) {
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		model.addAttribute("currentNickname", true);
+			return "profile";
+		}
+    	
     	if (userService.isUserNicknamePresent(userProfileDto.getNickname()) 
     			&& !(user.getNickname().equals(userProfileDto.getNickname()))) {
     		model.addAttribute("currentUser", userService.findUserByEmail(email));
@@ -580,18 +595,7 @@ public class AppController {
 		}
     	
 		user.setNickname(userProfileDto.getNickname());
-
-		if (!multipartFile.isEmpty()) {
-			UserPhoto userPhoto = UserPhoto.builder()
-					.file(multipartFile.getBytes())
-					.filename(multipartFile.getOriginalFilename())
-					.contentType(multipartFile.getContentType())
-					.createdAt(LocalDate.now())
-					.fileLength(multipartFile.getSize())
-					.build();
-			userPhotoService.saveUserPhoto(userPhoto);
-			user.setUserPhotoId(userPhoto.getId());
-		} 
+		redirectAttributes.addFlashAttribute("editedNickname", "The nickname has been edited successfully.");	
 
 		return "redirect:/users/" + userId + "/profile"; 	
 	}

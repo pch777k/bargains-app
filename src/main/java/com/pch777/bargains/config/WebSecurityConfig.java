@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/api/bargains/**", "/api/comments/**", "api/users/*/comments", "/api/activities/*","api/users/*/activities").permitAll()
 				.antMatchers(HttpMethod.GET, "api/users", "api/users/*", "api/users/photo/*").authenticated()
 				.antMatchers(HttpMethod.POST, "/api/bargains", "/api/bargains/*/photo", "/api/bargains/*/comments","/api/votes/*").authenticated()
-				.antMatchers(HttpMethod.PUT, "/api/bargains/*", "api/users/*/password", "api/users/*", "/api/comments/*").authenticated()
+				.antMatchers(HttpMethod.PUT, "/api/bargains/*", "api/users/*/password", "api/users/*/nickname", "api/users/*", "/api/comments/*").authenticated()
 				.antMatchers(HttpMethod.PATCH, "/api/bargains/*", "/api/comments/*").authenticated()
 				.antMatchers(HttpMethod.DELETE, "/api/bargains/*","api/users/*", "/api/comments/*").authenticated()
 				.antMatchers("/bargains/add", "/bargains/*/edit", "/bargains/*/delete", "/bargains/*/open", "/bargains/*/close").authenticated()

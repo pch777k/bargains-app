@@ -11,11 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserProfileDto {
+public class NicknameDto {
 	
     @NotBlank(message = "Nickname must not be blank")
 	private String nickname;
-	
-	private String email;
 
 }

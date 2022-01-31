@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.pch777.bargains.validation.CompareDate;
 import com.pch777.bargains.validation.ComparePrices;
@@ -44,10 +43,6 @@ public class BargainDto {
 	private String coupon;
 	
 	private String link;
-
-//	@ImageContentType
-//	@ImageFileSize
-	private MultipartFile fileImage;
 
 	private Boolean closed;
 

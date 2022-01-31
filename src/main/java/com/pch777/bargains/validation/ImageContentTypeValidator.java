@@ -12,16 +12,17 @@ public class ImageContentTypeValidator implements ConstraintValidator<ImageConte
 
 		boolean isValid = true;
 
-        String contentType = multipartFile.getContentType();
-
-        if (!isSupportedContentType(contentType) && !contentType.equals("application/octet-stream")) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Only png, jpg or jpeg images are allowed")
-                   .addConstraintViolation();
-
-            isValid = false;
-        }
-
+		if(!multipartFile.isEmpty()) {
+	        String contentType = multipartFile.getContentType();
+	
+	        if (!isSupportedContentType(contentType) && !contentType.equals("application/octet-stream")) {
+	            context.disableDefaultConstraintViolation();
+	            context.buildConstraintViolationWithTemplate("Only png, jpg or jpeg images are allowed")
+	                   .addConstraintViolation();
+	
+	            isValid = false;
+	        }
+		}
         return isValid;
     }
 	

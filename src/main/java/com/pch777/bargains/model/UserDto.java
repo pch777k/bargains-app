@@ -1,6 +1,7 @@
 package com.pch777.bargains.model;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @ComparePasswords(passwordField = "password", confirmPasswordField = "confirmPassword")
 public class UserDto {
 	
-    @NotEmpty(message = "Nickname must not be empty")
+    @NotBlank(message = "Nickname must not be blank")
 	private String nickname;
 	
     @NotEmpty(message = "Email must not be empty")

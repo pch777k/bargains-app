@@ -13,7 +13,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +27,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pch777.bargains.exception.ForbiddenException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
@@ -40,6 +40,7 @@ import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
 import com.pch777.bargains.model.CommentDto;
+import com.pch777.bargains.model.PhotoFileDto;
 import com.pch777.bargains.model.Shop;
 import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.security.UserSecurity;
@@ -51,6 +52,9 @@ import com.pch777.bargains.service.ShopService;
 import com.pch777.bargains.service.UserService;
 import com.pch777.bargains.utility.StringToEnumConverter;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Controller
 public class BargainController {
 
@@ -62,31 +66,6 @@ public class BargainController {
 	private ActivityService activityService;
 	private UserSecurity userSecurity;
 	private StringToEnumConverter converter;	
-	private final String NO_BARGAIN_PHOTO_URL;
-	private final String NO_USER_PHOTO_URL;
-	
-	public BargainController(BargainService bargainService, 
-			BargainPhotoService bargainPhotoService,
-			ShopService shopService,
-			CommentService commentService, 
-			UserService userService,
-			ActivityService activityService, 
-			UserSecurity userSecurity,
-			StringToEnumConverter converter,
-			@Value("${bargainapp.no-bargain-photo-url}") String nO_BARGAIN_PHOTO_URL,
-			@Value("${bargainapp.no-user-photo-url}") String nO_USER_PHOTO_URL) {
-		
-		this.bargainService = bargainService;
-		this.bargainPhotoService = bargainPhotoService;
-		this.shopService = shopService;
-		this.commentService = commentService;
-		this.userService = userService;
-		this.activityService = activityService;
-		this.userSecurity = userSecurity;
-		this.converter = converter;
-		this.NO_BARGAIN_PHOTO_URL = nO_BARGAIN_PHOTO_URL;
-		this.NO_USER_PHOTO_URL = nO_USER_PHOTO_URL;
-	}
 
 	@GetMapping("/")
 	public String listBargains(Model model, 
@@ -472,8 +451,6 @@ public class BargainController {
 		model.addAttribute("totalPages", pageCommentsByBargainId.getTotalPages());
 		model.addAttribute("bargain", bargain);
 		model.addAttribute("voteDto", new VoteDto());		
-		model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
-		model.addAttribute("noUserPhoto", NO_USER_PHOTO_URL);
 		
 		return "bargain";
 	}
@@ -489,7 +466,7 @@ public class BargainController {
 		model.addAttribute("currentUser", userService.findUserByEmail(email));	
 		model.addAttribute("bargain", new Bargain());
 		model.addAttribute("bargainDto", new BargainDto());
-		model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
+	//	model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
 
 		return "add_bargain_form";
 	}
@@ -497,32 +474,26 @@ public class BargainController {
 	@PostMapping("/bargains/add")
 	@Transactional
 	public String addBargain(@Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
-			BindingResult bindingResult, Model model,
-			 @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+			BindingResult bindingResult, Model model) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
-			model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
+//			model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
 			return "add_bargain_form";
 		}
 
 		Bargain bargain = bargainService.bargainDtoToBargain(bargainDto);
 		
 		bargainService.addBargain(bargain);
-		bargain.setUser(userService.findUserByEmail(email));
-		
-		if(!multipartFile.isEmpty()) {			
-			bargain.setBargainPhotoId(addBargainPhoto(multipartFile));
-		} else {				
-			bargain.setBargainPhotoId(1L);		
-		 }
+		bargain.setUser(userService.findUserByEmail(email));			
+		bargain.setBargainPhotoId(1L);		
 
 		activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
 		
-		return "redirect:/";
+		return "redirect:/bargains/" + bargain.getId();
 	}
 
 	@GetMapping("/bargains/{bargainId}/edit")
@@ -546,9 +517,9 @@ public class BargainController {
 
 	@PostMapping("/bargains/{bargainId}/edit")
 	@Transactional
-	public String editBargain(@PathVariable Long bargainId, @Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
-			BindingResult bindingResult, Model model,
-			@RequestParam("fileImage") MultipartFile multipartFile) throws IOException, ResourceNotFoundException {
+	public String editBargain(@PathVariable Long bargainId, 
+			@Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
+			BindingResult bindingResult, Model model) throws ResourceNotFoundException {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
@@ -558,33 +529,65 @@ public class BargainController {
 			return "edit_bargain_form";
 		}
 			
-		Bargain editedBargain = bargainService.getBargainById(bargainId);		
-		Bargain bargain = bargainService.bargainDtoToBargain(bargainDto);
-		
-		bargain.setVoteCount(editedBargain.getVoteCount());
-		bargain.setVotes(editedBargain.getVotes());
-		bargain.setComments(editedBargain.getComments());
-		bargain.setActivities(editedBargain.getActivities());
-		bargain.setUser(editedBargain.getUser());
-	
-		if (multipartFile.isEmpty()) {			
-			bargain.setBargainPhotoId(addBargainPhoto(multipartFile));	
-		} 
-			bargainService.editBargain(bargain, bargainId);
+		Bargain bargain = bargainService.getBargainById(bargainId);	
+		bargain.setTitle(bargainDto.getTitle());
+		bargain.setDescription(bargainDto.getDescription());
+		bargain.setReducePrice(bargainDto.getReducePrice());
+		bargain.setNormalPrice(bargainDto.getNormalPrice());
+		bargain.setDelivery(bargainDto.getDelivery());
+		bargain.setCoupon(bargainDto.getCoupon());
+		bargain.setLink(bargainDto.getLink());
+		bargain.setStartBargain(bargainDto.getStartBargain());
+		bargain.setEndBargain(bargainDto.getEndBargain());
+		bargain.setShop(bargainDto.getShop());
 			
-		return "redirect:/";
+		return "redirect:/bargains/" + bargainId;
 	}
 	
-	public long addBargainPhoto(MultipartFile multipartFile) throws IOException {
+	@GetMapping("/bargains/{bargainId}/photo/edit")
+	public String showBargainPhoto(@PathVariable Long bargainId, Model model) throws ResourceNotFoundException {
+		
+		Bargain bargain = bargainService.getBargainById(bargainId);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+			
+		if(userSecurity.isOwnerOrAdmin(bargain.getUser().getEmail(), email)) {	
+			model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute("photoFileDto", new PhotoFileDto());
+		} else {
+			throw new ForbiddenException("Access denied");
+		}
+		
+		return "bargain-photo";
+	}   
+	
+	@Transactional
+	@RequestMapping("/bargains/{bargainId}/photo/edit")
+	public String updatePhoto(@PathVariable Long bargainId, RedirectAttributes redirectAttributes,
+			@Valid @ModelAttribute("photoFileDto") PhotoFileDto photoFileDto, 
+			BindingResult result, Model model) throws IOException, ResourceNotFoundException {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		Bargain bargain = bargainService.getBargainById(bargainId);
+		
+		if (result.hasErrors()) { 
+    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		return "bargain-photo";
+    	}
+	    	
 		BargainPhoto bargainPhoto = BargainPhoto.builder()
-				.file(multipartFile.getBytes())
-				.filename(multipartFile.getOriginalFilename())
-				.contentType(multipartFile.getContentType())
+				.file(photoFileDto.getFileImage().getBytes())
+				.filename(photoFileDto.getFileImage().getOriginalFilename())
+				.contentType(photoFileDto.getFileImage().getContentType())
 				.createdAt(LocalDate.now())
-				.fileLength(multipartFile.getSize())
+				.fileLength(photoFileDto.getFileImage().getSize())
 				.build();
 		bargainPhotoService.saveBargainPhoto(bargainPhoto);
-		return bargainPhoto.getId();
+		bargain.setBargainPhotoId(bargainPhoto.getId());
+		redirectAttributes.addFlashAttribute("editedPhoto", "The photo has been edited successfully.");
+
+		return "redirect:/bargains/" + bargainId; 	
 	}
 
 	@GetMapping("/bargains/{bargainId}/delete")
@@ -610,7 +613,7 @@ public class BargainController {
 		} else {
 			throw new ForbiddenException("You don't have permission to do it.");
 		}
-		return "redirect:/";
+		return "redirect:/bargains/" + bargainId;
 	}
 	
 	@GetMapping("/bargains/{bargainId}/open")
@@ -622,7 +625,7 @@ public class BargainController {
 		} else {
 			throw new ForbiddenException("You don't have permission to do it.");
 		}
-			return "redirect:/";
+			return "redirect:/bargains/" + bargainId;
 		}
 	
 	  @GetMapping("bargains/{bargainId}/photo")

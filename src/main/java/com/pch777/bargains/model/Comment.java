@@ -36,11 +36,14 @@ public class Comment extends AuditModel {
 	
 	@ManyToOne
 	@JoinColumn(name="bargain_id")
-	@JsonIgnoreProperties({ "comments", "user", "activities", "votes" })
+	@JsonIgnoreProperties({"createdAt","updatedAt","description", "reducePrice", "normalPrice", "delivery", "coupon", 
+		"link","bargainPhotoId","closed","startBargain","endBargain","voteCount","category",
+		"shop","user","comments","activities","votes"})
 	private Bargain bargain;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({"createdAt","updatedAt","email","password","userPhotoId","roles"})
 	private User user;
 	
 	public Comment(String content) {

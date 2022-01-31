@@ -49,10 +49,12 @@ public class UserService {
 	public void registerAdmin(User admin) {
 		admin.setPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
 	
+		Role userRole = roleRepository.findRoleByName("USER");
 		Role adminRole = roleRepository.findRoleByName("ADMIN");
 	  
 	    Set<Role> roles = new HashSet<>();
 	    roles.add(adminRole);
+	    roles.add(userRole);
 		admin.setRoles(roles); 
 		userRepository.save(admin);
 	}

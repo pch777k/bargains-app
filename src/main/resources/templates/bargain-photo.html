@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Profile</title>
+  <title>update photo of the bargain</title>
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -26,15 +26,16 @@
 
     <div class="row d-flex justify-content-center">
       <div class="col-12 col-sm-10 col-md-8 col-lg-5">
-        <div class="card text-center">
-          <div class="card-header text-primary h5">
-            Profile
-          </div>
-  		  <div class="card-profile">
-  		    <img class="card-img-top img-profile  px-4 pt-4 pb-2" th:src="${'/users/' + userId + '/photo'}" id="thumbnail" alt="photo">
-          </div>
-          <div class="card-body"> 
-            <form th:action="@{/users/{id}/photo/edit (id=${userId})}" th:object="${photoFileDto}" method="post" enctype="multipart/form-data">         
+      
+        <form th:action="@{/bargains/{id}/photo/edit (id=${bargainId})}" th:object="${photoFileDto}" method="post" enctype="multipart/form-data">
+          <div class="card text-center">
+            <div class="card-header text-primary h5">
+    		  Photo
+  		    </div>
+  		    <div class="card-profile">
+  		      <img class="card-img-top img-bargain px-4 pt-4 pb-2" th:src="${'/bargains/' + bargainId + '/photo'}" id="thumbnail" alt="photo">
+            </div>
+            <div class="card-body">          
 	          <div class="input-group">
 		        <div class="custom-file">
 		          <input type="file" class="custom-file-input" name="fileImage" id="fileImage" accept="image/png, image/jpeg, image/jpg" onchange="previewImage()"/>
@@ -43,36 +44,16 @@
 		      </div>
 		      <div><span th:text="${editedPhoto}" class="text text-success"></span></div>
 		      <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small>
+<!-- 		      <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small> -->
+		      	      
 		      <div class="d-flex justify-content-center mt-3">
-	            <button type="submit" class="btn btn-sm btn-primary">Edit photo</button>            
+	            <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
+	            <button type="submit" class="btn btn-primary">Edit</button>            
 	          </div>
-            </form>
-            <form th:action="@{/users/{id}/nickname (id=${userId})}" th:object="${userProfileDto}" method="post">
-              <div class="text-center text-danger h6 pt-3" th:if="${nicknameExist}">					
-			    User with this nickname already exists
-		      </div>
-		      <div class="input-group mt-3">
-  				<div class="input-group-prepend">
-    			  <span class="input-group-text"><i class="far fa-user"></i></span>
-  				</div>
-	              <input type="text" th:field="*{nickname}" id="nickname" class="form-control" placeholder="nickname"/> 
-		      </div>
-		      <div><span th:text="${editedNickname}" class="text text-success"></span></div>
-		      	  <small><span class="text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span></small>
-		      	  <small><span class="text text-danger" th:if="${currentNickname}">Please choose a new nickname</span></small>
-		      <div class="input-group mt-3">
-  			    <div class="input-group-prepend">
-    			  <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
-  				</div>
-	              <input type="email" th:field="*{email}" id="email" class="form-control" readonly/>
-		      </div>		      
-		      <div class="d-flex justify-content-center mt-3">
-	            <a class="btn btn-sm btn-primary mr-3" th:href="@{/}" role="button">Back</a>
-	            <button type="submit" class="btn btn-sm btn-primary">Edit</button>            
-	          </div>
-			</form>
+	        </div>
           </div>
-        </div>
+
+        </form>
       </div>
     </div>
     

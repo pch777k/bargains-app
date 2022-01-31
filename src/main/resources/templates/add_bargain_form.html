@@ -148,25 +148,25 @@
 		  
 		</div>
 	
-		<label><strong>PHOTO</strong> <small>(Optional)</small></label>
-		<div class="input-group">
-		  <div class="input-group-prepend">
-		    <span class="input-group-text" title="remove photo" id="removeImage"><i class="fas fa-times"></i></span>
-		  </div>
-		  <div class="custom-file">
-		    <input type="file"  class="custom-file-input" name="fileImage"  id="fileImage" accept="image/png, image/jpeg, image/jpg" onchange="previewImage()"/>
-		    <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label>
-		  </div>
+<!-- 		<label><strong>PHOTO</strong> <small>(Optional)</small></label> -->
+<!-- 		<div class="input-group"> -->
+<!-- 		  <div class="input-group-prepend"> -->
+<!-- 		    <span class="input-group-text" title="remove photo" id="removeImage"><i class="fas fa-times"></i></span> -->
+<!-- 		  </div> -->
+<!-- 		  <div class="custom-file"> -->
+<!-- 		    <input type="file"  class="custom-file-input" name="fileImage"  id="fileImage" accept="image/png, image/jpeg, image/jpg" onchange="previewImage()"/> -->
+<!-- 		    <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label> -->
+<!-- 		  </div> -->
 		  
-		</div>
-		<div class="row">
-		  <div class="col-12"> 
-		    <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small> 
-		  </div>
-		</div>
-		<div class="d-flex justify-content-center mt-4">
-		  <img th:src="@{${noBargainPhoto}}" id="thumbnail" width="200" height="200"/>
-		</div>
+<!-- 		</div> -->
+<!-- 		<div class="row"> -->
+<!-- 		  <div class="col-12">  -->
+<!-- 		    <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small>  -->
+<!-- 		  </div> -->
+<!-- 		</div> -->
+<!-- 		<div class="d-flex justify-content-center mt-4"> -->
+<!-- 		  <img th:src="@{${noBargainPhoto}}" id="thumbnail" width="200" height="200"/> -->
+<!-- 		</div> -->
 
 		<div class="d-flex justify-content-center mt-4">
 		  <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
@@ -204,13 +204,13 @@
   	<script src="../static/js/display-filename.js" th:src="@{/js/display-filename.js}" type ="text/javascript"></script>
 	
 	<script th:inline="javascript">
-	var noBargainPhotoUrl = [[${noBargainPhoto}]];
+// 	var noBargainPhotoUrl = [[${noBargainPhoto}]];
 	// remove image 
-	document.getElementById("removeImage").onclick = function() {
-		document.getElementById("thumbnail").setAttribute("src", noBargainPhotoUrl);
- 		document.getElementById("fileImage").value = "";
-		document.getElementById("fileLabel").innerHTML = "Choose file";
-	};
+// 	document.getElementById("removeImage").onclick = function() {
+// 		document.getElementById("thumbnail").setAttribute("src", noBargainPhotoUrl);
+//  		document.getElementById("fileImage").value = "";
+// 		document.getElementById("fileLabel").innerHTML = "Choose file";
+// 	};
 	
     $(document).ready(function() {
    		$('#summernote').summernote({

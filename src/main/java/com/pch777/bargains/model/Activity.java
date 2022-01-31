@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,19 +29,23 @@ public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-		
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;
-	
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="bargain_id")
-	private Bargain bargain;
 	
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
 	
 	@Enumerated
 	private ActivityType activityType;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="bargain_id")
+	@JsonIgnoreProperties({"createdAt","updatedAt","description", "reducePrice", "normalPrice", "delivery", "coupon", 
+		"link","bargainPhotoId","closed","startBargain","endBargain","voteCount","category",
+		"shop","user","comments","activities","votes"})
+	private Bargain bargain;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({"createdAt","updatedAt","email","password","userPhotoId","roles"})
+	private User user;
 	
 }	
