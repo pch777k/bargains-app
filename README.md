@@ -67,6 +67,4 @@ Bargains app created with Spring.
 ##### User profile view
 [![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
 ##### Change password
-<span><img src="https://i.postimg.cc/HnKJvW2m/change-password-screenshot.png" alt="change password" width="455"/></span>
-##### Change password - validation
-<span><img src="https://i.postimg.cc/zfgkCBnn/change-password-validation-screenshot.png" alt="change password validation" width="455"/></span>
+[![change-password.gif](https://i.postimg.cc/ZYck4T8x/change-password.gif)](https://postimg.cc/23V9xNX1)
