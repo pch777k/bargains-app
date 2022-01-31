@@ -65,7 +65,7 @@ Bargains app created with Spring.
 ##### View of users, user with the "USER" role, the user can only edit his profile 
 <span><img src="https://i.postimg.cc/Njgh0jWm/view-of-users-normal-user-screenshot.png" alt="view of users" width="800"/></span>
 ##### User profile view
-<span><img src="https://i.postimg.cc/3rC6rRNc/profile-screenshot.png" alt="profile page" width="455"/></span><br>
+[![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
 ##### Change password
 <span><img src="https://i.postimg.cc/HnKJvW2m/change-password-screenshot.png" alt="change password" width="455"/></span>
 ##### Change password - validation
