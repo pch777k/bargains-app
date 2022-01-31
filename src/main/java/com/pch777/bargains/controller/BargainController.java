@@ -466,7 +466,6 @@ public class BargainController {
 		model.addAttribute("currentUser", userService.findUserByEmail(email));	
 		model.addAttribute("bargain", new Bargain());
 		model.addAttribute("bargainDto", new BargainDto());
-	//	model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
 
 		return "add_bargain_form";
 	}
@@ -474,22 +473,23 @@ public class BargainController {
 	@PostMapping("/bargains/add")
 	@Transactional
 	public String addBargain(@Valid @ModelAttribute("bargainDto") BargainDto bargainDto, 
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model) throws ResourceNotFoundException {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
-//			model.addAttribute("noBargainPhoto", NO_BARGAIN_PHOTO_URL);
 			return "add_bargain_form";
 		}
 
 		Bargain bargain = bargainService.bargainDtoToBargain(bargainDto);
 		
 		bargainService.addBargain(bargain);
-		bargain.setUser(userService.findUserByEmail(email));			
-		bargain.setBargainPhotoId(1L);		
+		bargain.setUser(userService.findUserByEmail(email));	
+		BargainPhoto bargainPhoto = bargainPhotoService.getBargainPhotoById(1L)
+				.orElseThrow(ResourceNotFoundException::new);
+		bargain.setBargainPhoto(bargainPhoto);		
 
 		activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
 		
@@ -584,7 +584,7 @@ public class BargainController {
 				.fileLength(photoFileDto.getFileImage().getSize())
 				.build();
 		bargainPhotoService.saveBargainPhoto(bargainPhoto);
-		bargain.setBargainPhotoId(bargainPhoto.getId());
+		bargain.setBargainPhoto(bargainPhoto);
 		redirectAttributes.addFlashAttribute("editedPhoto", "The photo has been edited successfully.");
 
 		return "redirect:/bargains/" + bargainId; 	
@@ -631,7 +631,7 @@ public class BargainController {
 	  @GetMapping("bargains/{bargainId}/photo")
 	    public void getImage(@PathVariable Long bargainId, HttpServletResponse response) throws Exception {
 		    Bargain bargain = bargainService.getBargainById(bargainId);
-		    BargainPhoto bargainPhoto = bargainPhotoService.getBargainPhotoById(bargain.getBargainPhotoId())
+		    BargainPhoto bargainPhoto = bargainPhotoService.getBargainPhotoById(bargain.getBargainPhoto().getId())
 					.orElseThrow(() -> new ResourceNotFoundException());
 	        byte[] bytes = bargainPhoto.getFile();
 	        InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));

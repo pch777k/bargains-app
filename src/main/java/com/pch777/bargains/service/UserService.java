@@ -16,6 +16,7 @@ import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Role;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.UserDto;
+import com.pch777.bargains.model.UserPhoto;
 import com.pch777.bargains.repository.RoleRepository;
 import com.pch777.bargains.repository.UserRepository;
 
@@ -26,16 +27,18 @@ import lombok.AllArgsConstructor;
 public class UserService {
 	
 	private UserRepository userRepository;
+	private UserPhotoService userPhotoService;
 	private RoleRepository roleRepository;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Transactional
-	public void registerUser(User user) {
+	public void registerUser(User user) throws ResourceNotFoundException {
 		
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-		if(user.getUserPhotoId() == null) {
-			user.setUserPhotoId(1L);
+		if(user.getUserPhoto() == null) {
+			UserPhoto userPhoto = userPhotoService.getUserPhotoById(1L).orElseThrow(ResourceNotFoundException::new);
+			user.setUserPhoto(userPhoto);
 		}
 		Role userRole = roleRepository.findRoleByName("USER");
 	  

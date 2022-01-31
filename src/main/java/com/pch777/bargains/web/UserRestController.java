@@ -37,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pch777.bargains.exception.EntityFieldException;
+import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.NicknameDto;
 import com.pch777.bargains.model.PasswordDto;
 import com.pch777.bargains.model.User;
@@ -149,7 +150,7 @@ public class UserRestController {
             	responseCode = "400",
             	content = @Content)
     })
-	public ResponseEntity<String> createUser(@Valid @RequestBody UserDto userDto) throws EntityFieldException {
+	public ResponseEntity<String> createUser(@Valid @RequestBody UserDto userDto) throws EntityFieldException, ResourceNotFoundException {
 		if (userService.isUserPresent(userDto.getEmail())) {
 			throw new EntityFieldException("Email " + userDto.getEmail() + " already exists","email");
 		}
@@ -330,7 +331,7 @@ public class UserRestController {
 									.fileLength(multipartFile.getSize())
 									.build();
 							userPhotoService.saveUserPhoto(userPhoto);
-							user.setUserPhotoId(userPhoto.getId());
+							user.setUserPhoto(userPhoto);
 						} catch (IOException e) {
 							System.out.println(e.getMessage());
 						}

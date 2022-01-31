@@ -250,12 +250,14 @@ public class BargainRestController {
 				responseCode = "401",
 				content = @Content)
 	})
-	public ResponseEntity<Void> addBargain(@Valid @RequestBody BargainDto bargainDto) {
+	public ResponseEntity<Void> addBargain(@Valid @RequestBody BargainDto bargainDto) throws ResourceNotFoundException {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		Bargain bargain = bargainService.bargainDtoToBargain(bargainDto);
-		bargain.setBargainPhotoId(1L);
+		BargainPhoto bargainPhoto = bargainPhotoService.getBargainPhotoById(1L)
+				.orElseThrow(ResourceNotFoundException::new);
+		bargain.setBargainPhoto(bargainPhoto);
 		
 		User user = userService.findUserByEmail(authentication.getName());
 		bargain.setUser(user);
@@ -428,7 +430,7 @@ public class BargainRestController {
 	public ResponseEntity<Resource> getBargainPhoto(@PathVariable Long bargainId) {
 		return bargainService.getById(bargainId)
 				.map(bargain -> { 
-					return bargainPhotoService.getBargainPhotoById(bargain.getBargainPhotoId())
+					return bargainPhotoService.getBargainPhotoById(bargain.getBargainPhoto().getId())
 							.map(file -> {
 								String contentDisposition = "attachment; filname=\"" + file.getFilename() + "\"";
 								byte[] bytes = file.getFile();
@@ -467,7 +469,7 @@ public class BargainRestController {
 							try {
 								BargainPhoto bargainPhoto = bargainService.FileToBargainPhoto(multipartFile);
 								bargainPhotoService.saveBargainPhoto(bargainPhoto);
-								bargain.setBargainPhotoId(bargainPhoto.getId()); 
+								bargain.setBargainPhoto(bargainPhoto); 
 							} catch (IOException e) {
 								System.out.println(e.getMessage());
 							}	  		

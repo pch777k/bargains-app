@@ -25,7 +25,7 @@ public class UserServiceTest {
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Test
-	public void shouldGetAllUsers() {
+	public void shouldGetAllUsers() throws ResourceNotFoundException {
 		// given
 		userService.registerUser(givenThirdUser());
 		userService.registerUser(givenFourthUser());
@@ -39,7 +39,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void shouldGetUserByEmail() {
+	public void shouldGetUserByEmail() throws ResourceNotFoundException {
 		// given
 		userService.registerUser(givenThirdUser());
 		userService.registerUser(givenFourthUser());
@@ -52,7 +52,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void shouldGetUserById() {
+	public void shouldGetUserById() throws ResourceNotFoundException {
 		// given
 		userService.registerUser(givenThirdUser());
 		userService.registerUser(givenFourthUser());
@@ -82,7 +82,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void shouldExistUserWithEmail() {
+	public void shouldExistUserWithEmail() throws ResourceNotFoundException {
 		// given
 		userService.registerUser(givenThirdUser());
 		userService.registerUser(givenFourthUser());
@@ -96,7 +96,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void shouldExistUserWithId() {
+	public void shouldExistUserWithId() throws ResourceNotFoundException {
 		// given
 		userService.registerUser(givenThirdUser());
 		userService.registerUser(givenFourthUser());

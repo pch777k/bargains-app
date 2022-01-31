@@ -80,7 +80,13 @@ public class InitializerService {
 					.withType(CsvUser.class)
 					.withIgnoreLeadingWhiteSpace(true)
 					.build();
-			build.stream().forEach(this::initUser);
+			build.stream().forEach(a -> {
+				try {
+					initUser(a);
+				} catch (ResourceNotFoundException e) {
+					e.printStackTrace();
+				}
+			});
 		} catch (IOException e) {
 			throw new IllegalStateException("Failed to parse csv file users.csv", e);
 		}
@@ -128,7 +134,7 @@ public class InitializerService {
 		}
 	}
 	
-	private void initUser(CsvUser csvUser) {
+	private void initUser(CsvUser csvUser) throws ResourceNotFoundException {
 		if(!userService.isUserPresent(csvUser.getEmail())) {
 		
 			String url = csvUser.getPhoto();
@@ -141,22 +147,24 @@ public class InitializerService {
 					.fileLength(imageBytes.length)
 					.build();
 			userPhotoService.saveUserPhoto(userPhoto);
-			User user = new User(csvUser.getEmail(), csvUser.getNickname(), csvUser.getPassword(), userPhoto.getId());
+			User user = new User(csvUser.getEmail(), csvUser.getNickname(), csvUser.getPassword(), userPhoto);
 			userService.registerUser(user);
 
 		}
 	}
 	
-	public void initGuestUser() {
+	public void initGuestUser() throws ResourceNotFoundException {
 		if(!userService.isUserPresent("guest@demomail.com")) {
-			User user = new User("guest@demomail.com", "guest", "guest",1L);
+			UserPhoto userPhoto = userPhotoService.getUserPhotoById(1L).orElseThrow(ResourceNotFoundException::new);
+			User user = new User("guest@demomail.com", "guest", "guest", userPhoto);
 			userService.registerUser(user);
 		}
 	}
 	
-	public void initAdmin() {
+	public void initAdmin() throws ResourceNotFoundException {
 		if(!userService.isUserPresent("admin@demomail.com")) {
-			User admin = new User("admin@demomail.com", "admin", "admin",1L);
+			UserPhoto userPhoto = userPhotoService.getUserPhotoById(1L).orElseThrow(ResourceNotFoundException::new);
+			User admin = new User("admin@demomail.com", "admin", "admin", userPhoto);
 			userService.registerAdmin(admin);
 		}
 	}
@@ -219,7 +227,7 @@ public class InitializerService {
 				.delivery(csvBargain.getDelivery())
 				.coupon(csvBargain.getCoupon())
 				.link(csvBargain.getLink())
-				.bargainPhotoId(bargainPhoto.getId())
+				.bargainPhoto(bargainPhoto)
 				.closed(csvBargain.getClosed())
 				.voteCount(0)				
 				.startBargain(LocalDate.now().plusDays(plusDays))

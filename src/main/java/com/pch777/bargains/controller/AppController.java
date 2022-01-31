@@ -83,7 +83,7 @@ public class AppController {
     
     @PostMapping("/process_register")
     @Transactional 
-    public String processRegister(@Valid UserDto userDto, BindingResult bindingResult, Model model) throws IOException {
+    public String processRegister(@Valid UserDto userDto, BindingResult bindingResult, Model model) throws IOException, ResourceNotFoundException {
     	if (bindingResult.hasErrors()) {
 			return "signup_form";
 		}
@@ -559,7 +559,7 @@ public class AppController {
 				.fileLength(photoFileDto.getFileImage().getSize())
 				.build();
 		userPhotoService.saveUserPhoto(userPhoto);
-		user.setUserPhotoId(userPhoto.getId());
+		user.setUserPhoto(userPhoto);
 		redirectAttributes.addFlashAttribute("editedPhoto", "The photo has been edited successfully.");		
 		
 		return "redirect:/users/" + userId + "/profile"; 	
@@ -647,8 +647,8 @@ public class AppController {
     @GetMapping("users/{userId}/photo")
     public void getImage(@PathVariable("userId") Long userId, HttpServletResponse response) throws Exception {
         User user = userService.findUserById(userId);
-        UserPhoto userPhoto = userPhotoService.getUserPhotoById(user.getUserPhotoId())
-        															.orElseThrow(() -> new ResourceNotFoundException());
+        UserPhoto userPhoto = userPhotoService.getUserPhotoById(user.getUserPhoto().getId())
+        									.orElseThrow(ResourceNotFoundException::new);
         byte[] bytes = userPhoto.getFile();
         InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
         String mimeType = URLConnection.guessContentTypeFromStream(inputStream);

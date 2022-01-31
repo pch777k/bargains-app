@@ -54,8 +54,6 @@ public class Bargain extends AuditModel {
 	private String coupon;
 	
 	private String link;
-
-	private Long bargainPhotoId;
 	
 	private Boolean closed;
 
@@ -69,6 +67,10 @@ public class Bargain extends AuditModel {
 	@Enumerated
 	private Category category;
 	
+	@ManyToOne(cascade = {CascadeType.MERGE})
+	@JoinColumn(name = "bargain_photo_id")
+	private BargainPhoto bargainPhoto;
+	
 	@ManyToOne
 	@JoinColumn(name = "shop_id")
 	private Shop shop;
@@ -76,7 +78,7 @@ public class Bargain extends AuditModel {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonIgnoreProperties({"createdAt","updatedAt","email","password","userPhotoId","roles",
-		"comments", "bargains", "votes", "activities" })
+							"comments", "bargains", "votes", "activities" })
 	private User user;
 
 	@OneToMany(cascade = CascadeType.ALL)
@@ -93,22 +95,5 @@ public class Bargain extends AuditModel {
 	@JoinColumn(name = "bargain_id")
 	@JsonIgnore
 	private List<Vote> votes;
-	
-//	public Bargain(String title, String description, Double reducePrice, Double normalPrice, 
-//			Double delivery, String coupon, String link, long bargainPhotoId, LocalDate startBargain, 
-//			LocalDate endBargain, Category category, Shop shop) {
-//			this.title = title;
-//			this.description = description;
-//			this.reducePrice = reducePrice;
-//			this.normalPrice = normalPrice;
-//			this.delivery = delivery;
-//			this.coupon = coupon;
-//			this.link = link;
-//			this.bargainPhotoId = bargainPhotoId;
-//			this.startBargain = startBargain;
-//			this.endBargain = endBargain;
-//			this.category = category;
-//			this.shop = shop;
-//		}
 
 }

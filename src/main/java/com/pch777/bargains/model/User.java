@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -50,7 +51,8 @@ public class User extends AuditModel{
     @Column(unique = true)
     private String password;
     
-    private Long userPhotoId;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private UserPhoto userPhoto;
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles",
@@ -96,11 +98,11 @@ public class User extends AuditModel{
 		this.password = password;
 	}
 
-	public User(String email, String nickname, String password, Long userPhotoId) {
+	public User(String email, String nickname, String password, UserPhoto userPhoto) {
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
-		this.userPhotoId = userPhotoId;
+		this.userPhoto = userPhoto;
 	}
 	   
 }

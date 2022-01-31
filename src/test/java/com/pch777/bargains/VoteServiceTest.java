@@ -38,7 +38,7 @@ public class VoteServiceTest {
 	VoteService voteService;
 	
 	@Test
-	public void shouldCheckIsOwnerCanVoteOnHisBargain() {
+	public void shouldCheckIsOwnerCanVoteOnHisBargain() throws ResourceNotFoundException {
 		// given
 		Bargain bargain = bargainService.addBargain(givenHtc());
 		User owner = givenOwner();
@@ -53,7 +53,7 @@ public class VoteServiceTest {
 	}
 	
 	@Test
-	public void shouldCheckIsUserCanVoteOnBargain() {
+	public void shouldCheckIsUserCanVoteOnBargain() throws ResourceNotFoundException {
 		// given
 		Bargain bargain = bargainService.addBargain(givenHtc());
 		User owner = givenOwner();
@@ -136,7 +136,7 @@ public class VoteServiceTest {
 				.delivery(0.0)
 				.coupon("coupon-discount")
 				.link("https://www.x-kom.pl/p/644074-smartfon-telefon-htc-desire-21-pro-5g-8-128gb-blue-0hz.html")
-				.bargainPhotoId(null)
+				.bargainPhoto(null)
 				.closed(false)
 				.category(Category.ELECTRONICS)
 				.build();
@@ -153,7 +153,7 @@ public class VoteServiceTest {
 				.delivery(0.0)
 				.coupon("sale")
 				.link("https://www.zalando.pl/adidas-originals-trefoil-hoodie-unisex-bluza-crew-blue-ad122s084-k13.html?size=L")
-				.bargainPhotoId(null)
+				.bargainPhoto(null)
 				.closed(false)
 				.category(Category.FASHION)
 				.build();
