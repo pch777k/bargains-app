@@ -21,7 +21,7 @@
 
     
   </head>
-  <body>
+  <body onLoad="self.focus();document.editBargainForm.link.focus()">
   
   <div id="wrap">
   <!-- Navigation -->
@@ -30,13 +30,8 @@
 <!-- Edit bargain -->  
 <div id="main" class="container my-5">
   <div class="row d-flex justify-content-center">
-<!--     <div class="col-auto border border-primary rounded bg-white"> -->
-<!--       <div> -->
-<!--         <p class="pt-3 h3 text-center">Edit bargain</p> -->
-<!--         <hr> -->
-<!--       </div> -->
 
-       <form th:action="@{/bargains/{id}/edit (id=${bargainId})}" th:object="${bargainDto}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+       <form th:action="@{/bargains/{id}/edit (id=${bargainId})}" th:object="${bargainDto}" name="editBargainForm" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
  	    <div class="card">
             <div class="card-header text-center text-primary h4">
     		  Edit bargain
@@ -47,14 +42,9 @@
  	    <div class="form-group row">
 		  <div class="col-12">
 			<label for="link"><strong>LINK</strong> <small>(Optional)</small></label> 
-		    <input type="text" th:field="*{link}" id="link" class="form-control" />
+		    <input type="text" th:field="*{link}" id="link" name="link" class="form-control" />
 		  </div>  
 	    </div>
-	    
-<!-- 	    <div> -->
-<!-- 		  <p class="h3">Details</p> -->
-<!-- 		  <hr> -->
-<!-- 	    </div> -->
 					
 	    <div class="form-group">	                
 		  <label for="reduceprice"><strong>REDUCED PRICE</strong> <small>(Optional)</small></label>
@@ -163,17 +153,6 @@
 		    <small><span class="text text-danger" th:if="${#fields.hasErrors('endBargain')}" th:errors="*{endBargain}"></span></small>
 		  </div>
 		</div>
-	
-<!--     	<label><strong>PHOTO</strong> <small>(Optional)</small></label> -->
-<!-- 		  <div class="input-group"> -->
-<!-- 		    <div class="custom-file"> -->
-<!-- 		      <input type="file"  class="custom-file-input" name="fileImage"  id="fileImage" accept="image/png, image/jpeg" onchange="previewImage()"/> -->
-<!-- 		      <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label> -->
-<!-- 		   </div>   -->
-<!-- 		  </div> -->
-<!-- 		  <div class="d-flex justify-content-center mt-4"> -->
-<!-- 		    <img th:src="${'/bargains/' + bargainId + '/photo'}" id="thumbnail" width="200" height="200"/> -->
-<!-- 		  </div>	                                  -->
 				
 		  <div class="d-flex justify-content-center mt-4">
 	        <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
 
 </head>  
-<body>
+<body onLoad="self.focus();document.addBargainForm.link.focus()">
 
 <div id="wrap">
 
@@ -25,7 +25,7 @@
   <div class="row d-flex justify-content-center">
     <div class="col-auto">
       
-      <form th:action="@{/bargains/add}" th:object="${bargainDto}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+      <form th:action="@{/bargains/add}" th:object="${bargainDto}" name="addBargainForm" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
  	      <div class="card">
             <div class="card-header text-center text-primary h4">
     		  Add bargain
@@ -36,7 +36,7 @@
  	    <div class="form-group row">
 		  <div class="col-12">
 			<label for="link"><strong>LINK</strong> <small>(Optional)</small></label> 
-		    <input type="text" th:field="*{link}" id="link" class="form-control" />
+		    <input type="text" th:field="*{link}" id="link" class="form-control" name="link" autofocus="autofocus"/>
 		  </div>  
 	    </div>
 					
@@ -147,26 +147,6 @@
 		  </div>
 		  
 		</div>
-	
-<!-- 		<label><strong>PHOTO</strong> <small>(Optional)</small></label> -->
-<!-- 		<div class="input-group"> -->
-<!-- 		  <div class="input-group-prepend"> -->
-<!-- 		    <span class="input-group-text" title="remove photo" id="removeImage"><i class="fas fa-times"></i></span> -->
-<!-- 		  </div> -->
-<!-- 		  <div class="custom-file"> -->
-<!-- 		    <input type="file"  class="custom-file-input" name="fileImage"  id="fileImage" accept="image/png, image/jpeg, image/jpg" onchange="previewImage()"/> -->
-<!-- 		    <label class="custom-file-label" id="fileLabel" for="fileImage">Choose file</label> -->
-<!-- 		  </div> -->
-		  
-<!-- 		</div> -->
-<!-- 		<div class="row"> -->
-<!-- 		  <div class="col-12">  -->
-<!-- 		    <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small>  -->
-<!-- 		  </div> -->
-<!-- 		</div> -->
-<!-- 		<div class="d-flex justify-content-center mt-4"> -->
-<!-- 		  <img th:src="@{${noBargainPhoto}}" id="thumbnail" width="200" height="200"/> -->
-<!-- 		</div> -->
 
 		<div class="d-flex justify-content-center mt-4">
 		  <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>
