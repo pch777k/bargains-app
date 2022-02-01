@@ -619,8 +619,9 @@ public class AppController {
     
     @Transactional
     @RequestMapping("/users/{userId}/password")
-	public String updatePassword(@Valid @ModelAttribute("passwordDto") PasswordDto passwordDto,
-			BindingResult bindingResult, Model model, @PathVariable Long userId) {
+	public String updatePassword(@PathVariable Long userId,
+			@Valid @ModelAttribute("passwordDto") PasswordDto passwordDto,
+			BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
@@ -639,9 +640,8 @@ public class AppController {
 		}
 		
 		user.setPassword(bCryptPasswordEncoder.encode(passwordDto.getNewPassword()));
-
-		model.addAttribute("success", true);
-		return "redirect:/"; 	
+		redirectAttributes.addFlashAttribute("changedPassword", "The password has been changed successfully.");
+		return "redirect:/users/" + userId + "/password"; 	
 	}
     
     @GetMapping("users/{userId}/photo")
