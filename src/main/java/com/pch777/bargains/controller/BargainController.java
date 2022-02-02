@@ -479,6 +479,9 @@ public class BargainController {
 		String email = auth.getName();
 		
 		if (bindingResult.hasErrors()) {
+			List<Shop> shops = shopService.getAllShops();
+			
+			model.addAttribute("shops", shops);
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
 			return "add_bargain_form";
 		}
@@ -525,6 +528,9 @@ public class BargainController {
 		String email = auth.getName();
 		
 		if (bindingResult.hasErrors()) {
+			List<Shop> shops = shopService.getAllShops();
+			
+			model.addAttribute("shops", shops);
 			model.addAttribute("currentUser", userService.findUserByEmail(email));
 			return "edit_bargain_form";
 		}
