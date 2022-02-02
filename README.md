@@ -47,9 +47,7 @@ Bargains app created with Spring.
 ##### Add a new bargain
 [![add-bargain.gif](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
 ##### Edit the bargain
-<span><img src="https://i.postimg.cc/dVYsTg6H/edit-bargain-screenshot-1.png" alt="edit the new bargain" width="597"/></span>
-<span><img src="https://i.postimg.cc/Jz513Kd1/edit-bargain-screenshot-2.png" alt="edit the new bargain" width="597"/></span>
-<span><img src="https://i.postimg.cc/N0GQdTWR/edit-bargain-screenshot-3.png" alt="edit the new bargain" width="597"/></span>
+![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
 ##### Validation fields of bargain when adding a bargain and editing the bargain
 <span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
 ##### User who added a bargain or user with the "ADMIN" role can edit, open, close or delete it, but can't vote.  
