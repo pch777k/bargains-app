@@ -542,6 +542,7 @@ public class BargainController {
 		bargain.setNormalPrice(bargainDto.getNormalPrice());
 		bargain.setDelivery(bargainDto.getDelivery());
 		bargain.setCoupon(bargainDto.getCoupon());
+		bargain.setCategory(bargainDto.getCategory());
 		bargain.setLink(bargainDto.getLink());
 		bargain.setStartBargain(bargainDto.getStartBargain());
 		bargain.setEndBargain(bargainDto.getEndBargain());
