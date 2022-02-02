@@ -28,10 +28,10 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
 ##### Add a new bargain
 [![add-bargain](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
-##### Edit the bargain
-![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
 ##### Validation fields of bargain when adding a bargain and editing the bargain
 <span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
+##### Edit the bargain
+![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
 ##### Main page
 <span><img src="https://i.postimg.cc/tgwkdNJ8/bargains-best-screenshot-description.png" alt="main page" width="800"/></span>
 ##### View of bargains, sorted by the most commented
@@ -50,16 +50,9 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
 ##### View of a specific bargain 
 <span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
-##### User who added a bargain or user with the "ADMIN" role can edit, open, close or delete it, but can't vote.  
-<span><img src="https://i.postimg.cc/FsZXyvZm/bargain-view-owner-or-admin.png" alt="view of the bargain for creator or admin" width="800"/></span>
-##### Other users can only vote or comment on bargains. 
-<span><img src="https://i.postimg.cc/yYBz3x0v/bargain-view-normal-user.png" alt="view of the bargain for other users" width="800"/></span>
-##### Voting  
+##### Voting
+![vote](https://user-images.githubusercontent.com/56579554/152210927-c4d2952d-c066-41a2-a628-0f15e3ce8930.gif)
 [![screenshot-vote-4-options.png](https://i.postimg.cc/C5rPnpyp/screenshot-vote-4-options.png)](https://postimg.cc/wRJcnPTw)
-##### View of users, user with the "ADMIN" role, admin can edit or delete a user
-<span><img src="https://i.postimg.cc/BQfkhBBJ/view-of-users-admin-screenshot.png" alt="view of users" width="800"/></span>
-##### View of users, user with the "USER" role, the user can only edit his profile 
-<span><img src="https://i.postimg.cc/Njgh0jWm/view-of-users-normal-user-screenshot.png" alt="view of users" width="800"/></span>
 ##### User profile view
 [![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
 ##### Change password
