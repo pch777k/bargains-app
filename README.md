@@ -26,6 +26,12 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/59htnKXd/signup.gif" alt="signup page" width="456"/></span><br>
 ##### Login Page
 <span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
+##### Add a new bargain
+[![add-bargain](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
+##### Edit the bargain
+![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
+##### Validation fields of bargain when adding a bargain and editing the bargain
+<span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
 ##### Main page
 <span><img src="https://i.postimg.cc/tgwkdNJ8/bargains-best-screenshot-description.png" alt="main page" width="800"/></span>
 ##### View of bargains, sorted by the most commented
@@ -44,12 +50,6 @@ Bargains app created with Spring.
 <span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
 ##### View of a specific bargain 
 <span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
-##### Add a new bargain
-[![add-bargain.gif](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
-##### Edit the bargain
-![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
-##### Validation fields of bargain when adding a bargain and editing the bargain
-<span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
 ##### User who added a bargain or user with the "ADMIN" role can edit, open, close or delete it, but can't vote.  
 <span><img src="https://i.postimg.cc/FsZXyvZm/bargain-view-owner-or-admin.png" alt="view of the bargain for creator or admin" width="800"/></span>
 ##### Other users can only vote or comment on bargains. 
