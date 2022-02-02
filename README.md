@@ -45,9 +45,7 @@ Bargains app created with Spring.
 ##### View of a specific bargain 
 <span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
 ##### Add a new bargain
-<span><img src="https://i.postimg.cc/fyWtYQkc/add-bargain-screenshot-1.png" alt="add a new bargain" width="597"/></span>
-<span><img src="https://i.postimg.cc/ZKMBvgmN/add-bargain-screenshot-2.png" alt="add a new bargain" width="597"/></span>
-<span><img src="https://i.postimg.cc/wTvRvzCH/add-bargain-screenshot-3.png" alt="add a new bargain" width="597"/></span>
+[![add-bargain.gif](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
 ##### Edit the bargain
 <span><img src="https://i.postimg.cc/dVYsTg6H/edit-bargain-screenshot-1.png" alt="edit the new bargain" width="597"/></span>
 <span><img src="https://i.postimg.cc/Jz513Kd1/edit-bargain-screenshot-2.png" alt="edit the new bargain" width="597"/></span>
