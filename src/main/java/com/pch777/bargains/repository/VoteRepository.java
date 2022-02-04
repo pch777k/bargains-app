@@ -15,7 +15,6 @@ import com.pch777.bargains.model.VoteType;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-	//Optional<Vote> findTopByBargainAndUserOrderByIdDesc(Bargain bargain, User currentUser);
 	Optional<Vote> findByBargainIdAndUserEmail(Long id, String email);
 	List<Vote> findVoteByUserId(Long userId);
 	List<Vote> findByBargainId(Long bargainId);

@@ -70,6 +70,8 @@ public class AppController {
 	private UserSecurity userSecurity;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	
+	
     @GetMapping("/login") 
 	public String showLoginForm() {		
 		return "login";  

@@ -142,14 +142,4 @@ public class VoteRestController {
 			}).orElse(ResponseEntity.notFound().build());				
 	}
 
-//	private Map<String, Object> responseError(HttpStatus status, String message, String path) {
-//		Map<String, Object> body = new LinkedHashMap<>();
-//		body.put("timestamp", new Date());
-//		body.put("status", status.value());
-//		body.put("error", status.name());
-//		body.put("message", message);
-//		body.put("path", path);
-//		return body;
-//	}
-
 }

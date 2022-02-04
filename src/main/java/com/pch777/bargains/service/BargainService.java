@@ -112,13 +112,6 @@ public class BargainService {
 		return bargainRepository.save(bargain);
 	}
 	
-//	public void deleteBargainById(Long id) throws ResourceNotFoundException {
-//		if (!existsById(id)) {
-//			throw new ResourceNotFoundException("Cannot find bargain with id: " + id);
-//		}
-//		bargainRepository.deleteById(id);
-//	}
-	
 	public void deleteBargainById(Long id) {
 		bargainRepository.deleteById(id);
 	}

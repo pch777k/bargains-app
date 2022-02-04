@@ -34,8 +34,6 @@ public class VoteService {
 	@Transactional
 	public boolean vote(VoteDto voteDto, Long bargainId, String email) {
 		Bargain bargain = bargainRepository.findById(bargainId).get();
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		String email = auth.getName();
 
 		Optional<Vote> voteByBargainAndUser = voteRepository
 				.findByBargainIdAndUserEmail(bargainId, email);

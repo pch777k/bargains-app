@@ -17,8 +17,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 @OpenAPIDefinition(
         info = @Info(
         	title = "Bargains API", 
-        	description = "Bargains demo project. Using the app, you can add information about promotions, sales and discounts. "
-        			+ "<br><a href=\"https://bargainsdemo.herokuapp.com\" target=\"_blank\">Deploy on heroku</a>",
+        	description = "Bargains demo project. Using the app, you can add information about promotions, sales and discounts.",
         	version = "v1.0.0",
         	contact = @Contact(
                  name = "pch777",
