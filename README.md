@@ -2,7 +2,7 @@
 Bargains demo app created with Spring. Using the Bargains app, you can add information about promotions, sales and discounts. Each offer can be rated by other users. Offers can be sorted by the number of votes, the number of comments or the date they were added. Additionally, you can view by category or specific store. The screenshots showing the application's works are presented below. The application can be tested, it is implemented on heroku, and you can test Swagger Open Api. Sample data can be loaded for ease of testing.
 #### Deploy on heroku
 https://bargainsdemo.herokuapp.com/
-#### Swagger Opan Api
+#### Swagger Open Api
 https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 ## Tools
 #### Backend technologies
