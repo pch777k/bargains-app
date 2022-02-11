@@ -204,7 +204,7 @@ public class UserRestController {
 							            summary = "Example nickname")})),
 				responses = {
 			@ApiResponse(description = "Nickname successfully changed", 
-            	responseCode = "200", content = @Content(mediaType = "application/json")),
+            	responseCode = "200", content = @Content),
             @ApiResponse(description = "User with nickname exists",
             	responseCode = "400", content = @Content),
             @ApiResponse(description = "You don't have permission to do it",
@@ -280,7 +280,7 @@ public class UserRestController {
 			@Parameter(name = "userId", description = "ID of user to delete", required = true)},
 				responses = {
             @ApiResponse(description = "User successfully deleted", 
-            	responseCode = "204", content = @Content(mediaType = "application/json")),
+            	responseCode = "204", content = @Content),
             @ApiResponse(description = "You don't have permission to do it",
             	responseCode = "403", content = @Content),
             @ApiResponse(description = "User not found",
@@ -345,7 +345,7 @@ public class UserRestController {
 	}
 	
 	@GetMapping("/users/photo/{userId}")
-	@Operation(summary = "Get user's photo", 
+	@Operation(summary = "Get user's photo",
 				parameters = {
 			@Parameter(name = "userId", description = "ID of user to get the photo", required = true)},			
 				responses = {
@@ -356,6 +356,7 @@ public class UserRestController {
             	responseCode = "404",
             	content = @Content)
     })
+	@Hidden
 	public ResponseEntity<Resource> getPhoto(@PathVariable Long userId) {
 		return userPhotoService.getUserPhotoById(userId)
 				.map(file -> {
