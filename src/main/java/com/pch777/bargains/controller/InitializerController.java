@@ -27,7 +27,7 @@ public class InitializerController {
 		initializerService.initBargainData();
 		initializerService.initCommentData();
 		initializerService.initVoteData(NUMBER_OF_VOTES);
-		mailService.sendEmail("bargainsapp@gmail.com", "bargainsapp@gmail.com", "Someone loads sample data", "Load sample data");
+		mailService.sendEmail("bargainsapp@gmail.com", "bargainsapp@gmail.com", "Someone loaded sample data", "Load sample data");
 		return "redirect:/";
 	}
 
