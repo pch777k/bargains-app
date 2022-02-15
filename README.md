@@ -17,17 +17,18 @@ Using the Bargains app, you can add information about promotions, sales and disc
 ## Technologies
 - Java 8
 - Spring Boot
-- Project Lombok
+- Thymeleaf
+- Lombok
+- Swagger
+- Maven
 - HTML 
 - CSS 
-- JavaScript
-- Thymeleaf
 - Bootstrap 4
-- Swagger
+- JavaScript
 - PostgreSQL
   
 ## Setup
-
+Clone this repostory to your desktop. Run applications using Spring Boot. You will then be able to access it at localhost:8080
 
 ## Deploy on heroku
 https://bargainsdemo.herokuapp.com/
@@ -67,8 +68,6 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 - Adding, Editing, Deleting a comment
 
 ## Screenshots
-##### Sign up Page
-<span><img src="https://i.postimg.cc/TYVMZ04X/signup-screenshot.png" alt="signup page" width="456"/></span>
 ##### User registration with field validation
 <span><img src="https://i.postimg.cc/59htnKXd/signup.gif" alt="signup page" width="456"/></span><br>
 ##### Login Page
@@ -99,6 +98,7 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 ##### View of a specific bargain 
 <span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
 ##### Voting
+###### Additionally, it shows how hiding ended offers works
 ![vote](https://user-images.githubusercontent.com/56579554/152210927-c4d2952d-c066-41a2-a628-0f15e3ce8930.gif)
 [![screenshot-vote-4-options.png](https://i.postimg.cc/C5rPnpyp/screenshot-vote-4-options.png)](https://postimg.cc/wRJcnPTw)
 ##### Edit nickname and photo
