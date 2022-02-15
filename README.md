@@ -1,29 +1,59 @@
-# bargains-app
-Bargains demo app created with Spring. Using the Bargains app, you can add information about promotions, sales and discounts. Each offer can be rated by other users. Offers can be sorted by the number of votes, the number of comments or the date they were added. Additionally, you can view by category or specific store. The screenshots showing the application's works are presented below. The application can be tested, it is implemented on heroku, and you can test Swagger Open Api. Sample data can be loaded for ease of testing.
-#### Deploy on heroku
-https://bargainsdemo.herokuapp.com/
-#### Swagger Open Api
-https://bargainsdemo.herokuapp.com/swagger-ui/index.html
-## Tools
-#### Backend technologies
-- Java
+# Bargains-app
+Bargains demo app created with Spring.
+
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Deploy on heroku](#deploy-on-heroku)
+* [Swagger Open Api](#swagger-open-api)
+* [Database diagram](#database-diagram)
+* [Features](#features)
+* [Screenshots](#screenshots)
+
+## General info
+Using the Bargains app, you can add information about promotions, sales and discounts. Each offer can be rated by other users. Offers can be sorted by the number of votes, the number of comments or the date they were added. Additionally, you can view by category or specific store. The screenshots showing the application's works are presented below. The application can be tested, it is implemented on heroku, and you can test Swagger Open Api. Sample data can be loaded for ease of testing.
+	
+## Technologies
+- Java 8
 - Spring Boot
 - Project Lombok
-
-#### Frontend technologies
-
-- HTML, CSS, JavaScript
+- HTML 
+- CSS 
+- JavaScript
 - Thymeleaf
 - Bootstrap 4
-
-#### Database
+- Swagger
 - PostgreSQL
+  
+## Setup
+To run this project, install it locally using npm:
+
+## Deploy on heroku
+https://bargainsdemo.herokuapp.com/
+
+## Swagger Open Api
+https://bargainsdemo.herokuapp.com/swagger-ui/index.html
+
 ## Database diagram
 [![diagram.png](https://i.postimg.cc/fLGP57Lj/diagram.png)](https://postimg.cc/Q9qSdTcH)
+
+## Features
+1. [User registration with field validation](#user-registration-with-field-validation)
+2. Two types of account: USER and ADMIN
+3. [Edit nickname and photo](#edit-nickname-and-photo)
+4. [Change password](#change-password)
+5. [Add a new bargain](#add-a-new-bargain)
+6. [Edit the bargain](#edit-the-bargain)
+7. Open or close Bargain
+8. Delete the bargain
+9. [Voting](#voting)
+
+
 ## Screenshots
 ##### Sign up Page
 <span><img src="https://i.postimg.cc/TYVMZ04X/signup-screenshot.png" alt="signup page" width="456"/></span>
-##### Sign up Validation
+##### User registration with field validation
 <span><img src="https://i.postimg.cc/59htnKXd/signup.gif" alt="signup page" width="456"/></span><br>
 ##### Login Page
 <span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
@@ -54,7 +84,7 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 ##### Voting
 ![vote](https://user-images.githubusercontent.com/56579554/152210927-c4d2952d-c066-41a2-a628-0f15e3ce8930.gif)
 [![screenshot-vote-4-options.png](https://i.postimg.cc/C5rPnpyp/screenshot-vote-4-options.png)](https://postimg.cc/wRJcnPTw)
-##### User profile view
+##### Edit nickname and photo
 [![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
 ##### Change password
 [![change-password.gif](https://i.postimg.cc/ZYck4T8x/change-password.gif)](https://postimg.cc/23V9xNX1)
