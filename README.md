@@ -37,7 +37,6 @@ https://bargainsdemo.herokuapp.com/
 https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 
 ## Database diagram
-[![diagram.png](https://i.postimg.cc/fLGP57Lj/diagram.png)](https://postimg.cc/Q9qSdTcH)
 ![diagram](https://user-images.githubusercontent.com/56579554/172560265-5c4019f7-32c0-4e76-bd23-7213d3eda65c.png)
 
 ## Features
@@ -70,14 +69,13 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 
 ## Screenshots
 ##### User registration with field validation
-<span><img src="https://i.postimg.cc/59htnKXd/signup.gif" alt="signup page" width="456"/></span><br>
+![signup](https://user-images.githubusercontent.com/56579554/172561803-2ba92548-0d37-4c50-a57a-d0fdb8a8858c.gif)
 ##### Login Page
-<span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
 ![login-screenshot](https://user-images.githubusercontent.com/56579554/172560798-b3569062-6bd5-4b8c-a163-95f2c71fd3d0.png)
 ##### Edit nickname and photo
-[![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
+![profile](https://user-images.githubusercontent.com/56579554/172562108-77a619ed-6d1c-4389-b002-8759db5040c2.gif)
 ##### Change password
-[![change-password.gif](https://i.postimg.cc/ZYck4T8x/change-password.gif)](https://postimg.cc/23V9xNX1)
+![change-password](https://user-images.githubusercontent.com/56579554/172562506-fc9b8c76-3c01-40d5-8688-deb37f01820e.gif)
 ##### View of bargains of a specific user 
 <span><img src="https://i.postimg.cc/SKbYtR57/bargains-user-screenshot.png" alt="bargains of a specific user" width="800"/></span>
 ##### View of activities of a specific user 
