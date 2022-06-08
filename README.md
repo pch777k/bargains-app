@@ -77,13 +77,13 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 ##### Change password
 ![change-password](https://user-images.githubusercontent.com/56579554/172562506-fc9b8c76-3c01-40d5-8688-deb37f01820e.gif)
 ##### View of bargains of a specific user 
-<span><img src="https://i.postimg.cc/SKbYtR57/bargains-user-screenshot.png" alt="bargains of a specific user" width="800"/></span>
+![bargains-user-screenshot](https://user-images.githubusercontent.com/56579554/172567677-db89734f-9220-4738-b63e-6cab251ac47e.png)
 ##### View of activities of a specific user 
-<span><img src="https://i.postimg.cc/L5VvjLDw/user-overview.png" alt="activities of a specific user" width="800"/></span>
+![user-overview](https://user-images.githubusercontent.com/56579554/172567293-8b35bdf4-11db-423f-890e-f1c2d1ec6f63.png)
 ##### View of comments of a specific user
-<span><img src="https://i.postimg.cc/W41pHdrx/comments-user-screenshot.png" alt="comments of a specific user" width="800"/></span>
+![comments-user-screenshot](https://user-images.githubusercontent.com/56579554/172566884-76ba4db0-75df-4d5a-9154-71d38a45710f.png)
 ##### View of votes of a specific user
-<span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
+![votes-user-screenshot](https://user-images.githubusercontent.com/56579554/172565973-acc3e6ae-36cc-48cd-8926-3c835ea34c1f.png)
 ##### Add a new bargain
 [![add-bargain](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
 ##### Validation fields of bargain
