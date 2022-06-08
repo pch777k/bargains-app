@@ -38,6 +38,7 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 
 ## Database diagram
 [![diagram.png](https://i.postimg.cc/fLGP57Lj/diagram.png)](https://postimg.cc/Q9qSdTcH)
+![diagram](https://user-images.githubusercontent.com/56579554/172560265-5c4019f7-32c0-4e76-bd23-7213d3eda65c.png)
 
 ## Features
 ### User
@@ -72,6 +73,7 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 <span><img src="https://i.postimg.cc/59htnKXd/signup.gif" alt="signup page" width="456"/></span><br>
 ##### Login Page
 <span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
+![login-screenshot](https://user-images.githubusercontent.com/56579554/172560798-b3569062-6bd5-4b8c-a163-95f2c71fd3d0.png)
 ##### Edit nickname and photo
 [![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
 ##### Change password
