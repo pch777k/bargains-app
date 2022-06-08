@@ -71,7 +71,7 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 ##### User registration with field validation
 ![signup](https://user-images.githubusercontent.com/56579554/172561803-2ba92548-0d37-4c50-a57a-d0fdb8a8858c.gif)
 ##### Login Page
-![login-screenshot](https://user-images.githubusercontent.com/56579554/172560798-b3569062-6bd5-4b8c-a163-95f2c71fd3d0.png)
+![login-screenshot](https://user-images.githubusercontent.com/56579554/172572644-5863441f-ea9e-427d-8700-0071afbd06a1.png)
 ##### Edit nickname and photo
 ![profile](https://user-images.githubusercontent.com/56579554/172562108-77a619ed-6d1c-4389-b002-8759db5040c2.gif)
 ##### Change password
@@ -85,23 +85,23 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 ##### View of votes of a specific user
 ![votes-user-screenshot](https://user-images.githubusercontent.com/56579554/172565973-acc3e6ae-36cc-48cd-8926-3c835ea34c1f.png)
 ##### Add a new bargain
-[![add-bargain](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
+![add-bargain](https://user-images.githubusercontent.com/56579554/172569240-045fba4d-cc94-4d87-9aaa-5c7f93ed08cf.gif)
 ##### Validation fields of bargain
-<span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
+![validation-bargain-screenshot-highlight](https://user-images.githubusercontent.com/56579554/172569576-36cbc076-8d12-4aa0-9f8f-53b50a85e73b.png)
 ##### Edit the bargain
 ![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
 ##### Main page
-<span><img src="https://i.postimg.cc/tgwkdNJ8/bargains-best-screenshot-description.png" alt="main page" width="800"/></span>
+![bargains-best-screenshot](https://user-images.githubusercontent.com/56579554/172570581-59e19457-c795-488d-87e8-69bf86d617f4.png)
 ##### View of bargains in the Electronics category
 ###### Additionally found by the keyword "acer", sorted by the latest offers
-<span><img src="https://i.postimg.cc/4x9xWPCD/bargains-category-search-acer.png" alt="sorted by the newest offers" width="800"/></span>
+![bargains-category-search-acer](https://user-images.githubusercontent.com/56579554/172570903-559059fa-e729-4b5d-a69a-90379623b768.png)
 ##### View of bargains, sorted by the most commented
-<span><img src="https://i.postimg.cc/brwvLj8g/bargains-commented-screenshot.png" alt="sorted by the most commented" width="800"/></span>
+![bargains-commented-screenshot](https://user-images.githubusercontent.com/56579554/172571163-c2c2a7aa-2cda-4563-9499-4c6a11caab80.png)
 ##### View of bargains of a specific shop
-<span><img src="https://i.postimg.cc/QMZxw7hH/bargains-shop.png" alt="bargains of a specific shop" width="800"/></span>
+![bargains-shop](https://user-images.githubusercontent.com/56579554/172571395-7663bb46-4120-49f9-9ae4-b727b33fd763.png)
 ##### View of a specific bargain 
-<span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
+![bargain-screenshot](https://user-images.githubusercontent.com/56579554/172571599-1407e813-c262-43ab-a320-407c047c525d.png)
 ##### Voting
 ###### Additionally, it shows how hiding ended offers works
 ![vote](https://user-images.githubusercontent.com/56579554/152210927-c4d2952d-c066-41a2-a628-0f15e3ce8930.gif)
-[![screenshot-vote-4-options.png](https://i.postimg.cc/C5rPnpyp/screenshot-vote-4-options.png)](https://postimg.cc/wRJcnPTw)
+![screenshot vote 4 options](https://user-images.githubusercontent.com/56579554/172571778-f00e0dd4-816d-416f-9f58-d5998017cd8a.png)
