@@ -37,7 +37,7 @@ https://bargainsdemo.herokuapp.com/
 https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 
 ## Database diagram
-[![diagram.png](https://i.postimg.cc/fLGP57Lj/diagram.png)](https://postimg.cc/Q9qSdTcH)
+![diagram](https://user-images.githubusercontent.com/56579554/172560265-5c4019f7-32c0-4e76-bd23-7213d3eda65c.png)
 
 ## Features
 ### User
@@ -69,39 +69,39 @@ https://bargainsdemo.herokuapp.com/swagger-ui/index.html
 
 ## Screenshots
 ##### User registration with field validation
-<span><img src="https://i.postimg.cc/59htnKXd/signup.gif" alt="signup page" width="456"/></span><br>
+![signup](https://user-images.githubusercontent.com/56579554/172561803-2ba92548-0d37-4c50-a57a-d0fdb8a8858c.gif)
 ##### Login Page
-<span><img src="https://i.postimg.cc/SKxQ21w9/login-screenshot.png" alt="login validation" width="456"/></span><br>
+![login-screenshot](https://user-images.githubusercontent.com/56579554/172572644-5863441f-ea9e-427d-8700-0071afbd06a1.png)
 ##### Edit nickname and photo
-[![profile.gif](https://i.postimg.cc/8ktrgS92/profile.gif)](https://postimg.cc/0rKN7L8n)
+![profile](https://user-images.githubusercontent.com/56579554/172562108-77a619ed-6d1c-4389-b002-8759db5040c2.gif)
 ##### Change password
-[![change-password.gif](https://i.postimg.cc/ZYck4T8x/change-password.gif)](https://postimg.cc/23V9xNX1)
+![change-password](https://user-images.githubusercontent.com/56579554/172562506-fc9b8c76-3c01-40d5-8688-deb37f01820e.gif)
 ##### View of bargains of a specific user 
-<span><img src="https://i.postimg.cc/SKbYtR57/bargains-user-screenshot.png" alt="bargains of a specific user" width="800"/></span>
+![bargains-user-screenshot](https://user-images.githubusercontent.com/56579554/172567677-db89734f-9220-4738-b63e-6cab251ac47e.png)
 ##### View of activities of a specific user 
-<span><img src="https://i.postimg.cc/L5VvjLDw/user-overview.png" alt="activities of a specific user" width="800"/></span>
+![user-overview](https://user-images.githubusercontent.com/56579554/172567293-8b35bdf4-11db-423f-890e-f1c2d1ec6f63.png)
 ##### View of comments of a specific user
-<span><img src="https://i.postimg.cc/W41pHdrx/comments-user-screenshot.png" alt="comments of a specific user" width="800"/></span>
+![comments-user-screenshot](https://user-images.githubusercontent.com/56579554/172566884-76ba4db0-75df-4d5a-9154-71d38a45710f.png)
 ##### View of votes of a specific user
-<span><img src="https://i.postimg.cc/9MBQhjmS/votes-user-screenshot.png" alt="votes of a specific user" width="800"/></span>
+![votes-user-screenshot](https://user-images.githubusercontent.com/56579554/172565973-acc3e6ae-36cc-48cd-8926-3c835ea34c1f.png)
 ##### Add a new bargain
-[![add-bargain](https://i.postimg.cc/MG0HdJd5/add-bargain.gif)](https://postimg.cc/XZJnYmMB)
+![add-bargain](https://user-images.githubusercontent.com/56579554/172569240-045fba4d-cc94-4d87-9aaa-5c7f93ed08cf.gif)
 ##### Validation fields of bargain
-<span><img src="https://i.postimg.cc/5ycN1m4T/validation-bargain-screenshot-highlight.png" alt="edit the new bargain" width="597"/></span>
+![validation-bargain-screenshot-highlight](https://user-images.githubusercontent.com/56579554/172569576-36cbc076-8d12-4aa0-9f8f-53b50a85e73b.png)
 ##### Edit the bargain
 ![edit-bargain](https://user-images.githubusercontent.com/56579554/152182711-16532e6f-c5b8-43d9-882d-92b4cc829fd8.gif)
 ##### Main page
-<span><img src="https://i.postimg.cc/tgwkdNJ8/bargains-best-screenshot-description.png" alt="main page" width="800"/></span>
+![bargains-best-screenshot](https://user-images.githubusercontent.com/56579554/172570581-59e19457-c795-488d-87e8-69bf86d617f4.png)
 ##### View of bargains in the Electronics category
 ###### Additionally found by the keyword "acer", sorted by the latest offers
-<span><img src="https://i.postimg.cc/4x9xWPCD/bargains-category-search-acer.png" alt="sorted by the newest offers" width="800"/></span>
+![bargains-category-search-acer](https://user-images.githubusercontent.com/56579554/172570903-559059fa-e729-4b5d-a69a-90379623b768.png)
 ##### View of bargains, sorted by the most commented
-<span><img src="https://i.postimg.cc/brwvLj8g/bargains-commented-screenshot.png" alt="sorted by the most commented" width="800"/></span>
+![bargains-commented-screenshot](https://user-images.githubusercontent.com/56579554/172571163-c2c2a7aa-2cda-4563-9499-4c6a11caab80.png)
 ##### View of bargains of a specific shop
-<span><img src="https://i.postimg.cc/QMZxw7hH/bargains-shop.png" alt="bargains of a specific shop" width="800"/></span>
+![bargains-shop](https://user-images.githubusercontent.com/56579554/172571395-7663bb46-4120-49f9-9ae4-b727b33fd763.png)
 ##### View of a specific bargain 
-<span><img src="https://i.postimg.cc/6pXkwvRx/bargain-screenshot.png" alt="view of a specific bargain" width="800"/></span>
+![bargain-screenshot](https://user-images.githubusercontent.com/56579554/172571599-1407e813-c262-43ab-a320-407c047c525d.png)
 ##### Voting
 ###### Additionally, it shows how hiding ended offers works
 ![vote](https://user-images.githubusercontent.com/56579554/152210927-c4d2952d-c066-41a2-a628-0f15e3ce8930.gif)
-[![screenshot-vote-4-options.png](https://i.postimg.cc/C5rPnpyp/screenshot-vote-4-options.png)](https://postimg.cc/wRJcnPTw)
+![screenshot vote 4 options](https://user-images.githubusercontent.com/56579554/172571778-f00e0dd4-816d-416f-9f58-d5998017cd8a.png)
