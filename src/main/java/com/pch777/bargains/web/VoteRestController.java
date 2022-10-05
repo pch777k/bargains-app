@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pch777.bargains.dto.VoteDto;
 import com.pch777.bargains.exception.NotFoundException;
 import com.pch777.bargains.model.Vote;
-import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.BargainService;
 import com.pch777.bargains.service.VoteService;
@@ -73,7 +73,7 @@ public class VoteRestController {
     })
 	public ResponseEntity<Vote> getVoteById(@PathVariable Long voteId) throws NotFoundException {
 		return voteService.getById(voteId)
-				.map(vote -> ResponseEntity.ok(vote))				
+				.map(ResponseEntity::ok)				
 				.orElseThrow(() -> new NotFoundException("Vote with id " + voteId + " not found"));
 	}
 
@@ -110,19 +110,19 @@ public class VoteRestController {
 				responseCode = "404",
 				content = @Content)
 	})
-	public ResponseEntity<Object> vote(@PathVariable("bargainId") Long bargainId, 
-			@RequestBody VoteDto voteDto) throws NotFoundException {
+	public ResponseEntity<String> vote(@PathVariable("bargainId") Long bargainId, 
+			@RequestBody VoteDto voteDto) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		if(voteDto.getVoteType() != null) {
 			return bargainService.getById(bargainId).map(bargain -> {
 				if(voteService.vote(voteDto, bargainId, email)) {
-				   return new ResponseEntity<Object>("Vote successfully added",HttpStatus.ACCEPTED);
+				   return new ResponseEntity<>("Vote successfully added",HttpStatus.ACCEPTED);
 				}
 				
-				return new ResponseEntity<Object>("User has already voted on this bargain or user is an owner", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>("User has already voted on this bargain or user is an owner", HttpStatus.BAD_REQUEST);
 	
-			}).orElse(new ResponseEntity<Object>("Bargain with id " + bargainId + " not found", HttpStatus.NOT_FOUND));
+			}).orElse(new ResponseEntity<>("Bargain with id " + bargainId + " not found", HttpStatus.NOT_FOUND));
 
 		}
 		return ResponseEntity.badRequest().body("Wrong input, voteType field cannot be null");

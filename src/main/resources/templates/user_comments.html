@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
   <title>[[${#strings.capitalize(#strings.toLowerCase(profileUser.nickname))}]] comments</title>
   <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
@@ -25,7 +25,7 @@
   <div id="main" class="container text-center">
 	<div class="card mb-4">
       <div class="card-header">
-    	<span class="text-primary py-2" title="comments">Comments <i class="far fa-comment"></i> [[${totalComments}]]</span>
+    	<span class="text-primary py-2" title="comments">Comments <em class="far fa-comment"></em> [[${totalComments}]]</span>
   	  </div>
   	  <ul class="list-group list-group-flush">
 		<li th:if="${totalComments==0}" class="list-group-item text-center"> There are no comments</li>
@@ -33,7 +33,8 @@
     	  <div class="row d-flex justify-content-start">
     		<div class="col-auto">
     		  <a th:href="@{/bargains/{bargainId} (bargainId=${comment.bargain.id})}">				    					    	 
-				<img th:src="@{${'/bargains/' + comment.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
+				<img th:src="@{${'/bargains/' + comment.bargain.id + '/photo'}}" width="50" height="50" 
+				class="rounded border" alt="bargain photo">
 			  </a>
     	    </div>
     		<div class="col-8 col-sm-10">

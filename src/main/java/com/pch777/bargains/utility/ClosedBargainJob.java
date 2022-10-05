@@ -21,8 +21,9 @@ public class ClosedBargainJob {
 	private BargainService bargainService;
 	
 	@Transactional
-	//@Scheduled(cron = "0 0 0 * * *", zone="UTC+1")
-	@Scheduled(fixedRate = 480_000)
+	@Scheduled(cron = "0 0 0 * * *")
+	//@Scheduled(fixedRate = 480_000)
+	//@Scheduled(cron = "@midnight")
 	public void run() {
 		List<Bargain> bargains = bargainRepository
 				.findByClosedAndEndBargainLessThan(false, LocalDate.now());

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
   <title>users</title>
   <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
@@ -32,11 +32,11 @@
 			  <ul class="list-group list-group-flush">
 			    <li class="list-group-item">
 			      <a class="mr-2" title="bargains" th:href="@{/users/{userId}/bargains ((userId=${user.id}))}"> 
- 			       <i class="fas fa-tag text-dark mr-1"></i><span th:text="${#lists.size(user.bargains)}"></span></a> 
+ 			       <em class="fas fa-tag text-dark mr-1"></em><span th:text="${#lists.size(user.bargains)}"></span></a> 
  			      <a class="mr-2" title="comments" th:href="@{/users/{userId}/comments ((userId=${user.id}))}"> 
- 			       <i class="fas fa-comment text-dark mr-1"></i><span th:text="${#lists.size(user.comments)}"></span></a>
+ 			       <em class="fas fa-comment text-dark mr-1"></em><span th:text="${#lists.size(user.comments)}"></span></a>
  			      <a title="votes" th:href="@{/users/{userId}/bargains ((userId=${user.id}))}"> 
- 			       <i class="fas fa-vote-yea text-dark mr-1"></i><span th:text="${#lists.size(user.votes)}"></span></a>
+ 			       <em class="fas fa-vote-yea text-dark mr-1"></em><span th:text="${#lists.size(user.votes)}"></span></a>
  			       
  			    </li>
 			    <li class="list-group-item">

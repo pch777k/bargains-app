@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.pch777.bargains.dto.CommentDto;
 import com.pch777.bargains.exception.ForbiddenException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Comment;
-import com.pch777.bargains.model.CommentDto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
 import com.pch777.bargains.service.BargainService;
@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 @Controller
 public class CommentController {
 
+	private static final String REDIRECT_BARGAINS = "redirect:/bargains/";
 	private BargainService bargainService;
 	private CommentService commentService;
 	private UserService userService;
@@ -50,7 +51,7 @@ public class CommentController {
 		commentService.addComment(comment);
 
 		activityService.addActivity(comment.getUser(), comment.getCreatedAt(), comment.getBargain(), ActivityType.COMMENT);
-		return "redirect:/bargains/" + commentDto.getBargainId();
+		return REDIRECT_BARGAINS + commentDto.getBargainId();
 	}
 	
 	@GetMapping("/bargains/{bargainId}/comments/{commentId}/edit")
@@ -90,7 +91,7 @@ public class CommentController {
 		comment.setBargain(bargainService.getBargainById(bargainId));
 		commentService.addComment(comment);
 
-		return "redirect:/bargains/" + bargainId;
+		return REDIRECT_BARGAINS + bargainId;
 	}
 	
 	@GetMapping("/bargains/{bargainId}/comments/{commentId}/cite")
@@ -101,10 +102,6 @@ public class CommentController {
 		Bargain bargain = bargainService.getBargainById(bargainId);
 		Comment comment = null;
 		comment = commentService.getCommentById(commentId);
-		
-//		comment.setContent("<p><font color=\"#cec6ce\">" + comment.getUser().getNickname() + " " 
-//							+ changeDateToString(comment.getCreatedAt())
-//							+ " wrote: </font></p><p><font color=\\\"#cec6ce\\\"> " + comment.getContent() + "</font></p><hr><br>");
 		
 		comment.setContent(comment.getUser().getNickname() + " " + changeDateToString(comment.getCreatedAt())
 				+ comment.getContent() + "<hr><br>");
@@ -132,7 +129,7 @@ public class CommentController {
 		commentService.addComment(comment);
 		
 		activityService.addActivity(comment.getUser(), comment.getCreatedAt(), comment.getBargain(), ActivityType.COMMENT);
-		return "redirect:/bargains/" + bargainId;
+		return REDIRECT_BARGAINS + bargainId;
 	}
 	
 	@GetMapping("/bargains/{bargainId}/comments/{commentId}/delete")
@@ -145,7 +142,7 @@ public class CommentController {
 		} else {
 			throw new ForbiddenException("Access denied");
 		}
-		return "redirect:/bargains/" + bargainId;
+		return REDIRECT_BARGAINS + bargainId;
 	}
 	
 	private String changeDateToString (LocalDateTime date) {

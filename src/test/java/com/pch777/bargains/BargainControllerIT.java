@@ -11,21 +11,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pch777.bargains.dto.BargainDto;
 import com.pch777.bargains.model.Bargain;
-import com.pch777.bargains.model.BargainDto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.web.BargainRestController;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class BargainControllerIT {
+class BargainControllerIT {
 	
 	@Autowired
 	BargainRestController bargainController;
 	
 	@Test
-	public void getAllBargains() throws IOException {
+	void getAllBargains() throws IOException {
 		// given
 		givenHtc();
 		givenAdidas();

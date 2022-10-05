@@ -12,24 +12,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pch777.bargains.dto.UserDto;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Role;
 import com.pch777.bargains.model.User;
-import com.pch777.bargains.model.UserDto;
 import com.pch777.bargains.model.UserPhoto;
 import com.pch777.bargains.repository.RoleRepository;
 import com.pch777.bargains.repository.UserRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class UserService {
 	
-	private UserRepository userRepository;
-	private UserPhotoService userPhotoService;
-	private RoleRepository roleRepository;
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final UserRepository userRepository;
+	private final UserPhotoService userPhotoService;
+	private final RoleRepository roleRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final Random random;
 	
 	@Transactional
 	public void registerUser(User user) throws ResourceNotFoundException {
@@ -63,12 +64,11 @@ public class UserService {
 	}
 	
 	public User userDtoToUser(UserDto userDto) {
-		User user = User.builder()
+		return User.builder()
 				.nickname(userDto.getNickname())
 				.email(userDto.getEmail())
 				.password(userDto.getPassword())
 				.build();
-		return user;
 	}
 	
 	public User findUserByEmail(String email) {
@@ -76,9 +76,9 @@ public class UserService {
 		return userRepository.getUserByEmail(email);
 	}
 	
-	public User findUserById(Long id) {
-		return userRepository.findById(id).get();
-	}
+//	public User findUserById(Long id) {
+//		return userRepository.findById(id).get();
+//	}
 	
 	public Optional<User> findById(Long id) {
 		return userRepository.findById(id);
@@ -106,8 +106,7 @@ public class UserService {
 	
 	public User randomUser() {
 		List<User> users = userRepository.findAll();
-		Random rand = new Random();
-		return users.get(rand.nextInt(users.size()));
+		return users.get(random.nextInt(users.size()));
 	}
 	
 	public boolean isEmptyUsersBargainsList(String email) {

@@ -1,6 +1,5 @@
 package com.pch777.bargains.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class ActivityController {
 	public ResponseEntity<Activity> getActivityById(@PathVariable Long activityId) {
 		return activityService
 				.getActivityById(activityId)
-				.map(activity -> ResponseEntity.ok(activity))
+				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
@@ -86,7 +85,7 @@ public class ActivityController {
 		}
 		
 		try {
-		      List<Activity> activities = new ArrayList<>();
+		      List<Activity> activities;
 		      
 		      Pageable pageable = PageRequest.of(page, size);
 		      Page<Activity> pageActivities = activityService.getActivitiesByUserId(pageable, userId);

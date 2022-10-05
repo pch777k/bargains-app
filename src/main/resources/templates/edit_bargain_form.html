@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -136,7 +136,7 @@
 			  <div class="input-group date start-bargain">
 			    <input type="text" class="form-control" th:field="*{startBargain}" th:value="${#dates.format(startBargain, 'dd-MM-yyyy')}" autocomplete="off" placeholder="DD-MM-YYYY"/>
 			    <div class="input-group-append ">
-				  <span class="input-group-text bg-primary text-white"><i class="far fa-calendar-alt"></i></span>
+				  <span class="input-group-text bg-primary text-white"><em class="far fa-calendar-alt"></em></span>
 				</div>
 			  </div>
 		  </div>
@@ -145,7 +145,7 @@
 			  <div class="input-group date end-bargain">
 			    <input type="text" class="form-control" th:field="*{endBargain}" th:value="${#dates.format(endBargain, 'dd-MM-yyyy')}" autocomplete="off" placeholder="DD-MM-YYYY"/>
 			    <div class="input-group-append ">
-				  <span class="input-group-text bg-primary text-white"><i class="far fa-calendar-alt"></i></span>
+				  <span class="input-group-text bg-primary text-white"><em class="far fa-calendar-alt"></em></span>
 				</div>
 			  </div>
 		  </div>

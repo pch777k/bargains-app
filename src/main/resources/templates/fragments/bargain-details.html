@@ -14,7 +14,7 @@
   </div>
   <div class="d-sm-inline d-block">
 	<th:block th:if="${bargain.delivery != null}">
-	  <span ><i class="fas fa-truck text-muted"></i></span>
+	  <span ><em class="fas fa-truck text-muted"></em></span>
 	  <span th:if="${bargain.delivery > 0}" class="mx-2  text-muted" th:text="${#numbers.formatDecimal(bargain.delivery, 1, 'DEFAULT', 2, 'DEFAULT')}"></span>
 	  <span th:if="${bargain.delivery < 0.01}" class="mx-2 text-muted" >free</span>
 	</th:block>
@@ -29,10 +29,10 @@
 <div class="row">
   <div class="col-lg-6 mt-2" th:if="${!#strings.isEmpty(bargain.link)}">
     <div class="d-none d-sm-block">
-	  <a th:href="${bargain.link}"   class="btn btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
+	  <a th:href="${bargain.link}"   class="btn btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><em class="fas fa-external-link-alt"></em></span></a>
 	</div>
 	<div class="d-block d-sm-none">
-	  <a th:href="${bargain.link}"   class="btn btn-sm btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><i class="fas fa-external-link-alt"></i></span></a>
+	  <a th:href="${bargain.link}"   class="btn btn-sm btn-danger text-warning btn-block" target="_blank">Go to bargain <span class="pl-2"><em class="fas fa-external-link-alt"></em></span></a>
 	</div>
   </div>
   <div class="col-lg-6 text-center mt-2" th:if="${!#strings.isEmpty(bargain.coupon)}">
@@ -43,7 +43,7 @@
 		<div class="input-group-append">
 		  <button class="btn btn-warning coupon-tooltip" data-toggle="tooltip" title="Copy to clipboard" 
 		    type="button" th:id="'copyCouponBtn' + ${bargain.id}" onClick="copyCouponClick(this.id)">
-		    <i class="fas fa-cut text-danger"></i>
+		    <em class="fas fa-cut text-danger"></em>
 		  </button>
 	    </div>
 	  </div>
@@ -54,7 +54,7 @@
 		  class="form-control-plaintext form-control-sm text-danger h6 border border-warning rounded-left text-center " >
 		<div class="input-group-append">
 		  <button class="btn btn-sm btn-warning coupon-tooltip" data-toggle="tooltip" title="Copy to clipboard" 
-		    type="button" th:id="'copyCouponBtn' + ${bargain.id}" onClick="copyCouponClick(this.id)"><i class="fas fa-cut text-danger"></i>
+		    type="button" th:id="'copyCouponBtn' + ${bargain.id}" onClick="copyCouponClick(this.id)"><em class="fas fa-cut text-danger"></em>
 		  </button>
 		</div>
  	  </div>

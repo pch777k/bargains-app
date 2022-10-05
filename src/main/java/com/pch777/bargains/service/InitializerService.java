@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,52 +27,30 @@ import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.UserPhoto;
 import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.repository.RoleRepository;
+import com.pch777.bargains.utility.ValuesProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class InitializerService {
 
-	private UserService userService;
-	private UserPhotoService userPhotoService;
-	private RoleRepository roleRepository;
-	private ShopService shopService;
-	private BargainService bargainService;
-	private BargainPhotoService bargainPhotoService;
-	private CommentService commentService;
-	private VoteService voteService;
-	private ActivityService activityService;
-	private RestTemplate restTemplate;
-	private final String GUEST_USER_PHOTO_URL;
-	private final String NO_BARGAIN_PHOTO_URL;
+	private final UserService userService;
+	private final UserPhotoService userPhotoService;
+	private final RoleRepository roleRepository;
+	private final ShopService shopService;
+	private final BargainService bargainService;
+	private final BargainPhotoService bargainPhotoService;
+	private final CommentService commentService;
+	private final VoteService voteService;
+	private final ActivityService activityService;
+	private final RestTemplate restTemplate;
+	private final Random random;
+	private final ValuesProperties valuesProperties;
 	
-	public InitializerService(UserService userService,
-			UserPhotoService userPhotoService,
-			RoleRepository roleRepository, 
-			ShopService shopService,
-			BargainService bargainService,
-			BargainPhotoService bargainPhotoService,
-			CommentService commentService, 
-			VoteService voteService, 
-			ActivityService activityService,
-			RestTemplate restTemplate, 
-			@Value("${bargainapp.no-user-photo-url}") String gUEST_USER_PHOTO_URL,
-			@Value("${bargainapp.no-bargain-photo-url}") String nO_BARGAIN_PHOTO_URL) {
-		this.userService = userService;
-		this.userPhotoService = userPhotoService;
-		this.roleRepository = roleRepository;
-		this.shopService = shopService;
-		this.bargainService = bargainService;
-		this.bargainPhotoService = bargainPhotoService;
-		this.commentService = commentService;
-		this.voteService = voteService;
-		this.activityService = activityService;
-		this.restTemplate = restTemplate;
-		this.NO_BARGAIN_PHOTO_URL = nO_BARGAIN_PHOTO_URL;
-		this.GUEST_USER_PHOTO_URL = gUEST_USER_PHOTO_URL;
-	}
 	
 	public void initUserData() {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("users.csv").getInputStream()))){
@@ -170,7 +148,7 @@ public class InitializerService {
 	}
 	
 	public void initPhotos() {
-		byte[] userPhotoBytes = restTemplate.getForObject(GUEST_USER_PHOTO_URL, byte[].class);
+		byte[] userPhotoBytes = restTemplate.getForObject(valuesProperties.getNoUserPhotoUrl(), byte[].class);
 		UserPhoto userPhoto = UserPhoto.builder()
 				.file(userPhotoBytes)
 				.filename("guest.png")
@@ -179,7 +157,7 @@ public class InitializerService {
 				.createdAt(LocalDate.now())
 				.build();
 		userPhotoService.saveUserPhoto(userPhoto);
-		byte[] bargainPhotoBytes = restTemplate.getForObject(NO_BARGAIN_PHOTO_URL, byte[].class);
+		byte[] bargainPhotoBytes = restTemplate.getForObject(valuesProperties.getNoBargainPhotoUrl(), byte[].class);
 		BargainPhoto bargainPhoto = BargainPhoto.builder()
 				.file(bargainPhotoBytes)
 				.filename("no-bargain-photo.png")
@@ -229,7 +207,8 @@ public class InitializerService {
 				.link(csvBargain.getLink())
 				.bargainPhoto(bargainPhoto)
 				.closed(csvBargain.getClosed())
-				.voteCount(0)				
+				.voteCount(0)		
+				.createdAt(getRandomBargainCreatedAtDate() )
 				.startBargain(LocalDate.now().plusDays(plusDays))
 				.endBargain(LocalDate.now().plusDays(randomEndBargain(plusDays)))
 				.category(csvBargain.getCategory())
@@ -240,6 +219,17 @@ public class InitializerService {
 		bargainService.addBargain(bargain);
 		activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
 	}
+	
+	private long getRandomNumberOfMinutes(int minutesRange) {
+	        return random
+	        		.nextInt(minutesRange);
+	    }
+
+	private LocalDateTime getRandomBargainCreatedAtDate() {
+	        return LocalDateTime
+	                .now().minusMinutes(
+	                		getRandomNumberOfMinutes(600));
+	    }
 	
 	private void initComment(CsvComment csvComment) {
 		Comment comment = new Comment(csvComment.getContent());
@@ -252,13 +242,11 @@ public class InitializerService {
 	
 	public Bargain randomBargain() {
 		List<Bargain> bargains = bargainService.getAllBargains();
-		Random rand = new Random();
-		return bargains.get(rand.nextInt(bargains.size()));
+		return bargains.get(random.nextInt(bargains.size()));
 	}
 		
 	public void randomVote() throws Exception {
-		Random rand = new Random();
-		int number = rand.nextInt(10);
+		int number = random.nextInt(10);
 		VoteType voteType = VoteType.UPVOTE;
 		if(number % 5 == 0) voteType = VoteType.DOWNVOTE;
 		voteService.initVote(randomBargain().getId(), userService.randomUser().getId(), voteType);
@@ -271,14 +259,12 @@ public class InitializerService {
 	}
 	
 	public int randomEndBargain(int startBargain) {
-		Random rand = new Random();
-		int number = rand.nextInt(14);
+		int number = random.nextInt(14);
 		return number + startBargain;
 	}
 	
 	public int randomStartBargain() {
-		Random rand = new Random();
-		return rand.nextInt(7);
+		return random.nextInt(7);
 	}
 
 	@Data

@@ -31,18 +31,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.pch777.bargains.dto.BargainDto;
+import com.pch777.bargains.dto.CommentDto;
+import com.pch777.bargains.dto.PhotoFileDto;
+import com.pch777.bargains.dto.VoteDto;
 import com.pch777.bargains.exception.ForbiddenException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
-import com.pch777.bargains.model.BargainDto;
 import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.Comment;
-import com.pch777.bargains.model.CommentDto;
-import com.pch777.bargains.model.PhotoFileDto;
 import com.pch777.bargains.model.Shop;
-import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
 import com.pch777.bargains.service.BargainPhotoService;
@@ -58,6 +58,26 @@ import lombok.AllArgsConstructor;
 @Controller
 public class BargainController {
 
+	private static final String BARGAIN_CATEGORY = "category";
+	private static final String SHOPS = "shops";
+	private static final String YOU_DON_T_HAVE_PERMISSION_TO_DO_IT = "You don't have permission to do it.";
+	private static final String CREATED_AT = "createdAt";
+	private static final String TODAY = "today";
+	private static final String RESULTS_FOUND = "resultsFound";
+	private static final String NO_RESULTS_FOUND = "noResultsFound";
+	private static final String TOTAL_DISPLAY_BARGAINS = "totalDisplayBargains";
+	private static final String TOTAL_BARGAINS = "totalBargains";
+	private static final String TOTAL_PAGES = "totalPages";
+	private static final String CURRENT_SIZE = "currentSize";
+	private static final String CURRENT_PAGE = "currentPage";
+	private static final String PAGE_SIZE = "pageSize";
+	private static final String TITLE = "title";
+	private static final String CURRENT_USER = "currentUser";
+	private static final String LOGGED_USER = "loggedUser";
+	private static final String CLOSED = "closed";
+	private static final String VOTE_DTO = "voteDto";
+	private static final String BARGAINS = "bargains";
+	private static final String REDIRECT_BARGAINS = "redirect:/bargains/";
 	private BargainService bargainService;
 	private BargainPhotoService bargainPhotoService;
 	private ShopService shopService;
@@ -74,7 +94,7 @@ public class BargainController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
 
-		Sort sort = Sort.by("voteCount").descending().and(Sort.by("createdAt"));
+		Sort sort = Sort.by("voteCount").descending().and(Sort.by(CREATED_AT));
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 		
 		Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLike(pageable, keyword);
@@ -90,34 +110,32 @@ public class BargainController {
 		boolean noResultsFound = false;
 		boolean resultsFound = false;
 		
-		if(!isEmpty && keyword.length() > 0) {
-			if(totalDisplayBargains == 0) {
-				noResultsFound = true;
-			}			
+		if(!isEmpty && keyword.length() > 0 && totalDisplayBargains == 0) {
+				noResultsFound = true;			
 		}
 		
 		if(!isEmpty && keyword.length() > 0 && totalDisplayBargains > 0) {
 			resultsFound = true;
 		}
 		
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargains.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());	
-		model.addAttribute("closed", ended);
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargains.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());	
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
 		model.addAttribute("isEmptyListOfBargains", isEmpty);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 		
-		return "bargains";
+		return BARGAINS;
 	}
 	
 	@GetMapping("/new")
@@ -130,7 +148,7 @@ public class BargainController {
 		boolean noResultsFound = false;
 		boolean resultsFound = false;
 				
-		Sort sort = Sort.by("createdAt").descending();
+		Sort sort = Sort.by(CREATED_AT).descending();
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 		Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLike(pageable, keyword);
 		long totalBargains = pageBargains.getTotalElements();
@@ -149,21 +167,21 @@ public class BargainController {
 			resultsFound = true;
 		}
 
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargains.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());
-		model.addAttribute("closed", ended);
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargains.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 
 		return "bargains_new";
 	}
@@ -196,21 +214,21 @@ public class BargainController {
 			resultsFound = true;
 		}
 		
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargains.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());
-		model.addAttribute("closed", ended);
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargains.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 	
 		return "bargains_commented";
 	}
@@ -231,7 +249,7 @@ public class BargainController {
 			return "redirect:/";
 		}
 		
-		Sort sort = Sort.by("voteCount").descending().and(Sort.by("createdAt"));
+		Sort sort = Sort.by("voteCount").descending().and(Sort.by(CREATED_AT));
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 
 		Page<Bargain> pageBargainsByCategory = bargainService.getAllBargainsByTitleLikeByCategory(pageable, keyword, category);
@@ -251,24 +269,24 @@ public class BargainController {
 			resultsFound = true;
 		}
 	
-		model.addAttribute("category", category);
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargainsByCategory);
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargainsByCategory.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());
-		model.addAttribute("closed", ended);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(BARGAIN_CATEGORY, category);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargainsByCategory);
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargainsByCategory.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 		
-		return "category";
+		return BARGAIN_CATEGORY;
 	}
 
 	@GetMapping("/{bargainCategory}/new")
@@ -281,7 +299,7 @@ public class BargainController {
 		boolean noResultsFound = false;
 		boolean resultsFound = false;
 
-		Sort sort = Sort.by("createdAt").descending();
+		Sort sort = Sort.by(CREATED_AT).descending();
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 
 		Category category = converter.convert(bargainCategory);
@@ -302,22 +320,22 @@ public class BargainController {
 			resultsFound = true;
 		}
 	
-		model.addAttribute("category", category);
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargainsByCategory);
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargainsByCategory.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());	
-		model.addAttribute("closed", ended);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(BARGAIN_CATEGORY, category);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargainsByCategory);
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargainsByCategory.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());	
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 		
 		return "category_new";
 	}
@@ -352,22 +370,22 @@ public class BargainController {
 			resultsFound = true;
 		}
 	
-		model.addAttribute("category", category);
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargainsByCategory);
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargainsByCategory.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());
-		model.addAttribute("closed", ended);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(BARGAIN_CATEGORY, category);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargainsByCategory);
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargainsByCategory.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 		
 		return "category_commented";
 	}
@@ -378,7 +396,7 @@ public class BargainController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) throws ResourceNotFoundException {
 
-		Sort sort = Sort.by("createdAt").descending();
+		Sort sort = Sort.by(CREATED_AT).descending();
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 		
 		Page<Bargain> pageBargains = bargainService.getBargainsByTitleLikeAndShopId(pageable, keyword, shopId);
@@ -394,10 +412,8 @@ public class BargainController {
 		boolean noResultsFound = false;
 		boolean resultsFound = false;
 		
-		if(!isEmpty && keyword.length() > 0) {
-			if(totalDisplayBargains == 0) {
-				noResultsFound = true;
-			}			
+	 if(!isEmpty && keyword.length() > 0 && totalDisplayBargains == 0) {
+				noResultsFound = true;		
 		}
 		
 		if(!isEmpty && keyword.length() > 0 && totalDisplayBargains > 0) {
@@ -405,21 +421,21 @@ public class BargainController {
 		}
 		
 		model.addAttribute("shop", shop);
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageBargains.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("today", LocalDate.now());	
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageBargains.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(TODAY, LocalDate.now());	
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
 		model.addAttribute("isEmptyListOfBargains", isEmpty);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
 		
 		return "shop_bargains";
 	}
@@ -433,24 +449,24 @@ public class BargainController {
 		String email = auth.getName();
 		
 		Bargain bargain = bargainService.getBargainById(bargainId);
-		Sort sort = Sort.by("createdAt").ascending();
+		Sort sort = Sort.by(CREATED_AT).ascending();
 		Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
 		Page<Comment> pageCommentsByBargainId = commentService.getCommentsByBargainId(pageable, bargainId);
 		Category category = bargain.getCategory();
 
-		model.addAttribute("category", category);
+		model.addAttribute(BARGAIN_CATEGORY, category);
 		model.addAttribute("commentDto", new CommentDto());
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
 		model.addAttribute("totalComments", pageCommentsByBargainId.getTotalElements());
 		model.addAttribute("pageComments", pageCommentsByBargainId);
 		model.addAttribute("pageTotalComments", pageCommentsByBargainId.getSize());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("totalPages", pageCommentsByBargainId.getTotalPages());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(TOTAL_PAGES, pageCommentsByBargainId.getTotalPages());
 		model.addAttribute("bargain", bargain);
-		model.addAttribute("voteDto", new VoteDto());		
+		model.addAttribute(VOTE_DTO, new VoteDto());		
 		
 		return "bargain";
 	}
@@ -460,10 +476,10 @@ public class BargainController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		
-		List<Shop> shops = shopService.getAllShops();
+		List<Shop> allShops = shopService.getAllShops();
 		
-		model.addAttribute("shops", shops);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));	
+		model.addAttribute(SHOPS, allShops);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));	
 		model.addAttribute("bargain", new Bargain());
 		model.addAttribute("bargainDto", new BargainDto());
 
@@ -479,10 +495,10 @@ public class BargainController {
 		String email = auth.getName();
 		
 		if (bindingResult.hasErrors()) {
-			List<Shop> shops = shopService.getAllShops();
+			List<Shop> allShops = shopService.getAllShops();
 			
-			model.addAttribute("shops", shops);
-			model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute(SHOPS, allShops);
+			model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
 			return "add_bargain_form";
 		}
 
@@ -496,7 +512,7 @@ public class BargainController {
 
 		activityService.addActivity(bargain.getUser(), bargain.getCreatedAt(), bargain, ActivityType.BARGAIN);
 		
-		return "redirect:/bargains/" + bargain.getId();
+		return REDIRECT_BARGAINS + bargain.getId();
 	}
 
 	@GetMapping("/bargains/{bargainId}/edit")
@@ -506,14 +522,14 @@ public class BargainController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		if(userSecurity.isOwnerOrAdmin(bargain.getUser().getEmail(), email)) {
-			List<Shop> shops = shopService.getAllShops();
+			List<Shop> allShops = shopService.getAllShops();
 			
 			BargainDto bargainDto = bargainService.bargainToBargainDto(bargain);
-			model.addAttribute("shops", shops);
-			model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute(SHOPS, allShops);
+			model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
 			model.addAttribute("bargainDto", bargainDto);
 		} else {
-			throw new ForbiddenException("You don't have permission to do it.");
+			throw new ForbiddenException(YOU_DON_T_HAVE_PERMISSION_TO_DO_IT);
 		}
 		return "edit_bargain_form";
 	}
@@ -528,10 +544,10 @@ public class BargainController {
 		String email = auth.getName();
 		
 		if (bindingResult.hasErrors()) {
-			List<Shop> shops = shopService.getAllShops();
+			List<Shop> allShops = shopService.getAllShops();
 			
-			model.addAttribute("shops", shops);
-			model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute(SHOPS, allShops);
+			model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
 			return "edit_bargain_form";
 		}
 			
@@ -548,7 +564,7 @@ public class BargainController {
 		bargain.setEndBargain(bargainDto.getEndBargain());
 		bargain.setShop(bargainDto.getShop());
 			
-		return "redirect:/bargains/" + bargainId;
+		return REDIRECT_BARGAINS + bargainId;
 	}
 	
 	@GetMapping("/bargains/{bargainId}/photo/edit")
@@ -559,7 +575,7 @@ public class BargainController {
 		String email = auth.getName();
 			
 		if(userSecurity.isOwnerOrAdmin(bargain.getUser().getEmail(), email)) {	
-			model.addAttribute("currentUser", userService.findUserByEmail(email));
+			model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
 			model.addAttribute("photoFileDto", new PhotoFileDto());
 		} else {
 			throw new ForbiddenException("Access denied");
@@ -579,7 +595,7 @@ public class BargainController {
 		Bargain bargain = bargainService.getBargainById(bargainId);
 		
 		if (result.hasErrors()) { 
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
     		return "bargain-photo";
     	}
 	    	
@@ -594,7 +610,7 @@ public class BargainController {
 		bargain.setBargainPhoto(bargainPhoto);
 		redirectAttributes.addFlashAttribute("editedPhoto", "The photo has been edited successfully.");
 
-		return "redirect:/bargains/" + bargainId; 	
+		return REDIRECT_BARGAINS + bargainId; 	
 	}
 
 	@GetMapping("/bargains/{bargainId}/delete")
@@ -606,7 +622,7 @@ public class BargainController {
 		if(userSecurity.isOwnerOrAdmin(bargainService.getBargainById(bargainId).getUser().getEmail(), email)) {
 			bargainService.deleteBargainById(bargainId);
 		} else {
-			throw new ForbiddenException("You don't have permission to do it.");
+			throw new ForbiddenException(YOU_DON_T_HAVE_PERMISSION_TO_DO_IT);
 		}
 		return "redirect:/";
 	}
@@ -618,9 +634,9 @@ public class BargainController {
 		if(userSecurity.isOwnerOrAdmin(bargainService.getBargainById(bargainId).getUser().getEmail(), email)) {
 		bargainService.closeBargainById(bargainId);
 		} else {
-			throw new ForbiddenException("You don't have permission to do it.");
+			throw new ForbiddenException(YOU_DON_T_HAVE_PERMISSION_TO_DO_IT);
 		}
-		return "redirect:/bargains/" + bargainId;
+		return REDIRECT_BARGAINS + bargainId;
 	}
 	
 	@GetMapping("/bargains/{bargainId}/open")
@@ -630,16 +646,16 @@ public class BargainController {
 		if(userSecurity.isOwnerOrAdmin(bargainService.getBargainById(bargainId).getUser().getEmail(), email)) {
 			bargainService.openBargainById(bargainId);
 		} else {
-			throw new ForbiddenException("You don't have permission to do it.");
+			throw new ForbiddenException(YOU_DON_T_HAVE_PERMISSION_TO_DO_IT);
 		}
-			return "redirect:/bargains/" + bargainId;
+			return REDIRECT_BARGAINS + bargainId;
 		}
 	
 	  @GetMapping("bargains/{bargainId}/photo")
 	    public void getImage(@PathVariable Long bargainId, HttpServletResponse response) throws Exception {
 		    Bargain bargain = bargainService.getBargainById(bargainId);
 		    BargainPhoto bargainPhoto = bargainPhotoService.getBargainPhotoById(bargain.getBargainPhoto().getId())
-					.orElseThrow(() -> new ResourceNotFoundException());
+					.orElseThrow(ResourceNotFoundException::new);
 	        byte[] bytes = bargainPhoto.getFile();
 	        InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(bytes));
 	        String mimeType = URLConnection.guessContentTypeFromStream(inputStream);

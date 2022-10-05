@@ -12,9 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pch777.bargains.dto.BargainDto;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Bargain;
-import com.pch777.bargains.model.BargainDto;
 import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.repository.BargainRepository;
@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class BargainService {
 
+	private static final String NOT_FOUND_A_BARGAIN_WITH_ID = "Not found a bargain with id: ";
 	private BargainRepository bargainRepository;
 	
 	public List<Bargain> getAllBargains() {
@@ -100,7 +101,7 @@ public class BargainService {
 	
 	public Bargain getBargainById(Long id) throws ResourceNotFoundException {
 		return bargainRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Not found a bargain with id: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_A_BARGAIN_WITH_ID + id));
 	}
 	
 	
@@ -118,7 +119,7 @@ public class BargainService {
 
 	public Bargain editBargain(Bargain bargain, Long id) throws ResourceNotFoundException {
 		if (!existsById(id)) {
-			throw new ResourceNotFoundException("Cannot find bargain with id: " + id);
+			throw new ResourceNotFoundException(NOT_FOUND_A_BARGAIN_WITH_ID + id);
 		}
 
 		bargain.setId(id);
@@ -128,21 +129,21 @@ public class BargainService {
 	
 	public void editBargainTitle(String title, Long id) {
 		Bargain bargain = bargainRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Not found a bargain with id: " + id));
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_A_BARGAIN_WITH_ID + id));
 		bargain.setTitle(title);
 		bargainRepository.save(bargain);
 	}
 	
 	public void closeBargainById(Long id) {
 		Bargain bargain = bargainRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Not found a bargain with id: " + id));
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_A_BARGAIN_WITH_ID + id));
 		bargain.setClosed(true);
 		bargainRepository.save(bargain);		
 	}
 	
 	public void openBargainById(Long id) {
 		Bargain bargain = bargainRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Not found a bargain with id: " + id));
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_A_BARGAIN_WITH_ID + id));
 		bargain.setClosed(false);
 		bargainRepository.save(bargain);		
 	}
@@ -157,19 +158,18 @@ public class BargainService {
 		return today.isAfter(date);
 	}
 	
-	public BargainPhoto FileToBargainPhoto(MultipartFile multipartFile) throws IOException {
-		BargainPhoto bargainPhoto = BargainPhoto.builder()
+	public BargainPhoto fileToBargainPhoto(MultipartFile multipartFile) throws IOException {
+		return BargainPhoto.builder()
 				.file(multipartFile.getBytes())
 				.filename(multipartFile.getOriginalFilename())
 				.contentType(multipartFile.getContentType())
 				.createdAt(LocalDate.now())
 				.fileLength(multipartFile.getSize())
 				.build();
-		return bargainPhoto;
 	}
 	
 	public Bargain bargainDtoToBargain(BargainDto bargainDto) {
-		Bargain bargain = Bargain.builder()
+		return Bargain.builder()
 				.title(bargainDto.getTitle())
 				.description(bargainDto.getDescription())
 				.reducePrice(bargainDto.getReducePrice())
@@ -183,11 +183,10 @@ public class BargainService {
 				.category(bargainDto.getCategory())
 				.shop(bargainDto.getShop())
 				.build();
-		return bargain;
 	}
 	
 	public BargainDto bargainToBargainDto(Bargain bargain) {
-		BargainDto bargainDto = BargainDto.builder()
+		return BargainDto.builder()
 				.title(bargain.getTitle())
 				.description(bargain.getDescription())
 				.reducePrice(bargain.getReducePrice())
@@ -201,7 +200,6 @@ public class BargainService {
 				.category(bargain.getCategory())
 				.shop(bargain.getShop())
 				.build();
-		return bargainDto;
 	}
 	
 	public static String whenElementAdded(LocalDateTime date) {

@@ -2,7 +2,6 @@ package com.pch777.bargains.web;
 
 import java.net.URI;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +71,7 @@ public class CommentRestController {
         @RequestParam(defaultValue = "10") int size) {
         
         try {
-	      List<Comment> comments = new ArrayList<>();
+	      List<Comment> comments;
 	      
 	      Pageable pageable = PageRequest.of(page, size);
 	      Page<Comment> pageComments = commentService.getAllComments(pageable); 
@@ -114,7 +113,7 @@ public class CommentRestController {
 		}
 		
         try {
-	      List<Comment> comments = new ArrayList<>();
+	      List<Comment> comments;
 	      
 	      Pageable pageable = PageRequest.of(page, size);
 	      Page<Comment> pageComments = commentService.getCommentsByBargainId(pageable, bargainId); 
@@ -156,7 +155,7 @@ public class CommentRestController {
 		}
 		
         try {
-	      List<Comment> comments = new ArrayList<>();
+	      List<Comment> comments;
 	      
 	      Pageable pageable = PageRequest.of(page, size);
 	      Page<Comment> pageComments = commentService.getCommentsByUserId(pageable, userId); 
@@ -199,7 +198,7 @@ public class CommentRestController {
 	public ResponseEntity<Comment> getCommentById(@PathVariable Long commentId) {
 		return commentService
 				.getById(commentId)
-				.map(comment -> ResponseEntity.ok(comment))
+				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
 

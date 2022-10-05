@@ -33,19 +33,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.pch777.bargains.dto.PasswordDto;
+import com.pch777.bargains.dto.PhotoFileDto;
+import com.pch777.bargains.dto.UserDto;
+import com.pch777.bargains.dto.UserProfileDto;
+import com.pch777.bargains.dto.VoteDto;
 import com.pch777.bargains.exception.ForbiddenException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Activity;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Comment;
-import com.pch777.bargains.model.PasswordDto;
-import com.pch777.bargains.model.PhotoFileDto;
 import com.pch777.bargains.model.User;
-import com.pch777.bargains.model.UserDto;
 import com.pch777.bargains.model.UserPhoto;
-import com.pch777.bargains.model.UserProfileDto;
 import com.pch777.bargains.model.Vote;
-import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.ActivityService;
@@ -61,6 +61,37 @@ import lombok.AllArgsConstructor;
 @Controller
 public class AppController {
 
+	private static final String ACCESS_DENIED = "Access denied";
+	private static final String CREATED_AT = "createdAt";
+	private static final String PROFILE = "profile";
+	private static final String PHOTO_FILE_DTO = "photoFileDto";
+	private static final String USER_PROFILE_DTO = "userProfileDto";
+	private static final String PAGE_VOTES = "pageVotes";
+	private static final String TOTAL_NEGATIVE_VOTES = "totalNegativeVotes";
+	private static final String TOTAL_POSITIVE_VOTES = "totalPositiveVotes";
+	private static final String RESULTS_FOUND = "resultsFound";
+	private static final String NO_RESULTS_FOUND = "noResultsFound";
+	private static final String VOTE_DTO = "voteDto";
+	private static final String TOTAL_VOTES = "totalVotes";
+	private static final String TOTAL_COMMENTS = "totalComments";
+	private static final String TOTAL_DISPLAY_BARGAINS = "totalDisplayBargains";
+	private static final String TOTAL_BARGAINS = "totalBargains";
+	private static final String TOTAL_ACTIVITIES = "totalActivities";
+	private static final String BARGAINS = "bargains";
+	private static final String TITLE = "title";
+	private static final String LOGGED_USER = "loggedUser";
+	private static final String TOTAL_PAGES = "totalPages";
+	private static final String TOTAL_USERS = "totalUsers";
+	private static final String PAGE_USERS = "pageUsers";
+	private static final String CURRENT_PAGE = "currentPage";
+	private static final String PAGE_SIZE = "pageSize";
+	private static final String CURRENT_SIZE = "currentSize";
+	private static final String PROFILE_USER = "profileUser";
+	private static final String CURRENT_USER = "currentUser";
+	private static final String CLOSED = "closed";
+	private static final String SIGNUP_FORM = "signup_form";
+	private static final String REDIRECT_USERS = "redirect:/users/";
+	private static final String CHANGE_PASSWORD_FORM = "change_password_form";
 	private UserService userService;
 	private UserPhotoService userPhotoService;
 	private BargainService bargainService;
@@ -80,24 +111,24 @@ public class AppController {
 	@GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userDto", new UserDto());         
-        return "signup_form";
+        return SIGNUP_FORM;
     }
     
     @PostMapping("/process_register")
     @Transactional 
-    public String processRegister(@Valid UserDto userDto, BindingResult bindingResult, Model model) throws IOException, ResourceNotFoundException {
+    public String processRegister(@Valid UserDto userDto, BindingResult bindingResult, Model model) throws ResourceNotFoundException {
     	if (bindingResult.hasErrors()) {
-			return "signup_form";
+			return SIGNUP_FORM;
 		}
     	
     	if (userService.isUserPresent(userDto.getEmail())) {
 			model.addAttribute("exist", true);
-			return "signup_form";
+			return SIGNUP_FORM;
 		}
     	
     	if (userService.isUserNicknamePresent(userDto.getNickname())) {
 			model.addAttribute("nicknameExist", true);
-			return "signup_form";
+			return SIGNUP_FORM;
 		}
     	
     	User user = userService.userDtoToUser(userDto);
@@ -118,14 +149,14 @@ public class AppController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     			
-		model.addAttribute("currentUser", userService.findUserByEmail(email));    
-		model.addAttribute("profileUser", userService.findUserByEmail(email));  
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);
-        model.addAttribute("pageUsers", pageUsers);
-        model.addAttribute("totalUsers", pageUsers.getTotalElements());
-        model.addAttribute("totalPages", pageUsers.getTotalPages());
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));    
+		model.addAttribute(PROFILE_USER, userService.findUserByEmail(email));  
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);
+        model.addAttribute(PAGE_USERS, pageUsers);
+        model.addAttribute(TOTAL_USERS, pageUsers.getTotalElements());
+        model.addAttribute(TOTAL_PAGES, pageUsers.getTotalPages());
                 
         return "users_list";
     }
@@ -139,7 +170,7 @@ public class AppController {
     	if(userSecurity.isAdmin(email)) {
     		userService.deleteUserById(userId);
     	} else {
-			throw new ForbiddenException("Access denied");
+			throw new ForbiddenException(ACCESS_DENIED);
 		}
 		return "redirect:/users";
 	}
@@ -149,14 +180,14 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
     	
-    	Sort sort = Sort.by("createdAt").descending();
+    	Sort sort = Sort.by(CREATED_AT).descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
     	Page<Activity> pageActivitiesByUser = activityService.getActivitiesByUserId(pageable, userId);
     	
     	double average = 0;
     	int hottest = 0;
     	List<Bargain> listBargainsByUser = bargainService.getAllBargainsByUserId(userId);
-    	if(listBargainsByUser.size()>0) {
+    	if(!listBargainsByUser.isEmpty()) {
     		average = bargainService.getAllBargainsByUserId(userId)
     				.stream()
     				.collect(Collectors.averagingInt(Bargain :: getVoteCount));
@@ -173,19 +204,21 @@ public class AppController {
     	
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
+		
+		User profileUser = userService.findById(userId).orElseThrow();
     	
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", userService.findUserById(userId)); 	
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
 		model.addAttribute("activities", pageActivitiesByUser);
-		model.addAttribute("totalActivities", pageActivitiesByUser.getTotalElements());
-		model.addAttribute("totalBargains", listBargainsByUser.size());
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("totalVotes", userVotes.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", pageActivitiesByUser.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
+		model.addAttribute(TOTAL_ACTIVITIES, pageActivitiesByUser.getTotalElements());
+		model.addAttribute(TOTAL_BARGAINS, listBargainsByUser.size());
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(TOTAL_VOTES, userVotes.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);
+		model.addAttribute(TOTAL_PAGES, pageActivitiesByUser.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
 		model.addAttribute("average", (int)Math.round(average));
 		model.addAttribute("hottest", hottest);	
     	
@@ -202,7 +235,7 @@ public class AppController {
     	boolean noResultsFound = false;
 		boolean resultsFound = false;
     	
-    	User user = userService.findUserById(userId);
+    	User user = userService.findById(userId).orElseThrow();
     	
     	Sort sort = Sort.by("voteCount").descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
@@ -227,24 +260,24 @@ public class AppController {
 			resultsFound = true;
 		}
 		
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargainsByUser);
-		model.addAttribute("totalActivities", userActivities.size());
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("totalVotes", userVotes.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);		
-		model.addAttribute("totalPages", pageBargainsByUser.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("closed", ended);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, user); 	
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargainsByUser);
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(TOTAL_VOTES, userVotes.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);		
+		model.addAttribute(TOTAL_PAGES, pageBargainsByUser.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
     	
 		return "user_bargains";
     } 
@@ -259,9 +292,9 @@ public class AppController {
     	boolean noResultsFound = false;
 		boolean resultsFound = false;
     	
-    	User user = userService.findUserById(userId);
+    	User profileUser = userService.findById(userId).orElseThrow();
     	
-    	Sort sort = Sort.by("createdAt").descending();
+    	Sort sort = Sort.by(CREATED_AT).descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
     	Page<Bargain> pageBargainsByUser = bargainService.getAllBargainsByTitleLikeByUserId(pageable, keyword, userId);
     	Long totalBargains = pageBargainsByUser.getTotalElements();
@@ -285,24 +318,24 @@ public class AppController {
 			resultsFound = true;
 		}
 		
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargainsByUser);
-		model.addAttribute("totalActivities", userActivities.size());
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("totalVotes", userVotes.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);	
-		model.addAttribute("totalPages", pageBargainsByUser.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("closed", ended);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargainsByUser);
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(TOTAL_VOTES, userVotes.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);	
+		model.addAttribute(TOTAL_PAGES, pageBargainsByUser.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
     	
 		return "user_bargains_new";
     }
@@ -317,7 +350,7 @@ public class AppController {
     	boolean noResultsFound = false;
 		boolean resultsFound = false;
     	
-    	User user = userService.findUserById(userId);
+    	User profileUser = userService.findById(userId).orElseThrow();
     	
        	Pageable pageable = PageRequest.of(page - 1, pageSize);
     	Page<Bargain> pageBargainsByUserIdOrderByCommentSize = bargainService.getBargainsMostCommentedByUserId(pageable, keyword, userId);
@@ -341,24 +374,24 @@ public class AppController {
 			resultsFound = true;
 		}
 		
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("title", keyword);
-		model.addAttribute("bargains", pageBargainsByUserIdOrderByCommentSize);
-		model.addAttribute("totalActivities", userActivities.size());
-		model.addAttribute("totalBargains", totalBargains);
-		model.addAttribute("totalDisplayBargains", totalDisplayBargains);
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("totalVotes", userVotes.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);	
-		model.addAttribute("totalPages", pageBargainsByUserIdOrderByCommentSize.getTotalPages());
-		model.addAttribute("voteDto", new VoteDto());
-		model.addAttribute("closed", ended);
-		model.addAttribute("noResultsFound", noResultsFound);
-		model.addAttribute("resultsFound", resultsFound);
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
+		model.addAttribute(TITLE, keyword);
+		model.addAttribute(BARGAINS, pageBargainsByUserIdOrderByCommentSize);
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
+		model.addAttribute(TOTAL_BARGAINS, totalBargains);
+		model.addAttribute(TOTAL_DISPLAY_BARGAINS, totalDisplayBargains);
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(TOTAL_VOTES, userVotes.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);	
+		model.addAttribute(TOTAL_PAGES, pageBargainsByUserIdOrderByCommentSize.getTotalPages());
+		model.addAttribute(VOTE_DTO, new VoteDto());
+		model.addAttribute(CLOSED, ended);
+		model.addAttribute(NO_RESULTS_FOUND, noResultsFound);
+		model.addAttribute(RESULTS_FOUND, resultsFound);
     	
 		return "user_bargains_commented";
     }
@@ -368,29 +401,29 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "10") int pageSize) {
     	
-    	User user = userService.findUserById(userId);
+    	User profileUser = userService.findById(userId).orElseThrow();
     	
-    	Sort sort = Sort.by("createdAt").descending();
+    	Sort sort = Sort.by(CREATED_AT).descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
-    	Page<Comment> pageComments = commentService.getAllCommentsByUser(pageable, user);
+    	Page<Comment> pageComments = commentService.getAllCommentsByUser(pageable, profileUser);
     	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
     	List<Vote> userVotes = voteService.getAllVotesByUserId(userId);
     	int totalUserBargains = bargainService.getAllBargainsByUserId(userId).size();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("totalComments", pageComments.getTotalElements());
-		model.addAttribute("totalVotes", userVotes.size());
-		model.addAttribute("totalActivities", userActivities.size());
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
+		model.addAttribute(TOTAL_COMMENTS, pageComments.getTotalElements());
+		model.addAttribute(TOTAL_VOTES, userVotes.size());
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
 		model.addAttribute("pageComments", pageComments);
-		model.addAttribute("totalBargains", totalUserBargains);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);		
-		model.addAttribute("totalPages", pageComments.getTotalPages());
+		model.addAttribute(TOTAL_BARGAINS, totalUserBargains);
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);		
+		model.addAttribute(TOTAL_PAGES, pageComments.getTotalPages());
 		    	
 		return "user_comments";
     }   
@@ -400,9 +433,9 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "12") int pageSize) {
     	
-    	User user = userService.findUserById(userId);
+    	User profileUser = userService.findById(userId).orElseThrow();
     	
-    	Sort sort = Sort.by("createdAt").descending();
+    	Sort sort = Sort.by(CREATED_AT).descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
     	Page<Vote> pageVotes = voteService.getVotesByUserId(pageable, userId);
     	List<Activity> userActivities = activityService.getActivitiesByUserId(userId);
@@ -415,20 +448,20 @@ public class AppController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("totalVotes", pageVotes.getTotalElements());
-		model.addAttribute("totalPositiveVotes", totalPositiveVotes);
-		model.addAttribute("totalNegativeVotes", totalNegativeVotes);
-		model.addAttribute("pageVotes", pageVotes);
-		model.addAttribute("totalActivities", userActivities.size());
-		model.addAttribute("totalBargains", totalUserBargains);
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);		
-		model.addAttribute("totalPages", pageVotes.getTotalPages());
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
+		model.addAttribute(TOTAL_VOTES, pageVotes.getTotalElements());
+		model.addAttribute(TOTAL_POSITIVE_VOTES, totalPositiveVotes);
+		model.addAttribute(TOTAL_NEGATIVE_VOTES, totalNegativeVotes);
+		model.addAttribute(PAGE_VOTES, pageVotes);
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
+		model.addAttribute(TOTAL_BARGAINS, totalUserBargains);
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);		
+		model.addAttribute(TOTAL_PAGES, pageVotes.getTotalPages());
 		    	
 		return "user_votes";
     }   
@@ -438,9 +471,9 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "12") int pageSize) {
     	
-    	User user = userService.findUserById(userId);
+    	User profileUser = userService.findById(userId).orElseThrow();
     	
-    	Sort sort = Sort.by("createdAt").descending();
+    	Sort sort = Sort.by(CREATED_AT).descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
     	Page<Vote> pageVotes = voteService.getVotesByVoteTypeAndUserId(pageable, VoteType.UPVOTE, userId);
     	int totalNegativeVotes = voteService.getAllByVoteTypeAndUserId(VoteType.DOWNVOTE, userId).size();
@@ -452,20 +485,20 @@ public class AppController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("totalVotes", totalVotes);
-		model.addAttribute("totalPositiveVotes", pageVotes.getTotalElements());
-		model.addAttribute("totalNegativeVotes", totalNegativeVotes);
-		model.addAttribute("pageVotes", pageVotes);
-		model.addAttribute("totalActivities", userActivities.size());
-		model.addAttribute("totalBargains", totalUserBargains);
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);		
-		model.addAttribute("totalPages", pageVotes.getTotalPages());
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
+		model.addAttribute(TOTAL_VOTES, totalVotes);
+		model.addAttribute(TOTAL_POSITIVE_VOTES, pageVotes.getTotalElements());
+		model.addAttribute(TOTAL_NEGATIVE_VOTES, totalNegativeVotes);
+		model.addAttribute(PAGE_VOTES, pageVotes);
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
+		model.addAttribute(TOTAL_BARGAINS, totalUserBargains);
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);		
+		model.addAttribute(TOTAL_PAGES, pageVotes.getTotalPages());
 		    	
 		return "user_votes_plus";
     }   
@@ -475,9 +508,9 @@ public class AppController {
 			@RequestParam(defaultValue = "1") int page, 
 			@RequestParam(defaultValue = "12") int pageSize) {
     	
-    	User user = userService.findUserById(userId);
+    	User profileUser = userService.findById(userId).orElseThrow();
     	
-    	Sort sort = Sort.by("createdAt").descending();
+    	Sort sort = Sort.by(CREATED_AT).descending();
     	Pageable pageable = PageRequest.of(page - 1, pageSize, sort);
     	Page<Vote> pageVotes = voteService.getVotesByVoteTypeAndUserId(pageable, VoteType.DOWNVOTE, userId);
     	
@@ -490,20 +523,20 @@ public class AppController {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
     	
-		model.addAttribute("loggedUser", email);
-		model.addAttribute("currentUser", userService.findUserByEmail(email));
-		model.addAttribute("profileUser", user); 	
-		model.addAttribute("totalVotes", totalVotes);
-		model.addAttribute("totalPositiveVotes", totalPositiveVotes);
-		model.addAttribute("totalNegativeVotes", pageVotes.getTotalElements());
-		model.addAttribute("pageVotes", pageVotes);
-		model.addAttribute("totalActivities", userActivities.size());
-		model.addAttribute("totalBargains", totalUserBargains);
-		model.addAttribute("totalComments", userComments.size());
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("currentSize", pageable.getPageSize());
-		model.addAttribute("currentPage", page);		
-		model.addAttribute("totalPages", pageVotes.getTotalPages());
+		model.addAttribute(LOGGED_USER, email);
+		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+		model.addAttribute(PROFILE_USER, profileUser); 	
+		model.addAttribute(TOTAL_VOTES, totalVotes);
+		model.addAttribute(TOTAL_POSITIVE_VOTES, totalPositiveVotes);
+		model.addAttribute(TOTAL_NEGATIVE_VOTES, pageVotes.getTotalElements());
+		model.addAttribute(PAGE_VOTES, pageVotes);
+		model.addAttribute(TOTAL_ACTIVITIES, userActivities.size());
+		model.addAttribute(TOTAL_BARGAINS, totalUserBargains);
+		model.addAttribute(TOTAL_COMMENTS, userComments.size());
+		model.addAttribute(PAGE_SIZE, pageSize);
+		model.addAttribute(CURRENT_SIZE, pageable.getPageSize());
+		model.addAttribute(CURRENT_PAGE, page);		
+		model.addAttribute(TOTAL_PAGES, pageVotes.getTotalPages());
 		    	
 		return "user_votes_minus";
     }   
@@ -511,7 +544,7 @@ public class AppController {
     @GetMapping("/users/{userId}/profile")
 	public String showUserProfile(@PathVariable Long userId, Model model) {
 		
-		User user = userService.findUserById(userId);
+		User user = userService.findById(userId).orElseThrow();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();	
 		if(userSecurity.isOwnerOrAdmin(user.getEmail(), email)) {	
@@ -521,25 +554,25 @@ public class AppController {
 					.email(user.getEmail())
 					.build(); 
 			
-			model.addAttribute("userProfileDto", userProfileDto);
-			model.addAttribute("photoFileDto", new PhotoFileDto());
-			model.addAttribute("currentUser", userService.findUserByEmail(email)); 
+			model.addAttribute(USER_PROFILE_DTO, userProfileDto);
+			model.addAttribute(PHOTO_FILE_DTO, new PhotoFileDto());
+			model.addAttribute(CURRENT_USER, userService.findUserByEmail(email)); 
 		} else {
-			throw new ForbiddenException("Access denied");
+			throw new ForbiddenException(ACCESS_DENIED);
 		}
 		
-		return "profile";
+		return PROFILE;
 	}   
     
     @Transactional
     @RequestMapping("/users/{userId}/photo/edit") 
 	public String updatePhoto(@PathVariable Long userId,
 			 RedirectAttributes redirectAttributes,
-			 @Valid @ModelAttribute("photoFileDto") PhotoFileDto photoFileDto, 
+			 @Valid @ModelAttribute(PHOTO_FILE_DTO) PhotoFileDto photoFileDto, 
 			 BindingResult result, Model model,
-			 @ModelAttribute("userProfileDto") UserProfileDto userProfileDto) throws IOException    {
+			 @ModelAttribute(USER_PROFILE_DTO) UserProfileDto userProfileDto) throws IOException    {
     	
-    	User user = userService.findUserById(userId);
+    	User user = userService.findById(userId).orElseThrow();
 		
 		if (result.hasErrors()) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -548,9 +581,9 @@ public class AppController {
 					.nickname(user.getNickname())
 					.email(user.getEmail())
 					.build(); 
-			model.addAttribute("userProfileDto", userProfileDto);
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
-    		return "profile";
+			model.addAttribute(USER_PROFILE_DTO, userProfileDto);
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+    		return PROFILE;
     	}
 			
 		UserPhoto userPhoto = UserPhoto.builder()
@@ -564,59 +597,59 @@ public class AppController {
 		user.setUserPhoto(userPhoto);
 		redirectAttributes.addFlashAttribute("editedPhoto", "The photo has been edited successfully.");		
 		
-		return "redirect:/users/" + userId + "/profile"; 	
+		return REDIRECT_USERS + userId + "/profile"; 	
 	}
     
     @Transactional
     @RequestMapping("/users/{userId}/nickname")
 	public String updateNickname(@PathVariable Long userId, 
-			@Valid @ModelAttribute("userProfileDto") UserProfileDto userProfileDto,
+			@Valid @ModelAttribute(USER_PROFILE_DTO) UserProfileDto userProfileDto,
 			BindingResult bindingResult, Model model, 
-			@ModelAttribute("photoFileDto") PhotoFileDto photoFileDto, RedirectAttributes redirectAttributes)    {
+			@ModelAttribute(PHOTO_FILE_DTO) PhotoFileDto photoFileDto, RedirectAttributes redirectAttributes)    {
 
-    	User user = userService.findUserById(userId);
+    	User user = userService.findById(userId).orElseThrow();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		
     	if (bindingResult.hasErrors()) {
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
-    		return "profile";
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+    		return PROFILE;
     	}
     	
     	if (user.getNickname().equals(userProfileDto.getNickname())) {
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
     		model.addAttribute("currentNickname", true);
-			return "profile";
+			return PROFILE;
 		}
     	
     	if (userService.isUserNicknamePresent(userProfileDto.getNickname()) 
     			&& !(user.getNickname().equals(userProfileDto.getNickname()))) {
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
     		model.addAttribute("nicknameExist", true);
-			return "profile";
+			return PROFILE;
 		}
     	
 		user.setNickname(userProfileDto.getNickname());
 		redirectAttributes.addFlashAttribute("editedNickname", "The nickname has been edited successfully.");	
 
-		return "redirect:/users/" + userId + "/profile"; 	
+		return REDIRECT_USERS + userId + "/profile"; 	
 	}
     
     @GetMapping("/users/{userId}/password")
 	public String showChangePassword(@PathVariable Long userId, Model model) {
 		
-		User user = userService.findUserById(userId);
+		User user = userService.findById(userId).orElseThrow();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 			
 		if(userSecurity.isOwnerOrAdmin(user.getEmail(), email)) {			
 			model.addAttribute("passwordDto", new PasswordDto());
-			model.addAttribute("currentUser", userService.findUserByEmail(email)); 			
+			model.addAttribute(CURRENT_USER, userService.findUserByEmail(email)); 			
 		} else {
-			throw new ForbiddenException("Access denied");
+			throw new ForbiddenException(ACCESS_DENIED);
 		}
 
-		return "change_password_form";
+		return CHANGE_PASSWORD_FORM;
 	}  
     
     @Transactional
@@ -629,26 +662,26 @@ public class AppController {
 		String email = auth.getName();
     	
     	if (bindingResult.hasErrors()) {
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
-			return "change_password_form";
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
+			return CHANGE_PASSWORD_FORM;
 		}
     	
-		User user = userService.findUserById(userId);
+		User user = userService.findById(userId).orElseThrow();
 
     	if (!bCryptPasswordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
-    		model.addAttribute("currentUser", userService.findUserByEmail(email));
+    		model.addAttribute(CURRENT_USER, userService.findUserByEmail(email));
 			model.addAttribute("oldPasswordNotCorrect", true);
-			return "change_password_form";
+			return CHANGE_PASSWORD_FORM;
 		}
 		
 		user.setPassword(bCryptPasswordEncoder.encode(passwordDto.getNewPassword()));
 		redirectAttributes.addFlashAttribute("changedPassword", "The password has been changed successfully.");
-		return "redirect:/users/" + userId + "/password"; 	
+		return REDIRECT_USERS + userId + "/password"; 	
 	}
     
     @GetMapping("users/{userId}/photo")
     public void getImage(@PathVariable("userId") Long userId, HttpServletResponse response) throws Exception {
-        User user = userService.findUserById(userId);
+        User user = userService.findById(userId).orElseThrow();
         UserPhoto userPhoto = userPhotoService.getUserPhotoById(user.getUserPhoto().getId())
         									.orElseThrow(ResourceNotFoundException::new);
         byte[] bytes = userPhoto.getFile();

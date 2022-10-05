@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -36,12 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.pch777.bargains.dto.NicknameDto;
+import com.pch777.bargains.dto.PasswordDto;
+import com.pch777.bargains.dto.UserDto;
 import com.pch777.bargains.exception.EntityFieldException;
 import com.pch777.bargains.exception.ResourceNotFoundException;
-import com.pch777.bargains.model.NicknameDto;
-import com.pch777.bargains.model.PasswordDto;
 import com.pch777.bargains.model.User;
-import com.pch777.bargains.model.UserDto;
 import com.pch777.bargains.model.UserPhoto;
 import com.pch777.bargains.security.UserSecurity;
 import com.pch777.bargains.service.UserPhotoService;
@@ -59,7 +59,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -67,6 +69,9 @@ import lombok.AllArgsConstructor;
 @Validated
 public class UserRestController {
 
+	private static final String NICKNAME = "nickname";
+	private static final String THIS_EMAIL_ALREADY_EXISTS = " - this email already exists";
+	private static final String THIS_NICKNAME_ALREADY_EXISTS = " - this nickname already exists";
 	private UserService userService;
 	private UserSecurity userSecurity;
 	private UserPhotoService userPhotoService;
@@ -86,7 +91,7 @@ public class UserRestController {
 			@RequestParam(defaultValue = "10") int size) {
 
 		try {
-			List<User> users = new ArrayList<>();
+			List<User> users;
 
 			Pageable pageable = PageRequest.of(page, size);
 			Page<User> pageUsers = userService.getUsers(pageable);
@@ -152,10 +157,10 @@ public class UserRestController {
     })
 	public ResponseEntity<String> createUser(@Valid @RequestBody UserDto userDto) throws EntityFieldException, ResourceNotFoundException {
 		if (userService.isUserPresent(userDto.getEmail())) {
-			throw new EntityFieldException("Email " + userDto.getEmail() + " already exists","email");
+			throw new EntityFieldException(userDto.getEmail() + THIS_EMAIL_ALREADY_EXISTS,"email");
 		}
 		if(userService.isUserNicknamePresent(userDto.getNickname())) {
-			throw new EntityFieldException("Nickname " + userDto.getNickname() + " already exists","nickname");
+			throw new EntityFieldException(userDto.getNickname() + THIS_NICKNAME_ALREADY_EXISTS,NICKNAME);
 		}
 
 		User user = userService.userDtoToUser(userDto);
@@ -174,10 +179,10 @@ public class UserRestController {
 	@Hidden
 	public ResponseEntity<Void> addAdmin(@Valid @RequestBody User admin) throws EntityFieldException {
 		if (userService.isUserPresent(admin.getEmail())) {
-			throw new EntityFieldException("Email " + admin.getEmail() + " already exists","email");
+			throw new EntityFieldException(admin.getEmail() + THIS_EMAIL_ALREADY_EXISTS,"email");
 		}
 		if(userService.isUserNicknamePresent(admin.getNickname())) {
-			throw new EntityFieldException("Nickname " + admin.getNickname() + " already exists","nickname");
+			throw new EntityFieldException(admin.getNickname() + THIS_NICKNAME_ALREADY_EXISTS,NICKNAME);
 		}
 		userService.registerAdmin(admin);
 		URI uri = ServletUriComponentsBuilder
@@ -215,17 +220,17 @@ public class UserRestController {
 	public ResponseEntity<String> changeNickname(@PathVariable Long userId,
 			 @Valid @RequestBody NicknameDto nicknameDto, 
 			 Principal principal) throws EntityFieldException {
-
-		if (userService.existsById(userId)) {
-			User editedUser = userService.findUserById(userId);
-			if (userSecurity.isOwnerOrAdmin(editedUser.getEmail(), principal.getName())) {
+		
+			Optional<User> editedUser = userService.findById(userId);
+			if(editedUser.isPresent()) {
+			if (userSecurity.isOwnerOrAdmin(editedUser.get().getEmail(), principal.getName())) {
 				if (!userService.isUserNicknamePresent(nicknameDto.getNickname())
-						&& !(editedUser.getNickname().equalsIgnoreCase(nicknameDto.getNickname()))) {
-							editedUser.setNickname(nicknameDto.getNickname());
+						&& !(editedUser.get().getNickname().equalsIgnoreCase(nicknameDto.getNickname()))) {
+							editedUser.get().setNickname(nicknameDto.getNickname());
 					return ResponseEntity.ok().body("Nickname successfully changed");
 
 				} else {
-					throw new EntityFieldException("Nickname " + nicknameDto.getNickname() + " already exists","nickname");
+					throw new EntityFieldException(nicknameDto.getNickname() + THIS_NICKNAME_ALREADY_EXISTS,NICKNAME);
 				}
 			} else {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -255,13 +260,13 @@ public class UserRestController {
 	public ResponseEntity<String> changePassword(@Valid @RequestBody PasswordDto passwordDto, @PathVariable Long userId,
 			Principal principal) throws EntityFieldException {
 
-		if (userService.existsById(userId)) {
-			User editedUser = userService.findUserById(userId);
-			if (editedUser.getEmail().equals(principal.getName())) {
-				if (!bCryptPasswordEncoder.matches(passwordDto.getOldPassword(), editedUser.getPassword())) {
+		Optional<User> editedUser = userService.findById(userId);
+		if(editedUser.isPresent()) {
+			if (editedUser.get().getEmail().equals(principal.getName())) {
+				if (!bCryptPasswordEncoder.matches(passwordDto.getOldPassword(), editedUser.get().getPassword())) {
 					throw new EntityFieldException("The old password is not correct","oldPassword");
 				} else {
-					editedUser.setPassword(bCryptPasswordEncoder.encode(passwordDto.getNewPassword()));
+					editedUser.get().setPassword(bCryptPasswordEncoder.encode(passwordDto.getNewPassword()));
 					return ResponseEntity.ok().body("Password successfully changed");
 				}
 			} else {
@@ -333,7 +338,7 @@ public class UserRestController {
 							userPhotoService.saveUserPhoto(userPhoto);
 							user.setUserPhoto(userPhoto);
 						} catch (IOException e) {
-							System.out.println(e.getMessage());
+							log.error(e.getMessage());
 						}
 						return ResponseEntity.accepted().build();
 					} else {

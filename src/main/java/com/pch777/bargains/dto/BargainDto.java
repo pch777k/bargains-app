@@ -1,4 +1,4 @@
-package com.pch777.bargains.model;
+package com.pch777.bargains.dto;
 
 import java.time.LocalDate;
 
@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.pch777.bargains.model.Category;
+import com.pch777.bargains.model.Shop;
 import com.pch777.bargains.validation.CompareDate;
 import com.pch777.bargains.validation.ComparePrices;
 

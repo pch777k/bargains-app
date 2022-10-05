@@ -3,7 +3,6 @@ package com.pch777.bargains.web;
 import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +35,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.pch777.bargains.dto.BargainDto;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
-import com.pch777.bargains.model.BargainDto;
 import com.pch777.bargains.model.BargainPhoto;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.User;
@@ -62,7 +61,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
@@ -89,7 +90,7 @@ public class BargainRestController {
         @RequestParam(defaultValue = "10") int size) {
         
         try {
-		      List<Bargain> bargains = new ArrayList<>();
+		      List<Bargain> bargains;
 		      
 		      Pageable pageable = PageRequest.of(page, size);
 		      Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLike(pageable, keyword);
@@ -125,7 +126,7 @@ public class BargainRestController {
         @RequestParam(defaultValue = "10") int size) {
         
         try {
-		      List<Bargain> bargains = new ArrayList<>();
+		      List<Bargain> bargains;
 		      
 		      Pageable pageable = PageRequest.of(page, size);
 		      Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLikeByUserId(pageable, keyword, userId);
@@ -163,7 +164,7 @@ public class BargainRestController {
         try {
         	Category bargainCategory = converter.convert(category);  
         	
-        	List<Bargain> bargains = new ArrayList<>();
+        	List<Bargain> bargains;
 		      
 		      Pageable pageable = PageRequest.of(page, size);
 		      Page<Bargain> pageBargains = bargainService.getAllBargainsByTitleLikeByCategory(pageable, keyword, bargainCategory);
@@ -204,7 +205,7 @@ public class BargainRestController {
 	})
 	public ResponseEntity<Bargain> getBargainById(@PathVariable Long bargainId) {
 		return bargainService.getById(bargainId)
-				.map(bargain -> ResponseEntity.ok(bargain))
+				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
@@ -345,7 +346,7 @@ public class BargainRestController {
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	@PatchMapping("/bargains/{id}")
 	@Hidden
-	public ResponseEntity<Object> updateBargainTitle(@RequestBody String title, @PathVariable Long id, Principal principal) throws ResourceNotFoundException {
+	public ResponseEntity<Object> updateBargainTitle(@RequestBody String title, @PathVariable Long id, Principal principal) {
 	
 		return bargainService.getById(id)
 				.map(b -> {
@@ -460,18 +461,18 @@ public class BargainRestController {
 			responseCode = "404", content = @Content)
 	})
 	public ResponseEntity<Object> addPhotoToBargain(@PathVariable Long bargainId, 
-			@Valid @ImageContentType @FileSize @RequestParam(value = "file") MultipartFile multipartFile, Principal principal) throws IOException {
+			@Valid @ImageContentType @FileSize @RequestParam(value = "file") MultipartFile multipartFile, Principal principal) {
 
 		return bargainService.getById(bargainId)
 				.map(bargain -> {
                     if (userSecurity.isOwnerOrAdmin(bargain.getUser().getEmail(), principal.getName())) {
                     	if(!multipartFile.isEmpty()) {
 							try {
-								BargainPhoto bargainPhoto = bargainService.FileToBargainPhoto(multipartFile);
+								BargainPhoto bargainPhoto = bargainService.fileToBargainPhoto(multipartFile);
 								bargainPhotoService.saveBargainPhoto(bargainPhoto);
 								bargain.setBargainPhoto(bargainPhoto); 
 							} catch (IOException e) {
-								System.out.println(e.getMessage());
+								log.error(e.getMessage());
 							}	  		
                     	}                  	
                         return ResponseEntity.accepted().build();
@@ -482,18 +483,4 @@ public class BargainRestController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-//	@PostMapping("/bargains/photo")
-//	public ResponseEntity<Void> addPhoto(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-//		BargainPhoto bargainPhoto = bargainService.FileToBargainPhoto(multipartFile);
-//		bargainPhotoService.saveBargainPhoto(bargainPhoto);
-//		
-//		URI uri = ServletUriComponentsBuilder
-//				.fromCurrentRequestUri()
-//				.path("/" + bargainPhoto.getId().toString())
-//				.build()
-//				.toUri();
-//		return ResponseEntity.created(uri).build();
-//	}
-	
-
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
   <title>Error 404 Not Found</title>
   <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
@@ -11,7 +11,6 @@
   <div th:replace="fragments/navigation-simple :: navigation-simple"></div>
 
   <!-- Error-display -->
-  <!-- <div th:replace="fragments/error-display :: error-display(bgTextColor='card-body bg-light text-dark')"></div>	 -->
   <div id="main" class="container text-center mt-5 pt-5">
     <div class="row justify-content-center align-items-center mt-5 ">
       <div class="card mb-3" style="max-width: 36rem;">

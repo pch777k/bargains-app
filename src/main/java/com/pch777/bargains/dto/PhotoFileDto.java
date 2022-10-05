@@ -1,4 +1,4 @@
-package com.pch777.bargains.model;
+package com.pch777.bargains.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 

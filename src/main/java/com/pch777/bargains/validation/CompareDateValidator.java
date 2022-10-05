@@ -8,6 +8,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CompareDateValidator implements ConstraintValidator<CompareDate, Object> {
 
 	private String startBargainField;
@@ -43,7 +46,7 @@ public class CompareDateValidator implements ConstraintValidator<CompareDate, Ob
 
 			return isValid;
 		} catch (Exception e) {
-			System.out.println("Something went wrong during compare startBargain date to endBargain date.");
+			log.error("Something went wrong during compare startBargain date to endBargain date.");
 		}
 		return true;
 	}

@@ -5,6 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ComparePasswordsValidator implements ConstraintValidator<ComparePasswords, Object> {
 
 	private String passwordField;
@@ -32,7 +35,7 @@ public class ComparePasswordsValidator implements ConstraintValidator<ComparePas
 
 			return isValid;
 		} catch (Exception e) {
-			System.out.println("Something went wrong.");
+			log.error("Something went wrong.");
 		}
 		return true;
 	}

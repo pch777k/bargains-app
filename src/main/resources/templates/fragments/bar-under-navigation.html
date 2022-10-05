@@ -4,8 +4,8 @@
 <div  class="container-fluid bg-dark" >
   <div class="container">
   	<div class="d-sm-inline mr-sm-3 d-block">
-      <span><img th:src="${'/users/' + profileUser.id + '/photo'}"  width="50" height="50" class="rounded-circle my-sm-3"></span>
-<!-- 	  <span th:if="${profileUser.photo == null}"><img th:src="${noBargainPhoto}" width="50" height="50" class="rounded-circle my-sm-3"></span> -->
+      <span><img th:src="${'/users/' + profileUser.id + '/photo'}"  width="50" height="50" 
+      class="rounded-circle my-sm-3" alt="user photo"></span>
 	  <span class="ml-1 h4 text-primary" th:text="${profileUser.nickname}"></span>
 	</div>
 	<div class="d-sm-inline d-block py-1 py-sm-0">

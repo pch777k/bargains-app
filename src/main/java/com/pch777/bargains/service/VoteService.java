@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pch777.bargains.dto.VoteDto;
 import com.pch777.bargains.model.ActivityType;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.model.Vote;
-import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.repository.BargainRepository;
 import com.pch777.bargains.repository.UserRepository;
@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class VoteService {
 
+	private static final String NOT_FOUND_A_BARGAIN_WITH_ID = "Not found a bargain with id: ";
 	private final VoteRepository voteRepository;
 	private final BargainRepository bargainRepository;
 	private final UserRepository userRepository;
@@ -33,7 +34,8 @@ public class VoteService {
 
 	@Transactional
 	public boolean vote(VoteDto voteDto, Long bargainId, String email) {
-		Bargain bargain = bargainRepository.findById(bargainId).get();
+		Bargain bargain = bargainRepository.findById(bargainId)
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_A_BARGAIN_WITH_ID + bargainId));
 
 		Optional<Vote> voteByBargainAndUser = voteRepository
 				.findByBargainIdAndUserEmail(bargainId, email);
@@ -59,13 +61,13 @@ public class VoteService {
 	@Transactional
 	public void initVote(Long bargainId, Long userId, VoteType voteType) throws Exception {
 		Bargain bargain = bargainRepository.findById(bargainId)
-				.orElseThrow(() -> new IllegalArgumentException("Not found a bargain with id: " + bargainId));
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_A_BARGAIN_WITH_ID + bargainId));
 		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new IllegalArgumentException("Not found a bargain with id: " + userId));
+				.orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_A_BARGAIN_WITH_ID + userId));
 		
 		Optional<Vote> voteByBargainAndUser = voteRepository.findByBargainIdAndUserEmail(bargainId, user.getEmail());
 
-		if (!voteByBargainAndUser.isPresent() && userId!=bargain.getUser().getId()) {
+		if (!voteByBargainAndUser.isPresent() && !bargain.getUser().getId().equals(userId)) {
 			if (VoteType.UPVOTE.equals(voteType)) {
 				bargain.setVoteCount(bargain.getVoteCount() + 1);
 			} else {

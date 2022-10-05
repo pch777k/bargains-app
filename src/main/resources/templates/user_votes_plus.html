@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
   <title>[[${#strings.capitalize(#strings.toLowerCase(profileUser.nickname))}]] comments</title>
   <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
@@ -40,13 +40,14 @@
 		  <div class="row align-items-center mt-2">
 		    <div class="col-2">
 		      <a th:href="@{/bargains/{bargainId} (bargainId=${vote.bargain.id})}">				    					    	 
-			    <img th:src="@{${'/bargains/' + vote.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
+			    <img th:src="@{${'/bargains/' + vote.bargain.id + '/photo'}}" width="50" height="50" 
+			    class="rounded border" alt="bargain photo">
 			  </a>
 		    </div>
 		    <div class="col-5 d-flex justify-content-start">
 		      <div class="border rounded pb-1 px-2 ml-2 ml-xl-0">
 		        <span class="h6" th:text="${vote.bargain.voteCount}"></span><span class="h6">&#176;</span>
-	            <button type="button" class="btn btn-sm btn-danger py-0 px-1"><i class="fas fa-plus"></i></button>
+	            <button type="button" class="btn btn-sm btn-danger py-0 px-1"><em class="fas fa-plus"></em></button>
 		      </div>	  
 	  	    </div>
 	        <div class="col-4 flex justify-content-end">

@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CommentService {
 
+	private static final String CANNOT_FIND_COMMENT_WITH_ID = "Cannot find comment with id: ";
 	private CommentRepository commentRepository;
 	
 	public Page<Comment> getAllComments(Pageable pageable) {
@@ -59,7 +60,7 @@ public class CommentService {
 	
 	public Comment editComment(Comment comment, Long id) throws ResourceNotFoundException {
 		if (!existsById(id)) {
-			throw new ResourceNotFoundException("Cannot find comment with id: " + id);
+			throw new ResourceNotFoundException(CANNOT_FIND_COMMENT_WITH_ID + id);
 		}
 		comment.setId(id);
 
@@ -68,7 +69,7 @@ public class CommentService {
 	
 	public void deleteCommentById(Long id) throws ResourceNotFoundException {
 		if (!existsById(id)) {
-			throw new ResourceNotFoundException("Cannot find comment with id: " + id);
+			throw new ResourceNotFoundException(CANNOT_FIND_COMMENT_WITH_ID + id);
 		}
 		commentRepository.deleteById(id);		
 	}
@@ -81,8 +82,9 @@ public class CommentService {
 		return commentRepository.existsById(id);
 	}
 
-	public void editCommentContent(String content, Long id) {
-		Comment comment = commentRepository.findById(id).get();
+	public void editCommentContent(String content, Long id) throws ResourceNotFoundException {
+		Comment comment = commentRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(CANNOT_FIND_COMMENT_WITH_ID + id));
 		comment.setContent(content);
 		commentRepository.save(comment);		
 	}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -44,7 +44,6 @@
 		      </div>
 		      <div><span th:text="${editedPhoto}" class="text text-success"></span></div>
 		      <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small>
-<!-- 		      <small><span class="text text-danger" th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}"></span></small> -->
 		      	      
 		      <div class="d-flex justify-content-center mt-3">
 	            <a class="btn btn-primary mr-3" th:href="@{/}" role="button">Back</a>

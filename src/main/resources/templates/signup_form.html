@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -39,28 +39,28 @@
 		        </div>
     		    <div class="input-group mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
-    			    <span class="input-group-text"><i class="far fa-user"></i></span>
+    			    <span class="input-group-text"><em class="far fa-user"></em></span>
   				  </div>
                     <input type="text" th:field="*{nickname}" id="nickname" class="form-control" placeholder="nickname"/>
 		        </div>
 		            <small><span class="text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></span></small>  		      
   		        <div class="input-group mt-2 mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
-    			    <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+    			    <span class="input-group-text"><em class="fas fa-envelope-square"></em></span>
   				  </div>
 	                <input type="email" th:field="*{email}" id="email" class="form-control" placeholder="email"/>           
 		        </div>
 		          <small><span class="text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></small>	  		      
 		        <div class="input-group mt-2 mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
-    			    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+    			    <span class="input-group-text"><em class="fas fa-lock"></em></span>
   				  </div>
 	                <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="password"/>  
 		        </div>
 		            <small><span class="text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span></small>
 		        <div class="input-group mt-2 mt-md-3 px-md-3">
   				  <div class="input-group-prepend">
-    			    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+    			    <span class="input-group-text"><em class="fas fa-lock"></em></span>
   				  </div>
 	                <input type="password" th:field="*{confirmPassword}" id="confirmPassword" class="form-control" placeholder="confirm password"/>    
 		        </div>

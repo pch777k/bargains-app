@@ -1,10 +1,14 @@
 package com.pch777.bargains.validation;
 
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ComparePricesValidator implements ConstraintValidator<ComparePrices, Object> {
 
 	private String reducePriceField;
@@ -36,7 +40,7 @@ public class ComparePricesValidator implements ConstraintValidator<ComparePrices
 
 			return isValid;
 		} catch (Exception e) {
-			System.out.println("Something went wrong.");
+			log.error("Something went wrong.");
 		}
 		return true;
 	}

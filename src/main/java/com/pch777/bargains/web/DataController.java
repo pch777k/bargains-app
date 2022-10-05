@@ -1,6 +1,5 @@
 package com.pch777.bargains.web;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,25 +7,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pch777.bargains.service.InitializerService;
+import com.pch777.bargains.utility.ValuesProperties;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 @Tag(name = "Data", description = "Initializing sample data")
 public class DataController {
 	
-	private InitializerService initializerService;	
-	private final int NUMBER_OF_VOTES;
-	
-	public DataController(InitializerService initializerService, 
-			@Value("${bargainapp.number-of-votes}") int nUMBER_OF_VOTES) {
-		this.initializerService = initializerService;
-		this.NUMBER_OF_VOTES = nUMBER_OF_VOTES;
-	}
+	private final InitializerService initializerService;	
+	private final ValuesProperties valuesProperties;
 
 	@PostMapping("/init-data")
 	@Transactional
@@ -43,7 +39,7 @@ public class DataController {
 		initializerService.initUserData();
 		initializerService.initBargainData();
 		initializerService.initCommentData();
-		initializerService.initVoteData(NUMBER_OF_VOTES);
+		initializerService.initVoteData(valuesProperties.getNumberOfVotes());
 		return ResponseEntity.ok("successful data initialization");
 		}
 	catch (Exception e) {

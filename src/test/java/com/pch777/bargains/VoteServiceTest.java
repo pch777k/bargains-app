@@ -11,11 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.pch777.bargains.dto.VoteDto;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.Bargain;
 import com.pch777.bargains.model.Category;
 import com.pch777.bargains.model.User;
-import com.pch777.bargains.model.VoteDto;
 import com.pch777.bargains.model.VoteType;
 import com.pch777.bargains.service.BargainService;
 import com.pch777.bargains.service.UserService;
@@ -26,7 +26,7 @@ import com.pch777.bargains.service.VoteService;
 @SpringBootTest
 //@Import({BargainService.class, UserService.class, VoteService.class})
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class VoteServiceTest {
+class VoteServiceTest {
 
 	@Autowired
 	BargainService bargainService;
@@ -38,7 +38,7 @@ public class VoteServiceTest {
 	VoteService voteService;
 	
 	@Test
-	public void shouldCheckIsOwnerCanVoteOnHisBargain() throws ResourceNotFoundException {
+	void shouldCheckIsOwnerCanVoteOnHisBargain() throws ResourceNotFoundException {
 		// given
 		Bargain bargain = bargainService.addBargain(givenHtc());
 		User owner = givenOwner();
@@ -53,7 +53,7 @@ public class VoteServiceTest {
 	}
 	
 	@Test
-	public void shouldCheckIsUserCanVoteOnBargain() throws ResourceNotFoundException {
+	void shouldCheckIsUserCanVoteOnBargain() throws ResourceNotFoundException {
 		// given
 		Bargain bargain = bargainService.addBargain(givenHtc());
 		User owner = givenOwner();

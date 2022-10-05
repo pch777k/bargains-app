@@ -1,6 +1,7 @@
 package com.pch777.bargains.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,7 +34,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Bargain extends AuditModel {
+public class Bargain {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +58,11 @@ public class Bargain extends AuditModel {
 	private String link;
 	
 	private Boolean closed;
+	
+	private LocalDateTime createdAt;
+	
+	@LastModifiedDate
+    private LocalDateTime updatedAt;
 
 	private LocalDate startBargain;
 

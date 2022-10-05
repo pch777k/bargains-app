@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
 <title>Best price deals | Bargains</title>
 	
@@ -26,7 +26,7 @@
 	  <div class="row row-margin border rounded mx-sm-2 mb-4">
 		<div class="col-12 py-2">
 		  <div class="row">
-			<span class="mx-2 pl-1"><i class="fas fa-exclamation-circle fa-lg text-danger"></i> Unfortunately, this bargain has expired.</span>
+			<span class="mx-2 pl-1"><em class="fas fa-exclamation-circle fa-lg text-danger"></em> Unfortunately, this bargain has expired.</span>
 		  </div>
 		</div>
 	  </div>
@@ -36,8 +36,10 @@
 	  <div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 	    <div class="row">
 	      <div class="col-12">
-		    <img th:if="${bargain.closed}" th:src="${'/bargains/' + bargain.id + '/photo'}" class="img-fluid opacity-30" />
-	        <img th:unless="${bargain.closed}" th:src="${'/bargains/' + bargain.id + '/photo'}" class="img-fluid" />
+		    <img th:if="${bargain.closed}" th:src="${'/bargains/' + bargain.id + '/photo'}" 
+		    class="img-fluid opacity-30" alt="bargain image" />
+	        <img th:unless="${bargain.closed}" th:src="${'/bargains/' + bargain.id + '/photo'}" 
+	        class="img-fluid" alt="bargain image"/>
 	      </div>
 	      <th:block sec:authorize="hasAuthority('USER')">
             <th:block th:if="${bargain.user.email.equals(currentUser.email)}">
@@ -63,7 +65,7 @@
 			<div class="row row-margin mt-3 mt-sm-0">
 			  <div class="col-auto border rounded pt-1 d-flex justify-content-center">
 				<span class="mx-2 h6 pt-1" th:text="${bargain.voteCount}"></span>
-				<span><i class="fas fa-hourglass-end pt-1 mt-1 h5"></i></span>
+				<span><em class="fas fa-hourglass-end pt-1 mt-1 h5"></em></span>
 				<span class="h6 pt-1">&nbsp;End</span>
 			  </div>
 			</div>
@@ -111,7 +113,8 @@
 	      <div class="col-12 col-lg-6">
 		    <div class="row d-flex justify-content-between">        
 			  <div class="col-auto">
-			    <span><img th:src="${'/users/' + bargain.user.id + '/photo'}" width="25" height="25" class="rounded-circle"></span>
+			    <span><img th:src="${'/users/' + bargain.user.id + '/photo'}" 
+			    width="25" height="25" class="rounded-circle" alt="user image"></span>
 				<a th:href="@{/users/{userId}/overview ((userId=${bargain.user.id}))}">
 				  <span class="ml-1" th:text="${bargain.user.nickname}"></span>
   				</a>
@@ -119,14 +122,14 @@
 			  <div class="col-auto ">
 				<div class="d-none d-sm-block">
 				  <a class="btn btn-outline-info " title="comments" role="button" th:href="@{/bargains/{id}#comments (id=${bargain.id})}">
-				    <span><i class="far fa-comment fa-lg ml-2"></i></span>
-					<b><span class="ml-1" th:text="${#lists.size(bargain.comments)}"></span></b>
+				    <span><em class="far fa-comment fa-lg ml-2"></em></span>
+					<strong><span class="ml-1" th:text="${#lists.size(bargain.comments)}"></span></strong>
 			      </a>
 			    </div>
 			    <div class="d-block d-sm-none">
 			      <a class="btn btn-sm btn-outline-info " title="comments" role="button" th:href="@{/bargains/{id}#comments (id=${bargain.id})}">
-				    <span><i class="far fa-comment fa-lg ml-2"></i></span>
-					<b><span class="ml-1" th:text="${#lists.size(bargain.comments)}"></span></b>
+				    <span><em class="far fa-comment fa-lg ml-2"></em></span>
+					<strong><span class="ml-1" th:text="${#lists.size(bargain.comments)}"></span></strong>
 			      </a>
 			    </div>      
 			  </div>
@@ -146,24 +149,24 @@
 	  <div class="col-12 py-2">
 		<div class="row  text-muted">
 		  <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-start mb-1">
-			<small><i class="far fa-clock"></i> Created on: </small>
+			<small><em class="far fa-clock"></em> Created on: </small>
 			<small class="ml-1" th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(bargain.createdAt)}"></small>
 		  </div>
 		  <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-start mb-1">
 			<th:block th:if="${bargain.updatedAt != bargain.createdAt}">
-			  <small><i class="fas fa-history"></i> Modified on: </small>
+			  <small><em class="fas fa-history"></em> Modified on: </small>
 			  <small class="ml-1" th:text="${#temporals.format(bargain.updatedAt, 'dd-MM-yyyy')}"></small>
 			</th:block>
 		  </div>
 		  <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-start mb-1">
 			<th:block th:if="${bargain.startBargain != null}">
-			  <small><i class="fas fa-hourglass-start"></i> Starts on: </small>
+			  <small><em class="fas fa-hourglass-start"></em> Starts on: </small>
 			  <small class="ml-1" th:text="${#temporals.format(bargain.startBargain, 'dd-MM-yyyy')}"></small>
 			</th:block>
 		  </div>
 		  <div class="col-12 col-md-6 col-lg-3 d-flex justify-content-start mb-1">
 			<th:block th:if="${bargain.endBargain != null}" >
-			  <small><i class="fas fa-hourglass-end"></i> Ends on: </small>
+			  <small><em class="fas fa-hourglass-end"></em> Ends on: </small>
 			  <small class="ml-1" th:text="${#temporals.format(bargain.endBargain, 'dd-MM-yyyy')}"></small>
 			</th:block>
 		  </div>
@@ -204,7 +207,7 @@
 			<div class="row">
 			  <div class="col-12 d-flex justify-content-center" >
 				<a th:name="comments">
-				  <span class="h5 text-primary">Comments <i class="far fa-comment"></i> [[${totalComments}]]</span>
+				  <span class="h5 text-primary">Comments <em class="far fa-comment"></em> [[${totalComments}]]</span>
 				</a> 
 			  </div>
 		    </div>	
@@ -216,7 +219,8 @@
 		   	  <div class="row row-margin"> 
 			    <div class="col-2 col-md-1 d-flex justify-content-center">			    			    	
 			      <a th:href="@{/users/{userId}/bargains ((userId=${comment.user.id}))}">
-				    <img th:src="@{${'/users/' + comment.user.id + '/photo'}}" width="50" height="50" class="rounded-circle">
+				    <img th:src="@{${'/users/' + comment.user.id + '/photo'}}" 
+				    width="50" height="50" class="rounded-circle" alt="user image">
 		    	  </a>
         	    </div>
 			    <div class="col-10 col-sm-11"> 
@@ -241,8 +245,6 @@
 				    <div class="col-12 d-flex justify-content-start">
 				      <a th:if="${comment.user.email.equals(loggedUser)}" class="btn btn-sm btn-info mr-2" role="button"
 						 th:href="@{/bargains/{bargainId}/comments/{commentId}/edit (bargainId=${bargain.id}, commentId=${comment.id})}">edit</a>
-<!-- 					  <a sec:authorize="isAuthenticated()" class="btn btn-sm btn-info mr-2" role="button" -->
-<!-- 						 th:href="@{/bargains/{bargainId}/comments/{commentId}/cite (bargainId=${bargain.id}, commentId=${comment.id})}">cite</a> -->
 					  <a th:if="${comment.user.email.equals(loggedUser)}" class="deleteBtn btn btn-sm btn-info mr-2" role="button"
 						 th:href="@{/bargains/{bargainId}/comments/{commentId}/delete (bargainId=${bargain.id}, commentId=${comment.id})}">delete</a>
 				    </div>
@@ -256,7 +258,8 @@
 			      <div class="row"> 
 			        <div class="col-3">		    			    	
 			          <a th:href="@{/users/{userId}/bargains ((userId=${comment.user.id}))}">
-				        <img th:src="@{${'/users/' + comment.user.id + '/photo'}}" width="50" height="50" class="rounded-circle">
+				        <img th:src="@{${'/users/' + comment.user.id + '/photo'}}" 
+				        width="50" height="50" class="rounded-circle" alt="user image">
 		    	      </a>
         	        </div>			     
 			        <div class="col-9 ">
@@ -279,8 +282,6 @@
 				    <div class="col-12 d-flex justify-content-start">
 				      <a th:if="${comment.user.email.equals(loggedUser)}" class="btn btn-sm btn-info mr-2" role="button"
 					     th:href="@{/bargains/{bargainId}/comments/{commentId}/edit (bargainId=${bargain.id}, commentId=${comment.id})}">edit</a>
-<!-- 					  <a sec:authorize="isAuthenticated()" class="btn btn-sm btn-info mr-2" role="button" -->
-<!-- 					     th:href="@{/bargains/{bargainId}/comments/{commentId}/cite (bargainId=${bargain.id}, commentId=${comment.id})}">cite</a> -->
 					  <a th:if="${comment.user.email.equals(loggedUser)}" class="deleteBtn btn btn-sm btn-info mr-2" role="button"
 					     th:href="@{/bargains/{bargainId}/comments/{commentId}/delete (bargainId=${bargain.id}, commentId=${comment.id})}">delete</a>
 			        </div>

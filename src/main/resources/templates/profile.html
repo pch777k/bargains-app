@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -53,7 +53,7 @@
 		      </div>
 		      <div class="input-group mt-3">
   				<div class="input-group-prepend">
-    			  <span class="input-group-text"><i class="far fa-user"></i></span>
+    			  <span class="input-group-text"><em class="far fa-user"></em></span>
   				</div>
 	              <input type="text" th:field="*{nickname}" id="nickname" class="form-control" placeholder="nickname"/> 
 		      </div>
@@ -62,7 +62,7 @@
 		      	  <small><span class="text text-danger" th:if="${currentNickname}">Please choose a new nickname</span></small>
 		      <div class="input-group mt-3">
   			    <div class="input-group-prepend">
-    			  <span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+    			  <span class="input-group-text"><em class="fas fa-envelope-square"></em></span>
   				</div>
 	              <input type="email" th:field="*{email}" id="email" class="form-control" readonly/>
 		      </div>		      

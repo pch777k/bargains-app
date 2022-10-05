@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
@@ -20,19 +21,23 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 @ControllerAdvice
 public class CustomGlobalExceptionHandler {
 	
+	private static final String HTTP_STATUS = "status";
+	private static final String TIMESTAMP = "timestamp";
+	private static final String ERRORS = "errors";
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.BAD_REQUEST;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
-	    List<String> errors = ex
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
+	    List<String> errorsList = ex
 	        .getBindingResult()
 	        .getFieldErrors()
 	        .stream()
 	        .map(x -> x.getField() + " - " + x.getDefaultMessage())
 	        .collect(Collectors.toList());
-	    body.put("errors", errors);
+	    body.put(ERRORS, errorsList);
 	    return new ResponseEntity<>(body, status);
 	}
 	
@@ -40,13 +45,13 @@ public class CustomGlobalExceptionHandler {
 	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.BAD_REQUEST;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
-	    List<String> errors = ex.getConstraintViolations()
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
+	    List<String> errorsList = ex.getConstraintViolations()
 	    		.stream()
-	    		.map(x -> x.getMessage())
+	    		.map(ConstraintViolation::getMessage)
 	    		.collect(Collectors.toList());
-	    body.put("errors", errors);
+	    body.put(ERRORS, errorsList);
 	    return new ResponseEntity<>(body, status);
 	}
 	
@@ -54,9 +59,9 @@ public class CustomGlobalExceptionHandler {
 	public ResponseEntity<Object> handleEntityFieldException(EntityFieldException ex) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.BAD_REQUEST;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
-	    body.put("errors", ex.getField() + " - " + ex.getMessage());
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
+	    body.put(ERRORS, ex.getField() + " - " + ex.getMessage());
 	    return new ResponseEntity<>(body, status);
 	}
 	
@@ -64,9 +69,9 @@ public class CustomGlobalExceptionHandler {
 	public ResponseEntity<Object> handleEntityFieldException(AccessDeniedException ex) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.FORBIDDEN;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
-	    body.put("errors", "Access Denied");
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
+	    body.put(ERRORS, "Access Denied");
 	    return new ResponseEntity<>(body, status);
 	}
 	
@@ -74,9 +79,9 @@ public class CustomGlobalExceptionHandler {
 	public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.BAD_REQUEST;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
-	    body.put("errors", "Only [DOWNVOTE, UPVOTE] values are acceptable for the VoteType field");
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
+	    body.put(ERRORS, "Only [DOWNVOTE, UPVOTE] values are acceptable for the VoteType field");
 	    return new ResponseEntity<>(body, status);
 	}
 	
@@ -84,8 +89,8 @@ public class CustomGlobalExceptionHandler {
 	public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, HttpServletRequest req) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.NOT_FOUND;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
 	    body.put("error", status.name());
 	    body.put("message", ex.getMessage());
 	    body.put("path", req.getServletPath());
@@ -97,8 +102,8 @@ public class CustomGlobalExceptionHandler {
 	public ResponseEntity<Object> handleBadRequestException(BadRequestException ex, HttpServletRequest req) {
 	    Map<String, Object> body = new LinkedHashMap<>();
 	    HttpStatus status = HttpStatus.BAD_REQUEST;
-	    body.put("timestamp", new Date());
-	    body.put("status", status.value());
+	    body.put(TIMESTAMP, new Date());
+	    body.put(HTTP_STATUS, status.value());
 	    body.put("error", status.name());
 	    body.put("message", ex.getMessage());
 	    body.put("path", req.getServletPath());

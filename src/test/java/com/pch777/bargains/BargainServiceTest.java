@@ -19,13 +19,13 @@ import com.pch777.bargains.service.BargainService;
 @AutoConfigureTestDatabase
 @Import({BargainService.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class BargainServiceTest {
+class BargainServiceTest {
 
 	@Autowired
 	BargainService bargainService;
 	
 	@Test
-	public void shouldGetAllBargains() {
+	void shouldGetAllBargains() {
 		// given
 		bargainService.addBargain(givenHtc());
 		bargainService.addBargain(givenAdidas());
@@ -38,7 +38,7 @@ public class BargainServiceTest {
 	}
 	
 	@Test
-	public void shouldGetBargainById() {
+	void shouldGetBargainById() {
 		// given
 		bargainService.addBargain(givenHtc());
 		bargainService.addBargain(givenAdidas());
@@ -52,7 +52,7 @@ public class BargainServiceTest {
 	}
 	
 	@Test
-	public void shouldEditBargain() throws ResourceNotFoundException {
+	void shouldEditBargain() throws ResourceNotFoundException {
 		// given
 		bargainService.addBargain(givenHtc());
 		Bargain bargain = givenAdidas();
@@ -65,7 +65,7 @@ public class BargainServiceTest {
 	}
 	
 	@Test
-	public void shouldEditBargainTitle() throws ResourceNotFoundException {
+	void shouldEditBargainTitle() throws ResourceNotFoundException {
 		// given
 		bargainService.addBargain(givenHtc());
 		bargainService.addBargain(givenAdidas());
@@ -78,7 +78,7 @@ public class BargainServiceTest {
 	}
 	
 	@Test
-	public void shouldDeleteBargainById() throws ResourceNotFoundException {
+	void shouldDeleteBargainById() throws ResourceNotFoundException {
 		// given
 		bargainService.addBargain(givenHtc());
 		bargainService.addBargain(givenAdidas());

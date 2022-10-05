@@ -1,4 +1,6 @@
-package com.pch777.bargains.model;
+package com.pch777.bargains.dto;
+
+import com.pch777.bargains.model.VoteType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
-	private Long bargainId;
-	private String content; 
+public class VoteDto {
+    private VoteType voteType;
 }

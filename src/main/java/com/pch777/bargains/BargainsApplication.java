@@ -1,5 +1,7 @@
 package com.pch777.bargains;
 
+import java.util.Random;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -20,6 +22,11 @@ public class BargainsApplication {
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplateBuilder().build();
+	}
+	
+	@Bean
+	public Random random() {
+		return new Random();
 	}
 
 }

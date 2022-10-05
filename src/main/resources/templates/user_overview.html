@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/base :: baseHeader(~{::title},~{::link})">
 
   <title>[[${#strings.capitalize(#strings.toLowerCase(profileUser.nickname))}]] overview</title>
@@ -30,11 +30,11 @@
    					 Statistics
   				</div>
 			    <ul class="list-group list-group-flush">
-				    <li class="list-group-item"><i class="fas fa-tag mr-1"></i> [[${totalBargains}]] bargains</li>
-				    <li class="list-group-item"><i class="fas fa-comment mr-1"></i> [[${totalComments}]] comments</li>
-				    <li class="list-group-item"><i class="fas fa-vote-yea mr-1"></i> [[${totalVotes}]] votes</li>
-				    <li class="list-group-item"><i class="fab fa-gripfire mr-1"></i> [[${hottest}]]&#176; hottest</li>
-				    <li class="list-group-item"><i class="fas fa-chart-bar mr-1"></i> [[${average}]]&#176; average</li>
+				    <li class="list-group-item"><em class="fas fa-tag mr-1"></em> [[${totalBargains}]] bargains</li>
+				    <li class="list-group-item"><em class="fas fa-comment mr-1"></em> [[${totalComments}]] comments</li>
+				    <li class="list-group-item"><em class="fas fa-vote-yea mr-1"></em> [[${totalVotes}]] votes</li>
+				    <li class="list-group-item"><em class="fab fa-gripfire mr-1"></em> [[${hottest}]]&#176; hottest</li>
+				    <li class="list-group-item"><em class="fas fa-chart-bar mr-1"></em> [[${average}]]&#176; average</li>
 			    </ul>
 			</div>
 		</div>
@@ -49,13 +49,14 @@
     					<div class="row">
     						<div class="col-2 col-sm-1 mr-3 mr-md-4 mr-lg-2 mr-xl-1">
     							<a th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">				    					    	 
-									<img th:src="@{${'/bargains/' + activity.bargain.id + '/photo'}}" width="50" height="50" class="rounded border">
+									<img th:src="@{${'/bargains/' + activity.bargain.id + '/photo'}}" width="50" height="50" 
+									class="rounded border" alt="bargain photo">
 								</a>
     						</div>
     						<div class="col-9 col-sm-10">
     						<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).BARGAIN}"> 	
 								<div class="text-muted" title="Added">
-									<i class="fas fa-plus"></i> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
+									<em class="fas fa-plus"></em> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
 								</div>
 								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
 									<strong><span th:text="${activity.user.nickname}"></span></strong> added the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
@@ -63,7 +64,7 @@
 							</th:block>	
 							<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).COMMENT}"> 
 								<div class="text-muted" title="Commented">
-									<i class="fas fa-comment"> </i> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
+									<em class="fas fa-comment"> </em> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
 								</div>
 								<a  th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
 									<strong><span th:text="${activity.user.nickname}"></span></strong> commented on the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>
@@ -71,7 +72,7 @@
 							</th:block>	
 							<th:block th:if="${activity.activityType == T(com.pch777.bargains.model.ActivityType).VOTE}"> 
 								<div class="text-muted" title="Voted">
-									<i class="fas fa-vote-yea"> </i> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
+									<em class="fas fa-vote-yea"> </em> <small th:text="${T(com.pch777.bargains.service.BargainService).whenElementAdded(activity.createdAt)}" ></small>
 								</div> 
 								<a th:href="@{/bargains/{activityId} (activityId=${activity.bargain.id})}">
 									<strong><span th:text="${activity.user.nickname}"></span></strong> voted on the bargain <strong><span th:text="${activity.bargain.title}"></span></strong>

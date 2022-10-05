@@ -5,19 +5,19 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.pch777.bargains.dto.UserDto;
 import com.pch777.bargains.exception.ResourceNotFoundException;
 import com.pch777.bargains.model.User;
 import com.pch777.bargains.service.UserService;
 
 @SpringBootTest
-@AutoConfigureTestDatabase
+//@AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class UserServiceTest {
+class UserServiceTest {
 
 	@Autowired
 	UserService userService;
@@ -25,24 +25,24 @@ public class UserServiceTest {
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Test
-	public void shouldGetAllUsers() throws ResourceNotFoundException {
-		// given
-		userService.registerUser(givenThirdUser());
-		userService.registerUser(givenFourthUser());
+	void shouldGetAllUsers() throws ResourceNotFoundException {
+		// given		
+		User thirdUser = userService.userDtoToUser(givenThirdUser());
+		userService.registerUser(thirdUser);
 		
 		// when
 		List<User> all = userService.getAllUsers();
 	
 		// then
 		// guest and administrator accounts are created when the application is started
-		Assertions.assertEquals(4, all.size());
+		Assertions.assertEquals(3, all.size());
 	}
 	
 	@Test
-	public void shouldGetUserByEmail() throws ResourceNotFoundException {
+	void shouldGetUserByEmail() throws ResourceNotFoundException {
 		// given
-		userService.registerUser(givenThirdUser());
-		userService.registerUser(givenFourthUser());
+		User thirdUser = userService.userDtoToUser(givenThirdUser());
+		userService.registerUser(thirdUser);
 		
 		// when
 		User user = userService.findUserByEmail("third@demomail.com");
@@ -52,40 +52,40 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void shouldGetUserById() throws ResourceNotFoundException {
+	void shouldGetUserById() throws ResourceNotFoundException {
 		// given
-		userService.registerUser(givenThirdUser());
-		userService.registerUser(givenFourthUser());
+		User thirdUser = userService.userDtoToUser(givenThirdUser());
+		userService.registerUser(thirdUser);
 		
 		// when
-		User user = userService.findUserById(4L);
+		User user = userService.findById(3L).orElseThrow();
 	
 		// then
-		Assertions.assertEquals("fourth@demomail.com", user.getEmail());
-		Assertions.assertNotEquals("third@demomail.com", user.getEmail());
+		Assertions.assertEquals("third@demomail.com", user.getEmail());
+		Assertions.assertEquals(3L, user.getId());
 	}
 	
 	@Test
-	public void shouldDeleteUserById() throws ResourceNotFoundException {
+	void shouldDeleteUserById() throws ResourceNotFoundException {
 		// given
-		userService.registerUser(givenThirdUser());
-		userService.registerUser(givenFourthUser());
+		User thirdUser = userService.userDtoToUser(givenThirdUser());
+		userService.registerUser(thirdUser);
 		
 		// when
-		userService.deleteUserById(4L);
+		userService.deleteUserById(3L);
 		List<User> all = userService.getAllUsers();
-		Boolean isExist = userService.existsById(4L);
+		Boolean isExist = userService.existsById(3L);
 	
 		// then
-		Assertions.assertEquals(3, all.size());
+		Assertions.assertEquals(2, all.size());
 		Assertions.assertFalse(isExist);
 	}
 	
 	@Test
-	public void shouldExistUserWithEmail() throws ResourceNotFoundException {
+	void shouldExistUserWithEmail() throws ResourceNotFoundException {
 		// given
-		userService.registerUser(givenThirdUser());
-		userService.registerUser(givenFourthUser());
+		User thirdUser = userService.userDtoToUser(givenThirdUser());
+		userService.registerUser(thirdUser);
 		
 		// when
 		Boolean isPresent = userService.isUserPresent("third@demomail.com");
@@ -96,31 +96,26 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void shouldExistUserWithId() throws ResourceNotFoundException {
+	void shouldExistUserWithId() throws ResourceNotFoundException {
 		// given
-		userService.registerUser(givenThirdUser());
-		userService.registerUser(givenFourthUser());
+		User thirdUser = userService.userDtoToUser(givenThirdUser());
+		userService.registerUser(thirdUser);
 		
 		// when
-		Boolean isExist = userService.existsById(4L);
+		Boolean isExist = userService.existsById(3L);
 	
 		// then
 		Assertions.assertTrue(isExist);
 	}
 	
-	private User givenThirdUser() {
-		return User.builder()
+	
+	private UserDto givenThirdUser() {
+		return UserDto.builder()
 				.email("third@demomail.com")
 				.nickname("third-user")
 				.password("pass1234")
+				.confirmPassword("pass1234")
 				.build();
 	}
 	
-	private User givenFourthUser() {
-		return User.builder()
-				.email("fourth@demomail.com")
-				.nickname("fourth-user")
-				.password("pass1234")
-				.build();
-	}
 }
